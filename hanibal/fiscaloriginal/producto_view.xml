@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>    
+        
+        <record id="view_product_form_inherit" model="ir.ui.view">
+            <field name="name">sri.view.product.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name='name' position='after'>
+                    <field name='tipoproducto_id' widget='selection'/>
+                </field>
+            </field>
+        </record>
+
+
+		<!-- 
+        <record id="view_product_form_inherit_retencion" model="ir.ui.view">
+            <field name="name">sri.view.product.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="account.product_normal_form_view"/>
+            <field name="arch" type="xml">
+
+		     <field name='taxes_id' position='replace'>
+				<field name="taxes_id" nolabel="1" colspan="2" attrs="{'readonly':[('sale_ok','=',0)]}" domain = "[('esretencion','=',False)]"/>
+		     </field>
+		     <field name='supplier_taxes_id' position='replace'>
+                     		<field name="supplier_taxes_id" nolabel="1" colspan="2" attrs="{'readonly':[('purchase_ok','=',0)]}" domain = "[('esretencion','=',False)]"/>
+	            </field>
+            </field>
+        </record>
+ 		-->
+
+        <record id="search_product_form_inherit" model="ir.ui.view">
+            <field name="name">sri.view.product.search.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_search_form_view"/>
+            <field name="arch" type="xml">
+                <field name='categ_id' position='after'>
+                    <field name='tipoproducto_id' widget='selection'/>
+                </field>
+            </field>
+        </record>
+        
+        <record id="product_template_only_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.template.product.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+            
+                <field name="default_code" position="after">
+                    <field name='tipoproducto_id' widget='selection' required="1"/>
+                    <!-- COMENTAR DESPUES DE LA MIGRACION -->
+                    <!-- <button name="insert_category" string="Completo Categorias" type="object" />
+                    <button name="complete_partner" string="Completo Partners" type="object"/>
+                    <button name="complete_sequence" string="Completo Secuencias" type="object"/>
+                      -->
+                </field>
+                
+            </field>
+        </record>
+
+
+                   
+                   
+
+    </data>
+</openerp>

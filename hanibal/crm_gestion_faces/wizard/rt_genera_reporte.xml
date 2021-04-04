@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="genera_reporte_cotizaciones_view" model="ir.ui.view">
+            <field name="name">Reporte de Cotizaciones</field>
+            <field name="model">rt.genera.reporte</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            <form string="Cheques Girados y no Cobrados">
+                 
+                       <notebook tabpos="up" colspan="4">
+                            <page string="Filtros" name="filters">
+                            	<group>
+                                <field name="partner_id" />
+                                <field name="user_id" />
+                                <field name="product_id" />
+                                <field name="desde" />
+                                <field name="hasta" />
+                                </group>
+                            </page>
+                            
+                        </notebook>
+                    <separator colspan="4"/>
+                    <group col="4" colspan="4">
+                        <button icon="gtk-cancel" special="cancel" string="Cancelar" colspan="2"/>
+                        <button icon="gtk-print" name="check_report" string="Imprimir" type="object" colspan="2" default_focus="1" />
+                    </group>
+            </form>
+            </field>
+        </record>
+
+		<record id="genera_cotizaciones_menu" model="ir.actions.act_window">
+            <field name="name">Genera reporte Cotizaciones</field>
+            <field name="res_model">rt.genera.reporte</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="genera_reporte_cotizaciones_view"/>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem id="menu_genera_reporte_cotizaciones" 
+        	name="Reporte de cotizaciones" 
+        	parent="reportes" 
+        	action="genera_cotizaciones_menu"
+        	icon="STOCK_PRINT" sequence="2"/>
+
+
+    </data>
+</openerp>

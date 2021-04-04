@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+        <data>
+               
+                        
+                <report
+                        id="retencion_preimpreso"
+                        string="Retencion Pre-Impreso"
+                        model="account.invoice"
+                        name="retencion.reporte"
+                        file="fiscal/report/retencion_preimpreso_reporte.sxw"
+                        report_type='sxw'
+                        header="False"
+                        />
+        </data>
+</openerp>

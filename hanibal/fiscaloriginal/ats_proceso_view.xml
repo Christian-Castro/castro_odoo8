@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--Menu Item-->
+        <menuitem id="sri_menu" name="Fiscal"/>
+        <!-- <menuitem id="sri_menu_anexos" name="Anexos" parent="sri_menu" sequence="1"/> -->
+
+		<!--proceso ATS-->
+
+    	<record model="ir.ui.view" id="ats_proceso_search_view">
+			<field name="name">ats_proceso.search</field>
+			<field name="model">fiscal.ats_proceso</field>
+			<field name="arch" type="xml">
+			    <search string="Session Search">
+			    	
+			        <field name="anio_id"/>
+			        <field name="mes"/>
+					<field name="state"/>
+					<field name="fechacerrado" string = "Fecha Cierre"/>
+			    </search>
+			</field>
+	    </record>
+
+        <record model="ir.actions.act_window" id="ats_proceso_list_action">
+            <field name="name">Fiscal ATS</field>
+            <field name="res_model">fiscal.ats_proceso</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Calculo del Anexo Transaccional Simplificado - proceso.</field>
+            <field name="search_view_id" ref="ats_proceso_search_view"/>
+            <field name="context">{'search_default_my_ats_proceso':1}</field>
+        </record>
+
+        <!-- <menuitem id="ats_proceso_menu"
+                    name="Fiscal ATS" 
+                    parent="sri_menu_anexos"
+                    action="ats_proceso_list_action" /> -->
+                
+
+		<record model="ir.ui.view" id="sri_ats_proceso_view_form">
+			<field name="name">fiscal.ats_proceso.form</field>
+			<field name="model">fiscal.ats_proceso</field>
+			<field name="arch" type="xml">
+				<form string="Fiscal" version="7.0">
+				<header>
+							<button name="ats_procesar" string='Abrir y Procesar' type="object" colspan='2' states='draft' />
+							<button name="proceso_nuevamente" string='Procesar' confirm='Esta a punto de volver a generar el ATS, las modificaciones sobre los registros generados automaticamente serán borrados. Confirma que desea continuar?' colspan='2' states='abierto' type='object' />
+							<button name="cerrar_ats" string='Cerrar' colspan='2' type="object" states='abierto'/>
+							<field name="state" widget="statusbar" statusbar_visible="draft,abierto,cerrado" statusbar_colors='{"draft":"blue","abierto":"blue","cerrado":"red"}'/>
+				 </header>
+					
+					<group colspan='4' col='6'>
+						<group colspan="2" col="2">
+							<separator string="Periodo" colspan="2" col="2"/>
+							<field name='company_id' invisible='0' readonly="1" />
+							<field name="anio_id" attrs="{'readonly':[('state','!=','draft')]}" />
+							<field name="mes"  attrs="{'readonly':[('state','!=','draft')]}" />
+							<field name="fechacerrado" attrs="{'invisible':[('state','!=','cerrado')]}" readonly='1'/>
+						</group>
+						
+						<!-- 
+						<group colspan="2" col="2">
+							<separator string="Procesos" colspan="2" col="2"/>
+							<field name="procesacompras" string = "Procesar Compras" attrs="{'readonly':[('state','=','cerrado')]}"/>
+							<field name="procesaventas" string = "Procesa Ventas" attrs="{'readonly':[('state','=','cerrado')]}" />
+							<field name="procesaanulados" string = "Procesa Comprobantes Anulados" attrs="{'readonly':[('state','=','cerrado')]}" />
+						</group>
+						 -->
+					</group>
+					<newline/>
+					<notebook colspan='4'>
+						<page string='Compras'>
+							<field name='compras' nolabel='1' attrs="{'readonly':[('state','=','cerrado')]}">
+								<tree string=''>	
+									<field name='manual' />	
+									<field name="fechaemision" />
+									<field name="numerofac"/>
+									<!-- <field name="idprov"/> -->
+									<field name='partner_id' />
+									<field name="basenograiva" />
+									<field name="baseimponible" />
+									<field name="baseimpgrav" />
+									<field name="montoiva" string = "IVA" />
+									<field name="montoivacalc" string = "IVA Calc." />
+									<field name="numeroret"/>
+									<field name="codsustento" />
+									<field name="tipocomprobante_id"/>
+				                </tree>
+							</field>
+						</page>
+						<page string='Ventas'>
+							<field name='ventas' nolabel='1' attrs="{'readonly':[('state','=','cerrado')]}">
+								<tree string=''>				
+									<field name='manual'/>		
+									<field name="partner_id" />
+									<field name="siglatipoidentificacion" string='Tipo Identificacion'/>
+									<!-- <field name="numeroidentificacion" string = "Numero"/> -->
+									<field name="tipodocumento_id" string = "Tipo Comprobante"/>
+									<field name="numerocomprobantes" string = "No Comprobantes"/>
+									<field name="baseninguniva" string = "Base No IVA"/>
+									<field name="basecero" string = "Base Cero"/>
+									<field name="basenocero" string = "Base de IVA"/>
+									<field name="montoiva" string = "IVA"/>
+									<field name="montoivaretenido" string = "IVA Retenido"/>
+									<field name="montorentaretenido" string = "Renta Retenido"/>
+					        	</tree>
+					        </field>
+						</page>
+						<page string='Punto Emision'>
+							<field name='emision' nolabel='1' attrs="{'readonly':[('state','=','cerrado')]}">
+								<tree string=''>	
+									<field name='manual'/>			
+									<field name='establecimiento'/>		
+									<field name="total" />
+						    	</tree>
+					        </field>
+						</page>
+						<page string='Anulados'>
+							<field name='anulados' nolabel='1' attrs="{'readonly':[('state','=','cerrado')]}">
+								<tree string=''>
+									<field name='manual' />
+					            	<field name="tipodocumento_id"/>
+									<field name="puntoemision"/>
+									<field name="establecimiento"/>
+									<field name="secuencialinicio"/>
+									<field name="secuencialfin"/>
+									<field name="autorizacion"/>
+				                </tree>
+							</field>
+						</page>
+						<page string='Archivo XML'>
+							<group colspan="2" col="2">
+								<button name="genera_archivo" type="object" string="Generar Archivo" class="oe_link oe_edit_only"/>
+							    <field name="xml_filename" invisible="1"/>
+							    <field name="xml_binary" nolabel="1" filename="xml_filename" readonly="1"/>
+							</group>
+						</page>
+					</notebook>
+				   
+				</form>
+			</field>
+		</record>
+
+        <record model="ir.ui.view" id="sri_ats_proceso_view_tree">
+            <field name="name">fiscal.ats_proceso.tree</field>
+            <field name="model">fiscal.ats_proceso</field>
+            <field name="arch" type="xml">
+                <tree string="SRI Proceso" >
+					<field name="anio_id" string ="Año"/>
+					<field name="mes" string ="Mes"/>
+					<field name="state"/>
+					<field name="fechacerrado" string = "Fecha Cierre"/>
+					<field name="procesacompras" string = "Procesar Compras"/>
+					<field name="procesaventas" string = "Procesa Ventas"/>
+					<field name="procesaanulados" string = "Procesa Comprobantes Anulados"/>
+                </tree>
+            </field>
+        </record>
+		
+		<!-- COMPRAS -->
+		
+		<record id="view_detalleair_line_form" model="ir.ui.view">
+	            <field name="name">view.detalleair.line.form</field>
+	            <field name="model">fiscal.ats_detalleair</field>
+	            <field name="type">form</field>
+	            <field name="arch" type="xml">
+	                <form string="Detalle AIR">
+	                    <field name='codretair' required='1'/>
+	                    <field name='baseimpair' required='1'/>
+	                    <field name='porcentajeair' required='1'/>
+	                    <field name='valretair' required='1'/>
+	                </form>
+	            </field>
+	        </record>
+
+	<!--compras ATS-->
+
+	    	<record model="ir.ui.view" id="ats_compras_search_view">
+			<field name="name">ats_compras.search</field>
+			<field name="model">fiscal.ats_compras</field>
+			<field name="arch" type="xml">
+			    <search string="Session Search">
+			        <!--<field name="anio"/>
+			        <field name="mes"/>-->
+				<field name="idprov" string = "Partner"/>
+				<field name="tipocomprobante" string = "Tipo Documento"/>
+				<field name="codsustento" string = "Sustento"/>
+			    </search>
+			</field>
+		    </record>               
+
+        	<record model="ir.ui.view" id="sri_ats_compras_view_form">
+            <field name="name">fiscal.ats_compras.form</field>
+            <field name="model">fiscal.ats_compras</field>
+            <field name="arch" type="xml">
+                <form string="SRI" version="7.0" >
+		  			<sheet>
+                		<notebook>
+                			<page string='General'>
+		                		<group colspan='2' col='4'>
+								<group colspan="2" col="2">
+									<separator string="Generales" colspan="6"/>
+									<field name="sustento_id" string='Sustento Tributario' widget='selection' on_change='onchange_sustento_id(sustento_id)'/>
+									<field name="codsustento" invisible='1'/>
+									<field name="fechaemision" string='Fecha Emision'/>
+									<field name="fecharegistro" string='Fecha Registro'/>
+									<field name="tipocomprobante_id" string='Documento' widget='selection' colspan='2' on_change='onchange_tipocomprobante_id(tipocomprobante_id)'/>
+									<field name="tipocomprobante" invisible='1'/>
+									<group col='2' colspan='2'>
+										<label align="1.0" string='Numero:' colspan='1'/>
+										<group col='10' colspan='1'>
+											<field name="establecimiento" nolabel='1' colspan='1'/>
+											<field name="puntoemision" nolabel='1' colspan='1'/>
+											<field name="secuencial" nolabel='1' colspan='8'/>
+										</group>					
+									</group>	
+									<field name="autorizacion" string='No. de Autorizacion' colspan='2'/>
+								</group>
+								<group colspan='2' col='2'>
+									<separator string="Datos Proveedor" colspan="2"/>
+									<field name='partner_id' on_change='onchange_partner_id(partner_id)'/>
+									<field name="tipoidentificacion_id" readonly='1' widget='selection' on_change='onchange_tipoidentificacion_id(tipoidentificacion_id)'/>
+									<field name="tpidprov" invisible="1"/>
+									<field name="idprov" readonly='1' />
+									<separator string="Valores" colspan="2"/>
+									<field name="basenograiva" string='Base imp. IVA 0'/>
+									<field name="baseimponible" string='Base imp. IVA no 0'/>
+									<field name="baseimpgrav" string='Base imp. no IVA'/>
+									<field name="montoice" string='ICE'/>
+									<field name="montoiva" string='IVA'/>
+								</group>
+							</group>
+						</page>
+						<page string='Retencion'>
+							<group colspan='2' col='2'>
+								<group colspan='1' col='2'>
+									<separator string="Generales" colspan="2"/>
+									<group colspan='2'>
+										<label align="1.0" string='Numero:' colspan='1'/>
+										<group col='10' colspan='1'>
+											<field name="estabretencion1" nolabel='1' colspan='1' />
+											<field name="ptoemiretencion1" nolabel='1' colspan='1'/>
+											<field name="secretencion1" nolabel='1' colspan='8'/>
+										</group>	
+									</group>
+									<field name="autretencion1" string='No. de Autorizacion' colspan='2'/>
+									<field name="fechaemiret1" string='Fecha Emision' colspan='2'/>
+								</group>
+								<group colspan='1' col='2'>
+									<separator string="Valores" colspan="2"/>
+									<field name="valorretbienes" string='Ret. IVA Bienes'/>
+									<field name="valorretservicios" string='Ret. IVA Servicios'/>
+									<field name="valretserv100"  />
+								</group>						
+								<newline/>
+								<separator string="Concepto AIR" colspan="2"/>
+								<field name='detalle_air' colspan='2' nolabel='1'>
+									<tree string=''>
+										<field name='codretair' />
+										<field name='baseimpair' />
+										<field name='porcentajeair' />
+										<field name='valretair' />
+									</tree>
+								</field>
+							</group>				
+						</page>
+						<page string='Comprobante Modificado'>
+							<group colspan='2' col='4'>
+								<field name='tipodocmodificado_id' string='Documento' widget='selection' colspan='2' on_change='onchange_tipodocmodificado_id(tipodocmodificado_id)'/>
+								<field name="docmodificado" invisible='1'/>
+								<group colspan='2' col='2'>
+									<label string='Numero:' align='1.0'/>
+									<group colspan='1' col='10'>
+										<field name="estabmodificado" nolabel='1' colspan='1' attrs="{'readonly':[('tipodocmodificado_id','=',False)]}"/>
+										<field name="ptoemimodificado" nolabel='1' colspan='1' attrs="{'readonly':[('tipodocmodificado_id','=',False)]}"/>
+										<field name="secmodificado" nolabel='1' colspan='8' attrs="{'readonly':[('tipodocmodificado_id','=',False)]}"/>
+									</group>
+								</group>
+								<field name="autmodificado" string='No. de Autorizacion' colspan='2' attrs="{'readonly':[('tipodocmodificado_id','=',False)]}"/>
+							</group>
+						</page>
+						<page string='SRI-PAGOS'>
+							<field name='sritipopago_id' domain="[('habilitado','=',True)]" widget='selection' on_change="onchange_tipopago_id(sritipopago_id)"/>
+							<field name="bandera" invisible="1" />
+							<newline/>
+							<field name='pais_id' widget='selection' attrs="{ 'invisible':[('bandera','=', False )],'required':[('bandera','=', True )]}" />
+							<newline/>
+	                        <field name='dobletributacion'  on_change="onchange_trubutacion_id(dobletributacion)" attrs="{ 'invisible':[('bandera','=', False )],'required':[('bandera','=', True )]}" />
+	                        <field name='retenciondobletributacion' attrs="{ 'invisible':[('bandera','=', False )],'required':[('bandera','=', True )]}" />
+	                        <group col="1" colspan="4">
+		                        <field name="sri_ats_pagos_line" nolabel="1" >
+		                                <tree string="Formas de Pago" editable="bottom"  >
+		                                	<field name='formapago_id'/>
+		                               </tree>
+		                        </field>
+			               </group>
+					    </page>
+					    <!-- NUEVA PARTE DE REEMBOLSOS -->
+					    <page string="Comprobante de Reembolso">
+					    <field name="reembolsos_id" nolabel="1" >
+                                <tree string="Comprobante de Reembolso">
+                                    <field name="tipoid_re"/>
+                                    <field name="tipodocumento_id_re"/>
+                                    <field name="establecimiento_re"/>
+                                    <field name="puntoemision_re"/>
+                                    <field name="secuencial_re"/>
+                                </tree>
+                                <form string="Comprobante de Reembolso">
+                                	<group colspan='3' col='2'>
+		                            	<field name='tipoid_re' required="1" />
+		                            	<field name='identificacion_pro_re' required="1" />
+		                            	<field name='tipodocumento_id_re' required="1" />
+		                            </group>
+			                        <group colspan='2' col='4'>
+					                	<field name='establecimiento_re' required="1"  />
+					                	<field name='puntoemision_re' required="1"  />
+					                	<field name='secuencial_re' required="1"  />
+					                </group>
+							        <group colspan='2' col='2'>
+			                			<field name='autorizacion_re' required="1" string="Autorización" />
+		                              	<field name='fecha_emision_re' required="1" string="Fecha de Emisión" />
+		                            </group>
+		                            <separator string='Datos para la Retención'/>
+		                              	<group colspan='5' col='2'>
+			                               	<field name='ivacero_re' />
+			                               	<field name='iva_dif_cero_re' />
+			                               	<field name='tarifa_no_iva_re' />
+			                               	<field name='monto_ice_re' />
+			                               	<field name='monto_iva_re' />
+		                              	</group>
+                                </form>
+                            </field>
+					    </page>
+					    <!-- NUEVA PARTE DE REEMBOLSOS -->
+				</notebook>
+			</sheet>
+             	</form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sri_ats_compras_view_tree">
+            <field name="name">fiscal.ats_compras.tree</field>
+            <field name="model">fiscal.ats_compras</field>
+            <field name="arch" type="xml">
+                <tree string="SRI" >										
+					<field name="codsustento" />
+					<field name="tpidprov" />
+					<field name="idprov"/>
+					<field name="tipocomprobante"/>
+					<field name="fecharegistro" />
+					<field name="establecimiento"/>
+					<field name="puntoemision" />
+					<field name="secuencial" />
+					<field name="fechaemision" />
+					<field name="autorizacion" />
+					<field name="basenograiva" string = "B IVA Cero"/>
+					<field name="baseimponible" string = " B No IVA"/>
+					<field name="baseimpgrav" string = "B IVA Cero"/>
+					<field name="montoice" string = "Ice"/>
+					<field name="montoiva" string = "IVA" />
+					<field name="montoivacalc" string = "IVA Calc." />
+					<field name="valorretbienes" string = "IVA Bienes"/>
+					<field name="valorretservicios" string = "IVA Servicios"/>
+					<field name="valretserv100" string = "Ret IVA Cien"/>
+					<field name="estabretencion1" />
+					<field name="ptoemiretencion1" />
+					<field name="secretencion1" />
+					<field name="autretencion1" />
+					<field name="fechaemiret1" />
+					<field name="docmodificado" />
+					<field name="estabmodificado" />
+					<field name="ptoemimodificado" />
+					<field name="secmodificado" />
+					<field name="autmodificado" />
+                </tree>
+            </field>
+        </record>
+        
+        <!--ventas ATS-->
+
+    	<record model="ir.ui.view" id="ats_ventas_search_view">
+		<field name="name">ats_ventas.search</field>
+		<field name="model">fiscal.ats_ventas</field>
+		<field name="arch" type="xml">
+		    <search string="Session Search">
+				<field name="partner_id" string = "Partner"/>
+				<field name="tipodocumento_id" string = "Tipo Documento" widget="selection"/>
+		    </search>
+		</field>
+	    </record>              
+
+        <record model="ir.ui.view" id="sri_ats_ventas_view_form">
+            <field name="name">fiscal.ats_ventas.form</field>
+            <field name="model">fiscal.ats_ventas</field>
+            <field name="arch" type="xml">
+                <form string="Ventas" version="7.0" >
+			<sheet>
+					<group colspan="2" col="4">
+						<separator string="Generales" colspan="4" col="4"/>
+						<field name="partner_id" colspan='4' on_change='onchange_partner_id(partner_id)'/>
+						<field name="tipoidentificacion_id" widget="selection" on_change='onchange_tipoidentificacion_id(tipoidentificacion_id)' readonly='1'/>
+						<field name="tipoidentificacionsri" invisible='1' />
+						<field name="numeroidentificacion" readonly='1'/>
+						<field name="tipodocumento_id" string = "Comprobante" widget="selection" on_change='onchange_tipocomprobante_id(tipodocumento_id)'/>
+						<field name="numerocomprobantes" string = " No Comprobantes"/>
+						<field name="parte_relacionada" string = "Parte relacionada"/>
+						<field name='tipodocumentosri' invisible='1' />
+					</group>
+					<newline/>
+					<group colspan="2" col="4">
+						<separator string="Valores" colspan="4" col="4"/>
+						<field name="baseninguniva" string = " Base No IVA"/>
+						<field name="montoiva" string = " IVA"/>
+						<field name="basecero" string = " Base Cero"/>
+						<field name="montoivaretenido" string = "IVA Retenido"/>
+						<field name="basenocero" string = " Base de IVA"/>
+						<field name="montorentaretenido" string = "Renta Retenido"/>
+					</group>
+			</sheet>
+		    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sri_ats_ventas_view_tree">
+            <field name="name">fiscal.ats_ventas.tree</field>
+            <field name="model">fiscal.ats_ventas</field>
+            <field name="arch" type="xml">
+                <tree string="Ventas" >
+					<field name="partner_id" string = "Partner" widget="selection"/>
+					<field name="tipoidentificacion_id" string = "Ruc" widget="selection"/>
+					<field name="numeroidentificacion" string = "Numero"/>
+					<field name="tipodocumento_id" string = "Ruc" widget="selection"/>
+	
+					<field name="numerocomprobantes" string = " No Comprobantes"/>
+					<field name="baseninguniva" string = " Base No IVA"/>
+					<field name="basecero" string = " Base Cero"/>
+					<field name="basenocero" string = " Base de IVA"/>
+					<field name="montoiva" string = " IVA"/>
+					<field name="montoivaretenido" string = "IVA Retenido"/>
+					<field name="montorentaretenido" string = "Renta Retenido"/>
+                </tree>
+            </field>
+        </record>
+		
+    </data>
+</openerp>

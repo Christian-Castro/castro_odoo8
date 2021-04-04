@@ -1,0 +1,72 @@
+<openerp>
+     <data>
+
+      <record id="view_ans_reporte_mayor" model="ir.ui.view">
+          <field name="name">Reporte Mayor General</field>
+            <field name="model">reporte.libro.mayor.ans</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+             <form string="Libro Mayor">
+                 <div class="oe_right oe_button_box" name="buttons" style="margin-bottom:10px">
+                            <!--button class="oe_stat_button" string='Consultar' name="consultar" type="object" icon="fa-bars">
+                            </button-->
+                            <button class="oe_stat_button" string='Excel' name="generar_excell" type="object" icon="fa-file-text-o">
+                            </button>
+                            <button class="oe_stat_button" string='PDF' name="generar_pdf" type="object" icon="fa-file-o" >
+                            </button>
+                        </div>
+
+                <label string=""/>  <!-- binding for inherited views -->
+                <group col="4">
+                   <field name="chart_account_id" widget='selection'  />
+                   <field name="fiscalyear_id"/>
+                   <field name="target_move"/>
+                   <field name="display_account"/>
+                   <field name="date_from"/>
+                   <field name="date_to"/>
+                </group>
+                 <field name="nombre_xls" invisible="1"/>
+                 <field name="nombre_txt" invisible="1"/>
+                 <group col="4" colspan="2">
+                    <field name="binario_txt" filename="nombre_txt" readonly="1"/>
+					<field name="binario_xls" filename="nombre_xls" readonly="1"/>
+				 </group>
+              <notebook tabpos="up" colspan="4">
+                    <page string="Diaros" name="journal_ids">
+                        <field name="journal_ids" widget="many2many_checkboxes">
+                         </field>
+                    </page>
+                    <page string="Estructura Escolar" name="estructura_escolar">
+                         <group>
+                         <field name="jornada" widget='selection'/>
+                          <field name="seccion" widget='selection'/>
+                           <field name="curso" widget='selection'/>
+
+                        </group>
+                    </page>
+                  <page string="Cuentas contables" name="journal_ids">
+                        <field name="cuentas" options="{'no_open': True}">
+                            <tree colors="blue:type=='view'" >
+                                <field name="code" />
+                                <field name="name" />
+                                <field name="type" />
+                            </tree>
+                        </field>
+
+                    </page>
+                </notebook>
+            </form>
+            </field>
+      </record>
+
+    <record id="reporte_libro_mayor_menu" model="ir.actions.act_window">
+        <field name="name">Reporte Mayor General</field>
+        <field name="res_model">reporte.libro.mayor.ans</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+    </record>
+         
+<menuitem id="menu_reporte_mayor_item_ans" name="Libro Mayor"
+action="reporte_libro_mayor_menu" parent="ans_reporte.menu_reportes" sequence="2"/>
+     </data>
+</openerp>

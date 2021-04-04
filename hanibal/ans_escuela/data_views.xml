@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="id_secuencial_res_partner" model="ir.sequence.type">
+            <field name="name">Res Partner</field>
+            <field name="code">res.partner</field>
+        </record>
+    	<record id="id_secuencial_codigo_alumno" model="ir.sequence">
+            <field name="name">Codigo Alumno</field>
+            <field name="active">True</field>
+            <field name="prefix"></field>
+            <field name="padding">8</field>
+            <field name="code">res.partner</field>
+            <field name="number_next_actual">1</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">no_gap</field>
+        </record>
+
+
+    </data>
+</openerp>

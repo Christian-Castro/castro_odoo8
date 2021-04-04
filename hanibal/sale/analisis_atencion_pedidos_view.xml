@@ -1,0 +1,246 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        
+        <menuitem name="Reporting"
+            id="base.menu_reporting"
+            groups="base.group_user"
+            sequence="170"/>
+        
+            
+        <menuitem id="menu_report" name="Análisis financiero" parent="base.menu_reporting" sequence="9"/>
+        
+	<record id="view_pedido_line_form" model="ir.ui.view">
+            <field name="name">view.pedido.line.tree</field>
+            <field name="model">analisis.pedidos.det</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <form string="Detalle Pediti">
+                   
+                    <field name='descripcion' required='1'/>
+                    <field name='cantidad' required='1'/>
+               
+                </form>
+            </field>
+        </record>
+        
+
+
+        
+        <!-- ANALISIS DE PEDIDOS -->
+        
+        <record model="ir.ui.view" id="view_analisis_pedidos_graph">
+            <field name="name">analisis.pedidos.graph</field>
+            <field name="model">analisis.pedidos</field>
+            <field name="arch" type="xml">
+                <graph string="ANALISIS DE PEDIDOS" type="bar">
+                
+                    <field name="eficiencia"  type="measure"/>
+                    <field name="no_eficiencia"  type="measure"/>
+                    
+                </graph>
+            </field>
+        </record>
+    
+    
+        <record id="view_analisis_pedidos_filter" model="ir.ui.view">
+            <field name="name">analisis.pedidos.filter</field>
+            <field name="model">analisis.pedidos</field>
+            <field name="arch" type="xml">
+                <search string="ANALISIS DE PEDIDOS">
+
+                    <field name="pedido" string="Numero"/>
+                    <field name="fecha_digita_pedido" string="Fecha"/>
+                    <field name="cliente_codigo" invisible="1"/>
+                   
+                    <field name="estado_pedido"  string="Estado"/>
+                    <field name="estado_cerrado" />
+                    <field name="vendedor" string="Vendedor" />
+                    <field name="localidad" string="Ciudad" />
+                   
+                    <field name="diferencia" string="Atraso" invisible="1"/>
+                    <field name="cliente_descripcion" string="Cliente" />
+
+
+                    <separator/>
+                    <group string="Resultados">
+				    <filter string="En tiempo" name="atencion" domain="[('atencion','=','EN TIEMPO')]"/>
+				    <filter string="Fuera de tiempo" name="atencion" domain="[('atencion','=','FUERA DE TIEMPO')]"/>
+                    </group>
+                    <group string="Refacturacion">
+				    <filter string="Refacturados" name="refacturacion" domain="[('refacturado','=','Refacturado')]"/>
+				    <filter string="NO Refacturados" name="refacturacion" domain="[('refacturado','!=','Refacturado')]"/>
+                    </group>
+                    <group string="Oficina">
+                                    <filter string="Guayaquil" name="OfiGuayaquil" domain="[('oficina','=','Guayaquil')]"/>
+                                    <filter string="Quito" name="OfiQuito" domain="[('oficina','!=','Guayaquil')]"/>
+                    </group>
+
+                    <newline/>
+                    <separator/>
+		    <separator/>
+
+                    <filter string="Cerrado" name="estado_cerrado" domain="[('estado_cerrado','=','S')]"/>
+                    <filter string="No cerrado" name="estado_cerrado" domain="[('estado_cerrado','=','N')]"/>
+                    <newline/>
+		    <newline/>
+                    <separator/>
+                    <group string="Estado Pedidos">
+				    <filter string="Facturados" name="estado_pedido" domain="[('estado_pedido','=','FAC')]"/>
+				    <filter string="Fact. Parcial" name="estado_pedido" domain="[('estado_pedido','=','FPA')]"/>
+				    <filter string="Pend. Facturar" name="estado_pedido" domain="[('estado_pedido','=','PFA')]"/>
+				    <filter string="Suspendido por credito" name="estado_pedido" domain="[('estado_pedido','=','SCR')]"/>
+				    <filter string="Insuficiencia parcial" name="estado_pedido" domain="[('estado_pedido','=','SIP')]"/>
+				    <filter string="Insuficiencia total" name="estado_pedido" domain="[('estado_pedido','=','SIT')]"/>
+				    <filter string="Entrega Total" name="estado_pedido" domain="[('estado_pedido','=','ETO')]"/>
+                                    <filter string="Entrega Parcial" name="estado_pedido" domain="[('estado_pedido','=','EPA')]"/>
+                    </group>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                    	<filter string="Año" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'anio'}"/>
+                    	<filter string="Refacturados" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'refacturado'}"/>
+                        <filter string="Mes" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'mes'}"/>
+                        
+                        <filter string="Vendedor" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'vendedor'}"/>
+                        <filter string="Cliente" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'cliente_descripcion'}"/>
+                    	<filter string="Oficina" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'oficina'}"/>
+                        <filter string="Localidad" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'localidad'}"/>
+
+                       <filter string="Atencion" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'atencion'}"/>
+                       <filter string="Motivo Cierre" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'motivo_cierre'}"/>
+                    </group>
+                </search>
+
+            </field>
+        </record>
+
+        <record id="view_analisis_pedidos_tree" model="ir.ui.view">
+            <field name="name">analisis.pedidos.tree</field>
+            <field name="model">analisis.pedidos</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="Analisis de pedidos" >
+                    <field name="compania" invisible="1" />
+                    <field name="pedido" string="Numero"/>
+                    <!---field name="motivo_cierre" string="Mot Cierre"/-->
+                    <field name="fecha_digita_pedido" string="Fecha"/>
+                    <field name="mes" invisible="1"/>
+                    <field name="anio" invisible="1"/>
+                    <field name="cliente_codigo" invisible="1"/>
+                    <field name="cliente_descripcion" string="Cliente" />
+                    <field name="estado_pedido" invisible="0" string="Estado" />
+                    <field name="estado_cerrado" invisible="1"/>
+                    <field name="motivo_cierre" invisible="0"/>
+                    <field name="vendedor" string="Vendedor" />
+                    <field name="cod_vendedor" invisible="1" />
+                    <field name="refacturado" string="Refacturados" />
+                    <field name="oficina" string="Oficina" />
+                    <field name="localidad" string="Ciudad" />
+                  
+                    <field name="dias_limite" invisible="1"/>
+                    <field name="eficiencia" widget="integer" invisible="1"/>
+                    <field name="no_eficiencia" widget="integer" invisible="1" />
+                    <field name="fecha_ultima_factura" string="Facturado"/>
+                    <field name="fecha_ultima_guia" invisible="1"/>
+                    <field name="fecha_ultima_planificacion" invisible="1"/>
+                    <field name="diferencia" string="Atraso"/>
+                    <field name="atencion" invisible="0" string="Atencion"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_analisis_pedidos_form" model="ir.ui.view">
+            <field name="name">analisis.pedidos.form</field>
+            <field name="model">analisis.pedidos</field>
+            <field name="arch" type="xml">
+                <form string="Analisis de pedidos">
+                <sheet>
+                	<group col="6" colspan ="4">
+                	
+                     	    <!--field name="compania" invisible="1" /-->
+	                    <field name="pedido" string="Pedido"/>
+                            <field name="estado_pedido" string="Estado"/>
+		             <field name="vendedor" string="Vendedor"/>
+
+                            <newline/>
+			    <field name="cliente_descripcion" string="Cliente"/>
+                            <field name="localidad" string="Ciudad"/>
+	                    <field name="atencion" string="Atencion"/>
+                            <newline/>
+	                    <field name="fecha_digita_pedido" string="Fecha"/>
+                            <field name="fecha_ultima_factura" string="Ult Factura"/>
+	                    <field name="diferencia" string="Dias"/>
+                    </group>
+                                               
+
+			     <button name="import_data" type="object" string="Traer Informacion"/>
+                            <separator string="Articulos"/>
+
+			    <notebook colspan="1">
+			        <page string="Pedido">
+			            <field name="line_id" colspan='2' nolabel='1'>
+                                        <tree string="">
+                                          
+			                        
+			                        <field name="descripcion"/>
+			                        <field name ="estado_linea"/>
+			                        <field name ="existencia_actual"/>
+			                        <field name="bodega"/>
+			                        <field name="unidad"/>
+			                        <field name="cantidad"/>
+			                        <field name="precio"/>
+			                        <field name="total_art"/>
+                                         
+                                       </tree	>
+                                    </field>
+                                 </page>
+			        <page string="Historico">
+			            <field name="line_id_bit" colspan='2' nolabel='1'>
+                                        <tree string="">
+			                        <field name="clase"/>
+			                        <field name="codigo"/>
+			                        <field name="descripcion"/>
+			                        <field name="cantidad"/>
+			                        <field name="estado"/>
+			                        <field name="bodega"/>
+			                        <field name="disponible_cia"/>
+			                        <field name="reservado_cia"/>
+			                        <field name="disponible_bod"/>
+			                        <field name="reservado_bod"/>
+                                       </tree	>
+                                    </field>
+                                 </page>
+			    </notebook>
+
+			    <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+				    <field name="subtotal" string="Subotal"  widget='monetary' options="{'currency_field': 'currency_id'}"/>
+
+			            <field name="iva" string="Iva" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+
+				     <field name="total" string="Total"  widget='monetary' options="{'currency_field': 'currency_id'}"/>
+
+			    </group>
+
+ 
+                </sheet>
+                </form>
+            </field>
+        </record>
+        
+        
+        <record id="action_analisis_pedidos" model="ir.actions.act_window">
+            <field name="name">Analisis atencion pedidos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">analisis.pedidos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,graph,form</field>
+            <field name="search_view_id" ref="view_analisis_pedidos_filter"/>
+        </record>
+        
+        
+        <menuitem action="action_analisis_pedidos" id="menu_analisis_pedidos_form" parent="menu_report" sequence="1"/>
+        <!-- ANALISIS DE PEDIDOS -->
+        
+    </data>
+</openerp>
+

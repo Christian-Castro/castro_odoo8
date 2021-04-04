@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--<record id="view_notascreditocliente_inherit" model="ir.ui.view">
+            <field name="name">fiscal.notas.credito.cliente.view.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="pg1__notas_credito_cliente.pg2_inherit_refund_id_cliente"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form//notebook/page[@string='Payments']" position="after">
+		     		<page string="Fiscal">
+                        <separator string="Punto de Emision" colspan="4"/>
+                        <group colspan="4" col="6">
+	                        <group colspan='2' col='2'>
+	                            <field name='puntoemision' attrs="{ 'readonly':[('state','!=', 'draft' )]}"/>
+	                            <field name='establecimiento' attrs="{ 'readonly':[('state','!=', 'draft' )]}"/>
+	                            <field name='secuencial' attrs="{ 'readonly':[('state','!=', 'draft' )]}"/>
+	                        </group>
+	                        <group colspan='2' col='2'>
+	                            <field name='Numautorizacion' string='Aut. Numero' attrs="{ 'readonly':[('state','!=', 'draft' )]}"/>
+	                            <field name='numeAutImp' attrs="{ 'readonly':[('state','!=', 'draft' )]}"/>
+	                        </group>
+	                        <group colspan='2' col='2'>
+	                            <field name='tipodocumento_id' attrs="{ 'readonly':[('state','!=', 'draft' )]}" widget='selection'/>
+	                            <field name='puntoemision_id' on_change='on_change_puntoemision_id(puntoemision_id)' domain="[('tipodocumento_id.esretencion','=',False),('habilitado','=',True)]"/>
+	                        </group>
+	                        <group>
+	                            <field name='parte_relacionada' />
+	                        </group>
+
+                        </group>
+
+                        <separator string="Formas de Pago" colspan="4"/>
+                        <group colspan="4" col="6">
+                        <div style="width: 50%%">
+                        <field name='fiscaltipopago_id' domain="[('habilitado','=',True)]" widget='selection' on_change="onchange_tipopago_id(sritipopago_id)" colspan="2"/>
+						<field name="fiscal_option" invisible="1" />
+						<field name='pais_id' widget='selection' attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+						<field name='dobletributacion'  on_change="onchange_trubutacion_id(dobletributacion)" attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+	                    <field name='retenciondobletributacion' attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+	                    </div>
+	                    </group>
+	                    <group colspan="4">
+	                    	<div style="width: 50%%">
+			                    <field name="fiscal_invoice_pagos_line" nolabel="1" >
+			                            <tree string="Formas de Pago" editable="bottom"  >
+			                            	<field name='formapago_id'/>
+			                           </tree>
+			                    </field>
+		                    </div>
+	                    </group>
+	                    	<div style="width: 60%%">
+		                        <field name='fiscaltipopago_id' domain="[('habilitado','=',True)]" widget='selection' on_change="onchange_tipopago_id(fiscaltipopago_id)" colspan="2"/>
+								<field name="fiscal_option" invisible="1" />
+								<field name='pais_id' widget='selection' attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+								<field name='dobletributacion'  on_change="onchange_trubutacion_id(dobletributacion)" attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+			                    <field name='retenciondobletributacion' attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+		                    </div>
+	                    	<div style="width: 50%%">
+			                    <field name="fiscal_invoice_pagos_line" nolabel="1" >
+			                            <tree string="Formas de Pago" editable="bottom"  >
+			                            	<field name='formapago_id'/>
+			                           </tree>
+			                    </field>
+		                    </div>
+					</page>
+				</xpath>
+            </field>
+         </record>-->
+
+        <record id="view_facturacliente_inherit" model="ir.ui.view">
+            <field name="name">fiscal.factura.cliente.view.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+            	
+            	
+		         
+                <field name="partner_id" position="replace">
+                	<field string="Customer" name="partner_id"
+                              on_change="onchange_partner_id(type, partner_id, date_invoice, payment_term, partner_bank_id, company_id, context)"
+                              context="{'default_supplier': 0, 'search_default_customer': 1, 'default_customer': 1}"
+                              domain="[('customer', '=', True),('tipo','!=', 'H' )]"/>
+                </field>
+                
+<!--                 CAMBIO -->
+
+<!--                 KF -->
+                 <field name='number' position='replace'>
+                    <h3>
+                    <field name='numerofac' readonly = 'True'/>
+                    </h3>
+                     <h4>
+                    <field name='number' />
+                    </h4>
+                </field>
+<!--                 KF -->
+                <field name='date_invoice' position='replace'>
+                    <field name='date_invoice' required='True'/>
+                </field>
+                 
+                <field name='journal_id' position='replace'>
+                    <field name='journal_id' on_change='on_change_journal_id(journal_id)'/>
+					<!-- 			BF -->
+<!-- 					ESTE CAMPO DE SE INSERTO PARA GENERAR EL RIDE DESDE EL MODELO DE ACCOUNT INVOICE -->
+                    <field name='invoice_id' attrs="{ 'invisible':[('type','!=', 'out_invoice' )]}" />
+                    <!-- 			BF -->
+                    
+                </field>   
+				<!-- 			BF -->
+<!-- 				SOLO DEJO LOS CAMPOS QUE SON NECESARIOS EN ESTA HERENCIA DE VISTA -->
+				<xpath expr="/form//notebook/page[@string='Invoice Lines']/group/field[@name='amount_tax']" position="after">
+		    		            
+								<field name='baseivacero' widget="monetary" options="{'currency_field': 'currency_id'}"/>
+								<field name='baseivanocero' widget="monetary" options="{'currency_field': 'currency_id'}"/>
+				</xpath>
+				<!-- 			BF -->
+
+                <xpath expr="/form//notebook/page[@string='Payments']" position="after">
+				<!--RERV attrs agregado para que no aparezca en out_refund-->
+		     		<page string="Fiscal" attrs="{'invisible': [('type', '!=', 'out_invoice')]}">
+                        <separator string="Punto de Emision" colspan="4"/>
+                        <group colspan="4" col="6">
+	                        <group colspan='2' col='2'>
+	                            <field name='puntoemision' readonly='1' />
+	                            <field name='establecimiento'  readonly='1' />
+	                            <field name='secuencial'  readonly='1' />
+	                        </group>
+	                        <group colspan='2' col='2'>
+	                            <field name='Numautorizacion' string='Aut. Numero'  readonly='1' />
+	                            <field name='numeAutImp'  readonly='1'/>
+	                        </group>
+	                        <group colspan='2' col='2'>
+	                            <field name='tipodocumento_id' attrs="{ 'readonly':[('state','!=', 'draft' )]}" widget='selection'/>
+	                            <field name='puntoemision_id' on_change='on_change_puntoemision_id(puntoemision_id)' domain="[('tipodocumento_id.esretencion','=',False),('habilitado','=',True)]"/>
+	                        </group>
+	                        <group>
+	                            <field name='parte_relacionada' attrs="{ 'readonly':[('state','!=', 'draft' )]}"/>
+	                        </group>
+	                        
+                        </group>
+                        
+                        <separator string="Formas de Pago" colspan="4"/>
+                        <!--<group colspan="4" col="6">
+                        <div style="width: 50%%">
+                        <field name='fiscaltipopago_id' domain="[('habilitado','=',True)]" widget='selection' on_change="onchange_tipopago_id(sritipopago_id)" colspan="2"/>
+						<field name="fiscal_option" invisible="1" />
+						<field name='pais_id' widget='selection' attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+						<field name='dobletributacion'  on_change="onchange_trubutacion_id(dobletributacion)" attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+	                    <field name='retenciondobletributacion' attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+	                    </div>
+	                    </group>
+	                    <group colspan="4">
+	                    	<div style="width: 50%%">
+			                    <field name="fiscal_invoice_pagos_line" nolabel="1" >
+			                            <tree string="Formas de Pago" editable="bottom"  >
+			                            	<field name='formapago_id'/>
+			                           </tree>
+			                    </field>
+		                    </div>
+	                    </group>-->
+	                    	<div style="width: 60%%">
+		                        <field name='fiscaltipopago_id' domain="[('habilitado','=',True)]" widget='selection' on_change="onchange_tipopago_id(fiscaltipopago_id)" colspan="2"/>
+								<field name="fiscal_option" invisible="1" />
+								<field name='pais_id' widget='selection' attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+								<field name='dobletributacion'  on_change="onchange_trubutacion_id(dobletributacion)" attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+			                    <field name='retenciondobletributacion' attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+		                    </div>
+	                    	<div style="width: 50%%">
+			                    <field name="fiscal_invoice_pagos_line" nolabel="1" >
+			                            <tree string="Formas de Pago" editable="bottom"  >
+			                            	<field name='formapago_id'/>
+			                           </tree>
+			                    </field>
+		                    </div>
+					</page>
+				</xpath>
+
+            </field>
+        </record>
+        
+        <record id="view_invoice_line_form_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.line.form.inherit</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="/form/group/group/field[@name='product_id']" position="replace">
+            		        <field name="product_id" on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, parent.company_id, context)"/>
+                </xpath>
+            </field>
+            </record>
+            
+        
+        
+        <!-- FACTURAS DE PROVEEDORES -->
+        
+            	<record id="view_account_invoice_filter_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.filter.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <field name="number" position='after'>
+               		<field name='numerofac'/>
+               		<field name='numeroret'/>
+               	</field>                  		
+            </field>
+        </record>
+        
+
+
+
+
+        <!--record id="invoice_tree_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.tree.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <field name="number" position='after'>
+
+               		<field name='numerofac'/>
+               		<field name='numeroret'/>
+               	</field>                  		
+            </field>
+        </record-->
+    	
+
+<record model="ir.ui.view" id="invoice_tree_inherit">
+    <field name="name">account.invoice.tree.inherit</field>
+    <field name="model">account.invoice</field>
+    <field name="inherit_id" ref="account.invoice_tree"/>
+    <field name="type">tree</field>
+    <field name="arch" type="xml">
+         <field name="number" position="after">
+         <field name="numerofac"/>
+         <field name="type"/>
+         <field name="numeroret" attrs="{ 'invisible':[('type','=', 'out_invoice' )]}"/>
+    </field>
+
+</field>
+
+</record>
+
+
+
+
+
+
+
+        <record id="view_facturaproveedor_inherit" model="ir.ui.view">
+            <field name="name">sri.facturaproveedor.view.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="priority" eval="1" />
+            <field name="arch" type="xml">
+		
+		    	
+            	<field name='journal_id' position='replace'>
+                    <field name='journal_id' on_change='on_change_journal_id(journal_id, context)'/>
+                </field> 
+                   
+                <field name='date_invoice' position='replace'>
+                    <field name='date_invoice' required='1'/>
+                </field>
+                 
+                <xpath expr="/form//notebook/page[@string='Invoice']" position="replace">
+					<page string="Invoice">
+							<group colspan='1' col='5'>
+			                	<field name='establecimientoprov' attrs="{'readonly':[('state','!=','draft')]}" string='Pre-impreso' colspan='1' />
+			                	<field name='puntoemisionprov' nolabel='1' colspan='1' attrs="{'readonly':[('state','!=','draft')]}" />
+			                	<field name='secuencialprov' nolabel='1' colspan='2' attrs="{'readonly':[('state','!=','draft')]}" />
+	                		</group>
+							<field context="{'partner_id': partner_id, 'price_type': context.get('price_type') or False, 'type': type}" name="invoice_line">
+							<tree string="Invoice lines">
+								<field name="sequence" widget="handle" />
+                                <field name="product_id" 
+								 	   on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/> 
+				  			    <field name="name"/>
+                                <field name="company_id" invisible="1"/>
+                                <field groups="account.group_account_user"
+                                       domain="[('company_id', '=', parent.company_id), ('journal_id', '=', parent.journal_id), ('type', '=', 'other')]" name="account_id" 
+									   on_change="onchange_account_id(product_id,parent.partner_id,parent.type,parent.,account_id)"/>
+                                
+                                <field name="quantity"/>
+								<field name="uos_id" groups="product.group_uom"
+                                        on_change="uos_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
+                                <field name="price_unit"/>
+								<field name="total" string='SubTotal'/>
+								<field name="discount" groups="sale.group_discount_per_so_line"/>
+                            	<field name="invoice_line_tax_id" widget="many2many_tags" context="{'type':parent.type}"
+                                        domain="[('parent_id','=',False),('company_id', '=', parent.company_id)]"/>
+								<field name="account_analytic_id" groups="analytic.group_analytic_accounting"
+                                        domain="[('type','!=','view'), ('company_id', '=', parent.company_id)]"/>
+                                 <!-- Removed if subtotal is set -->
+	                         	<field name="price_subtotal" string='Total'/>
+                            </tree>
+                            
+                        </field>
+						
+						<group class="oe_subtotal_footer oe_right">
+                                <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+								<field name='baseivacero'/>
+								<field name='baseivanocero'/>
+                                <div>
+                                    <label for="amount_tax"/>
+                                    <button name="button_reset_taxes" states="draft,proforma2"
+                                        string="(update...)" class="oe_link oe_edit_only"
+                                        type="object" help="Recompute taxes and total"/>
+                                </div>
+                                <field name="amount_tax" nolabel="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							    <field name="amount_total" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							    <field name="totalretencion" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="residual" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="reconciled" invisible="1"/>
+								
+                        </group> 
+                        
+			    		<div style="width: 50%%">
+                                <field name="tax_line">
+                                    <tree editable="bottom" string="Taxes">
+                                        <field name="name"/>
+                                        <field name="account_id" groups="account.group_account_invoice"/>
+                                        <field name="account_analytic_id" domain="[('type','&lt;&gt;','view'), ('company_id', '=', parent.company_id)]" groups="analytic.group_analytic_accounting"/>
+                                        <field name="base" on_change="base_change(base,parent.currency_id,parent.company_id,parent.date_invoice)" readonly="1"/>
+                                        <field name="amount" on_change="amount_change(amount,parent.currency_id,parent.company_id,parent.date_invoice)"/>
+                                        <field invisible="True" name="base_amount"/>
+                                        <field invisible="True" name="tax_amount"/>
+                                        <field name="factor_base" invisible="True"/>
+                                        <field name="factor_tax" invisible="True"/>
+                                    </tree>
+                                </field>
+                         </div>
+                         <div class="oe_clear">
+                                <label for="comment"/>
+                         </div>
+                                <field name="comment"/>
+                </page>
+		</xpath>           
+                   
+        <xpath expr="/form//notebook/page[@string='Payments']" position="after">
+		     <page string="Fiscal">
+                        <separator string="Datos para Facturas" colspan="4"/>
+                        	<group colspan='2' col='4' >
+		                        <field name='num_autfac' attrs="{'readonly':[('state','!=','draft')]}" />
+		                        <field name='venc_autfac' attrs="{'readonly':[('state','!=','draft')]}" />
+		                        <field name='num_autimpfac' attrs="{'readonly':[('state','!=','draft')]}" />
+		                        <field name='sustentotributario_id' attrs="{'readonly':[('state','!=','draft')]}" widget='selection'/>
+	                        </group>
+
+                        <separator string="Datos para la Retencion" colspan="4"/>
+                        
+                        <group colspan='2' col='4'>
+                            <field name='puntoemision' attrs="{'readonly':[('state','!=','draft')]}" />
+                            <field name='establecimiento' attrs="{'readonly':[('state','!=','draft')]}" />
+                            <field name='secuencial' attrs="{'readonly':[('state','!=','draft')]}" />
+                        </group>
+                        <group colspan='2' col='4'>
+                            <field name='Numautorizacion' attrs="{'readonly':[('state','!=','draft')]}" />
+                            <field name='numeAutImp' attrs="{'readonly':[('state','!=','draft')]}" />
+                        </group>
+                        <group colspan='2' col='4'>
+                            <field name='tipodocumento_id' readonly='True' widget='selection'/>
+                            <field name='puntoemision_id' attrs="{'readonly':[('state','!=','draft')]}" on_change='on_change_puntoemision_id(puntoemision_id)' domain="[('tipodocumento_id.esretencion','=','True'),('habilitado','=',True)]" />
+                        </group>
+                        <group col="1" colspan="4"> 
+                            <field name="retencion_line" nolabel="1" options='{"quick_create": false}'>
+                                <tree string="Detalles de Retencion">
+                                    <field name='manual'/>
+                                    <field name="name"/>
+                                    <field name="account_id" groups="account.group_account_invoice"  string='Cuenta impuesto'/>
+                                    <field name="base" on_change="base_change(base,parent.currency_id,parent.company_id,parent.date_invoice)" readonly="1"/>
+                                    <field name='porcentaje' />
+                                    <field name="amount" on_change="amount_change(amount,parent.currency_id,parent.company_id,parent.date_invoice)"/>
+
+                                    <field invisible="True" name="base_amount"/>
+                                    <field invisible="True" name="tax_amount"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <separator string="Formas de Pago" colspan="4"/>
+               
+	                    	<div style="width: 60%%">
+		                        <field name='fiscaltipopago_id' domain="[('habilitado','=',True)]" widget='selection' on_change="onchange_tipopago_id(fiscaltipopago_id)" colspan="2"/>
+								<field name="fiscal_option" invisible="1" />
+								<field name='pais_id' widget='selection' attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+								<field name='dobletributacion'  on_change="onchange_trubutacion_id(dobletributacion)" attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+			                    <field name='retenciondobletributacion' attrs="{ 'invisible':[('fiscal_option','=', False )],'required':[('fiscal_option','=', True )]}" />
+		                    </div>
+	                    	<div style="width: 50%%">
+			                    <field name="fiscal_invoice_pagos_line" nolabel="1" >
+			                            <tree string="Formas de Pago" editable="bottom"  >
+			                            	<field name='formapago_id'/>
+			                           </tree>
+			                    </field>
+		                    </div>
+	                    
+	                    
+                </page>
+                <page string="Comprobante de Reembolso">
+							<group col="1" colspan="4"> 
+                            <field name="reembolsos_id" nolabel="1" >
+                                <tree string="Comprobante de Reembolso">
+                                    <field name="tipoid"/>
+                                    <field name="tipodocumento_id"/>
+                                    <field name="establecimiento"/>
+                                    <field name="puntoemision"/>
+                                    <field name="secuencial"/>
+                                </tree>
+                                <form string="Comprobante de Reembolso">
+                                	<group colspan='3' col='2'>
+                                		<field name='tipoid' required="1"/>
+                                		<field name='partner_id' required="1" on_change="change_vat(partner_id)"/>
+                                		<field name='identificacion_pro' required="1"/>
+                                		<field name='tipodocumento_id' required="1"/>
+                                	</group>
+                                	<group colspan='2' col='4'>
+					                	<field name='establecimiento' required="1" />
+					                	<field name='puntoemision' required="1"  />
+					                	<field name='secuencial' required="1" />
+					                </group>
+			                		<group colspan='2' col='2'>
+			                			<field name='autorizacion' string="Autorización" required="1" />
+                                		<field name='fecha_emision' string="Fecha de Emisión" required="1" />
+                                	</group>
+                                	<separator string='Datos para la Retención'/>
+                                	<group colspan='5' col='2'>
+                                		<field name='monto_exe_reembolso' />
+	                                	<field name='ivacero' />
+	                                	<field name='iva_dif_cero' />
+	                                	<field name='tarifa_no_iva' />
+	                                	<field name='monto_ice' />
+	                                	<field name='monto_iva' />
+                                	</group>
+                                </form>
+                            </field>
+                        	</group>
+                        </page>
+	    </xpath>
+        </field>
+        </record>
+      
+ 		
+        <record id="view_facturaproveedor_invoice_line_inherit" model="ir.ui.view">
+            <field name="name">sri.facturaproveedor.view.inherit</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_form"/>
+            <field name="arch" type="xml">
+                <field name='invoice_line_tax_id' position='replace'>
+                    <field colspan="4" name="invoice_line_tax_id" context="{'type':parent.type}" domain="[('parent_id','=',False),('company_id', '=', parent.company_id),('esretencion','=',False)]" nolabel="1"/>
+                </field>
+            </field>
+        </record>
+        
+        
+
+    </data>
+</openerp>

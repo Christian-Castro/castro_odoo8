@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		
+	<!-- MENU -->
+	
+	   <menuitem name="Escuela" id="menu_escuela"
+            sequence='0' />
+
+
+        <menuitem id="menu_persona_escolar" name="Personas" 
+            parent="menu_escuela"   sequence="0"/>
+            
+        <menuitem id="menu_estructura_escolar" name="Estructura Escolar" 
+			parent="menu_escuela"	sequence="1"/>
+
+        <menuitem id="menu_gestion_escolar" name="Gestión" 
+            parent="menu_escuela"   sequence="2"/>
+
+        <menuitem id="menu_mentenimiento_escolar" name="Mantenimientos" 
+            parent="menu_escuela"   sequence="3"/>
+
+        <menuitem id="menu_configuracion_escolar" name="Configuración" 
+            parent="menu_escuela"  sequence="6"/>
+
+    </data>
+</openerp>

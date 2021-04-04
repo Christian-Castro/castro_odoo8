@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="reporte_ventas_form" model="ir.ui.view">
+            <field name="name">reporte.ventas.form</field>
+            <field name="model">reporte.ventas</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button 
+                            name="generar_archivo_xlsx"
+                            string="Formulario 104 Excel"
+                            type="object"
+                            class="oe_highlight"
+                            groups="base.group_user"
+                        />
+                        <button 
+                            name="generar_archivo_pdf"
+                            string="Formulario 104 PDF"
+                            type="object"
+                            class="oe_highlight"
+                            groups="base.group_user"
+                        />
+                    </header>
+                    <sheet>
+                        <field name="name" invisible="True" />
+                        <group>
+                            <group>
+                                <field name="fecha_inicio" required="True"/>
+                                <!-- <field name="tipo_factura" required="True"/> -->
+                                <field name="cliente_id" domain="[('customer', '=', True), ('tipo', '!=', 'H')]" required="False" />
+                                <field name="jornada_id" options="{'no_create': True,'edit': False,'no_open':True}" />
+                                <field name="curso_id" 
+                                    options="{'no_create': True,'edit': False,'no_open':True}" 
+                                    domain="[('jornada_id', '=', jornada_id),('seccion_id','=',seccion_id)]" />
+                                <!-- <field name="presentar_alumno" /> -->
+                            </group>
+                            <group>
+                                <field name="fecha_fin" required="True" />
+                                <field name="alumno_id" domain="[('customer', '=', True), ('tipo', '=', 'H')]" required="False"/>
+                                <field name="seccion_id" required="False" options="{'no_create': True, 'edit': False,'no_open':True}" />
+                                <field name="paralelo_id" required="False" 
+                                    options="{'no_create': True,'edit': False,'no_open':True}"
+                                    domain="[('curso_id', '=', curso_id), ('seccion_id', '=', seccion_id), ('jornada_id', '=', jornada_id)]"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_reporte_ventas" model="ir.actions.act_window">
+            <field name="name">Reporte Ventas</field>
+            <field name="res_model">reporte.ventas</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+            <field name="domain">[]</field>
+            <field name="context">\{}</field>
+        </record>
+        
+        <menuitem id="menu_reporte_ventas" name="Ventas" sequence="3" action="action_reporte_ventas" parent="menu_ans_reporte"/>
+    </data>
+</openerp>

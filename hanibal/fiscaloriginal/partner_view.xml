@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_partner_form_inherit" model="ir.ui.view">
+            <field name="name">view.partner.form.inherit.fiscal</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base_vat.view_partner_form"/>
+            <field name="arch" type="xml">
+            	
+            	<field name='property_account_position' position='replace'>
+                    <field name='property_account_position' attrs="{'required': ['|',('customer', '=', True), ('supplier','=',True)]}"  widget='selection'/>
+                </field>
+                
+<!--                 <field name='vat' position='replace'> -->
+<!--                     <field name='vat' required='True' /> -->
+<!--                     <newline/> -->
+<!--                 </field> -->
+                
+                <button name="button_check_vat" position="replace" >
+                	<label for="tipoid" class="oe_edit_only" string="Tipo Identificacion"/>
+	                    	<field name="tipoid" domain="[('habilitado','=',True)]" widget='selection' colspan="2" />
+		           <newline/>
+                </button>
+                 
+                <field name="property_account_receivable" position="replace">                
+                	<field name="property_account_receivable" groups="account.group_account_invoice" attrs="{'required': [('customer', '=', True)]}"/>
+                </field>
+                
+                <field name="property_account_payable" position="replace">                
+                	<field name="property_account_payable" groups="account.group_account_invoice" attrs="{'required': [('supplier','=',True)]}" />
+                </field>
+                
+            </field>
+        </record>
+
+
+        <record id="view_partner_fiscal_page" model="ir.ui.view">
+            <field name="name">fiscal.view.partner.fiscal.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form//notebook/page[@name='sales_purchases']" position="before">
+					<page string="Fiscalsss">
+						<group colspan='4' col='6'>
+        						<group colspan="2" col="2">
+				                <separator string="Información de Factura" colspan="2" col="2" />
+					                <field name='num_autfac'/>
+					       			<field name='venc_autfac'/>
+					       			<field name='num_autimpfac'/>
+					       		</group>
+					       		<group colspan="2" col="2">
+					            <separator string="Información de Notas de Credito" colspan="2" col="2" />
+					                <field name='num_autncre'/>
+					                <field name='venc_autncre'/>
+					            </group>
+					      </group>      
+					</page>
+				</xpath>
+            </field>
+        </record>
+
+
+
+
+    </data>
+</openerp>
+

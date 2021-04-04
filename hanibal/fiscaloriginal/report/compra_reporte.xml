@@ -1,0 +1,33 @@
+<openerp>
+        <data>
+        		
+                <report
+                    id="purchase.report_purchase_quotation"
+                    model="purchase.order"
+                    name="solicitud.compra"
+                    string="Solicitud de Compra RTk"
+                    rml="sri/report/solicitudcompra_reporte.rml"
+                    auto="False"
+                    header="False"/>
+                        
+				<report
+					id="purchase.report_purchase_order" 
+					model="purchase.order"
+                	name="orden.compra"
+                	string="Purchase Order" 
+                	rml="sri/report/ordencompra_reporte.rml"
+                	auto="False"
+                	header='False'
+                	usage="default"/>
+                	
+                <report
+					id="purchase.report_purchase_internalorder" 
+					model="purchase.order"
+                	name="ordeninterna.compra"
+                	string="Orden de Compra Interna" 
+                	rml="sri/report/ordencomprainterna_reporte.rml"
+                	auto="False"
+                	header='False'
+                	usage="default"/>
+        </data>
+</openerp>

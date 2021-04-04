@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <record model="ir.ui.view" id="configuracion_form_view">
+       <field name="name">configuracion.form</field>
+       <field name="model">configuracion.gen</field>
+       <field name="type">form</field>
+       <field name="arch" type="xml">
+           <form string="Configuracion">
+    				    <group string='Configuracion General'>
+                  <field name='relacion' invisible='1'/>
+    				    </group>
+                <group >
+                   <field name="id_pais" required="1" />
+                  </group>
+                  <group >
+                   <field name="id_provincia" required="1" />
+                  </group>
+                  <group >
+                   <field name="ciudad" required="1" />
+                  </group>
+                  <group string='Dias a considerar Descuento'>
+                    <field name="dias_pago" required='1'/>
+                  </group>
+                <group string='Fiscal'>
+                    <field name="cuenta_id_default" required='1'/>
+                  </group>
+           </form>
+       </field>
+    </record>
+
+    <record id="action_configuracion" model="ir.actions.act_window">
+            <field name="name">Configuracion</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">configuracion.gen</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+    </record>
+  
+  <menuitem id="menu_configuracion" name="Configuración General" 
+        action="action_configuracion" parent="menu_configuracion_escolar" sequence="1"/>
+
+
+  <record id="cerrar_ventana_purchase_falla" model="ir.ui.view">
+    <field name="name">Transaccion Realizada.</field>
+    <field name="model">close.window.purchase</field>
+    <field name="arch" type="xml">
+      <form string="Confirmada">
+        <footer >
+          <button name="cerrar_ventana" string="Aceptar" type="object" class="btn-primary"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+
+
+    </data>
+</openerp>

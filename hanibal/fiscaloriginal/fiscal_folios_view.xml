@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem id="fiscal_menu" name="Fiscal"/>
+        <menuitem id="fiscal_menu_configuracion" name="Configuracion" parent="fiscal_menu" sequence="30"/>
+
+    	<record model="ir.ui.view" id="folios_search_view">
+		<field name="name">folios.search</field>
+		<field name="model">fiscal.folios</field>
+		<field name="arch" type="xml">
+		    <search string="Session Search">
+	    		<group expand="0" string="Group By...">
+		             <filter string="Establecimiento" name="group_mes" icon="terp-personal" context="{'group_by':'establecimiento'}" />
+		        </group>
+
+
+
+		    </search>
+		</field>
+	    </record>
+
+        <record model="ir.actions.act_window" id="folios_list_action">
+            <field name="name">Folios Fiscales</field>
+            <field name="res_model">fiscal.folios</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Define los folios necesarios para el funcionamiento fiscal de la empresa</field>
+                <field name="search_view_id" ref="folios_search_view"/>
+                <field name="context">{'search_default_my_folios':1}</field>
+        </record>	
+
+
+
+        <menuitem id="folios_menu" 
+                    name="Folios Fiscales" 
+                    parent="fiscal_menu_configuracion"
+                    action="folios_list_action" />
+                    
+        <record model="ir.ui.view" id="fiscal_folios_view_form">
+            <field name="name">fiscal.folios.form</field>
+            <field name="model">fiscal.folios</field>
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <form string="Esto creo que es el titulo de la pantalla" version="7.2">
+			 <header>
+			 <field name="numautorizacion"  />
+			 </header>
+			<group colspan="4" col="6">
+				<field name="name"/>
+				<field name="tipopuntoemision"/>
+				<field name="habilitado"/>
+				<newline/>
+				<field name="fechavalidezinicio" />
+				<field name="fechavalidezfinal"/>
+				<newline/>
+				<field name="numautorizacion"/>
+				<field name="numeAutImp"/>
+				<newline/>
+				<field name="establecimiento"  />
+				<newline/>
+				<field name="puntoemision" />
+				<newline/>
+				<field name="secuenciaActual" />
+				<newline/>
+				<field name="secuenciaInicial" />
+				<newline/>	
+				<field name="secuenciaFinal"/>
+			</group>
+             </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="fiscal_folios_view_tree">
+            <field name="name">fiscal.folios.tree</field>
+            <field name="model">fiscal.folios</field>
+            <field name="priority" eval="19"/>
+            <field name="arch" type="xml">
+                <tree string="titulo de arbol">
+
+				<field name="name"/>
+		        <field name="establecimiento" colspan="1"/>
+				<field name="puntoemision"/>
+				<field name="secuenciaActual"/>
+				<field name="numautorizacion"/>
+				<field name="fechavalidezinicio" />
+				<field name="fechavalidezfinal"/>
+				<field name="habilitado"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

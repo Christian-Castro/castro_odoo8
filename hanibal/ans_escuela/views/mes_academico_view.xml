@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>        
+        <!-- Academic Months Information From View -->
+        <record model="ir.ui.view" id="view_academic_month_form">
+            <field name="name">academic.month.form</field>
+            <field name="model">academic.month</field>
+            <field name="arch" type="xml">
+                <form string="Months" >
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="name" placeholder="Name"/>
+                            <field name="code" placeholder="Code"/>
+                            <field name="date_start" placeholder="Start Date"/>
+                            <field name="date_stop" placeholder="Stop Date"/>
+                            <field name="year_id" />
+                            <field name="anio_lectivo" readonly="1"/>
+                            <!-- <field name="habilitado" string="Habilitado"/> -->
+                            <field name="description" colspan="4"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Academic Months Information Tree View -->
+        <record model="ir.ui.view" id="view_academic_month_tree">
+            <field name="name">academic.month.tree</field>
+            <field name="model">academic.month</field>
+            <field name="arch" type="xml">
+                <tree string="Months">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="date_start"/>
+                    <field name="date_stop"/>
+                    <field name="year_id"/>
+                    <field name="anio_lectivo"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Academic Month Information Action -->
+        <record model="ir.actions.act_window" id="action_academic_month_form">
+            <field name="name">Mes</field>
+            <field name="res_model">academic.month</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_academic_month_form" name="Mes" parent="menu_estructura_escolar"
+            action="action_academic_month_form"/>
+    </data>
+</openerp>  

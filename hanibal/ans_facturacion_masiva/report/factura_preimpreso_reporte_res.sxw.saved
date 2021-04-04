@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE abiword PUBLIC "-//ABISOURCE//DTD AWML 1.0 Strict//EN" "http://www.abisource.com/awml.dtd">
+<abiword template="false" xmlns:ct="http://www.abisource.com/changetracking.dtd" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:math="http://www.w3.org/1998/Math/MathML" xid-max="111" xmlns:dc="http://purl.org/dc/elements/1.1/" fileformat="1.1" xmlns:svg="http://www.w3.org/2000/svg" xmlns:awml="http://www.abisource.com/awml.dtd" xmlns="http://www.abisource.com/awml.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" version="3.0.0" xml:space="preserve" props="dom-dir:ltr; document-footnote-restart-section:0; document-endnote-type:numeric; document-endnote-place-enddoc:1; document-endnote-initial:1; lang:es-EC; document-endnote-restart-section:0; document-footnote-restart-page:0; document-footnote-type:numeric; document-footnote-initial:1; document-endnote-place-endsection:0">
+<!-- ======================================================================== -->
+<!-- This file is an AbiWord document.                                        -->
+<!-- AbiWord is a free, Open Source word processor.                           -->
+<!-- More information about AbiWord is available at http://www.abisource.com/ -->
+<!-- You should not edit this file by hand.                                   -->
+<!-- ======================================================================== -->
+
+<metadata>
+<m key="Info 1">http://localhost:8069</m>
+<m key="Info 2">admin</m>
+<m key="Info 3">1004</m>
+<m key="Info 4">account.invoice</m>
+<m key="abiword.generator">AbiWord</m>
+<m key="dc.date">2018-06-01T16:24:19</m>
+<m key="dc.format">application/x-abiword</m>
+</metadata>
+<rdf>
+</rdf>
+<styles>
+<s type="P" name="Caption" basedon="Normal" props="margin-top:0.212cm; font-size:12pt; margin-bottom:0.212cm; font-style:italic"/>
+<s type="C" name="Endnote Symbol"/>
+<s type="P" name="Footer" basedon="Normal" props=""/>
+<s type="C" name="Footnote Symbol"/>
+<s type="P" name="Heading" basedon="Normal" followedby="Text body" props="margin-top:0.423cm; font-size:14pt; margin-bottom:0.212cm; font-family:Liberation Sans; keep-with-next:yes"/>
+<s type="P" name="Index" basedon="Normal" props=""/>
+<s type="P" name="List" basedon="Text body" props=""/>
+<s type="P" name="P1" basedon="terp_default_9" props="font-family:Lucida Console; font-size:11pt"/>
+<s type="P" name="P10" basedon="Table Contents" props="text-align:center; font-size:9pt; font-family:Lucida Console"/>
+<s type="P" name="P11" basedon="Table Contents" props="text-align:left; font-size:9pt; font-family:Lucida Console"/>
+<s type="P" name="P12" basedon="terp_default_Centre_9" props="text-align:left; font-size:9pt; font-family:Lucida Console"/>
+<s type="P" name="P13" basedon="terp_default_Right_9" props="font-family:Lucida Console; font-size:9pt"/>
+<s type="P" name="P14" basedon="terp_default_Right_9" props="text-align:right; font-size:9pt; font-family:Lucida Console"/>
+<s type="P" name="P15" basedon="terp_default_2" props="font-family:Lucida Console; font-size:2pt"/>
+<s type="P" name="P2" basedon="terp_default_9" props="text-align:center; font-size:9pt; font-family:Lucida Console"/>
+<s type="P" name="P3" basedon="Table Contents" props="font-family:Lucida Console; font-size:11pt"/>
+<s type="P" name="P4" basedon="Table Contents" props="text-align:left; font-size:11pt; font-family:Lucida Console"/>
+<s type="P" name="P5" basedon="Table Contents" props="font-family:Lucida Console; font-size:9pt"/>
+<s type="P" name="P6" basedon="Table Contents" props="text-align:center; font-size:9pt; font-family:Lucida Console"/>
+<s type="P" name="P7" basedon="Table Contents" props="text-align:right; font-size:9pt; font-family:Lucida Console"/>
+<s type="P" name="P8" basedon="Table Contents" props="text-align:left; font-size:9pt; font-family:Lucida Console"/>
+<s type="P" name="P9" basedon="Table Contents" props="text-align:right; font-size:9pt; font-family:Lucida Console"/>
+<s type="C" name="Sect1" props=""/>
+<s type="P" name="Standard" basedon="Normal" followedby="Normal"/>
+<s type="C" name="Tabla1" props=""/>
+<s type="C" name="Tabla1.1" props=""/>
+<s type="C" name="Tabla1.A" props=""/>
+<s type="C" name="Tabla1.A1" props=""/>
+<s type="C" name="Tabla1.B" props=""/>
+<s type="C" name="Tabla1.C" props=""/>
+<s type="C" name="Tabla1.D" props=""/>
+<s type="P" name="Table Contents" basedon="Normal" props=""/>
+<s type="P" name="Table Heading" basedon="Table Contents" props="text-align:center; font-weight:bold"/>
+<s type="C" name="Table1" props=""/>
+<s type="C" name="Table1.1" props=""/>
+<s type="C" name="Table1.A" props=""/>
+<s type="C" name="Table1.A1" props=""/>
+<s type="C" name="Table1.B" props=""/>
+<s type="C" name="Table1.C" props=""/>
+<s type="C" name="Table10" props=""/>
+<s type="C" name="Table10.1" props=""/>
+<s type="C" name="Table10.A" props=""/>
+<s type="C" name="Table10.A1" props=""/>
+<s type="C" name="Table10.B" props=""/>
+<s type="C" name="Table10.C" props=""/>
+<s type="C" name="Table10.D" props=""/>
+<s type="C" name="Table11" props=""/>
+<s type="C" name="Table11.1" props=""/>
+<s type="C" name="Table11.A" props=""/>
+<s type="C" name="Table11.A1" props=""/>
+<s type="C" name="Table11.B" props=""/>
+<s type="C" name="Table11.B1" props=""/>
+<s type="C" name="Table12" props=""/>
+<s type="C" name="Table12.1" props=""/>
+<s type="C" name="Table12.A" props=""/>
+<s type="C" name="Table12.A1" props=""/>
+<s type="C" name="Table13" props=""/>
+<s type="C" name="Table13.1" props=""/>
+<s type="C" name="Table13.A" props=""/>
+<s type="C" name="Table13.A1" props=""/>
+<s type="C" name="Table15" props=""/>
+<s type="C" name="Table15.1" props=""/>
+<s type="C" name="Table15.A" props=""/>
+<s type="C" name="Table15.A1" props=""/>
+<s type="C" name="Table15.B" props=""/>
+<s type="C" name="Table15.B1" props=""/>
+<s type="C" name="Table17" props="margin-left:0cm"/>
+<s type="C" name="Table17.2" props=""/>
+<s type="C" name="Table17.3" props=""/>
+<s type="C" name="Table17.4" props=""/>
+<s type="C" name="Table17.5" props=""/>
+<s type="C" name="Table17.A" props=""/>
+<s type="C" name="Table17.A1" props=""/>
+<s type="C" name="Table17.B" props=""/>
+<s type="C" name="Table3" props=""/>
+<s type="C" name="Table3.1" props=""/>
+<s type="C" name="Table3.A" props=""/>
+<s type="C" name="Table3.A1" props=""/>
+<s type="C" name="Table3.B" props=""/>
+<s type="C" name="Table3.C" props=""/>
+<s type="C" name="Table4" props="margin-right:0cm; margin-left:0cm"/>
+<s type="C" name="Table4.A" props=""/>
+<s type="C" name="Table4.A1" props=""/>
+<s type="C" name="Table4.B" props=""/>
+<s type="C" name="Table4.C" props=""/>
+<s type="C" name="Table4.D" props=""/>
+<s type="C" name="Table4.E" props=""/>
+<s type="C" name="Table6" props=""/>
+<s type="C" name="Table6.1" props=""/>
+<s type="C" name="Table6.A" props=""/>
+<s type="C" name="Table6.A1" props=""/>
+<s type="C" name="Table6.B" props=""/>
+<s type="C" name="Table6.C" props=""/>
+<s type="C" name="Table6.D" props=""/>
+<s type="C" name="Table7" props=""/>
+<s type="C" name="Table7.1" props=""/>
+<s type="C" name="Table7.A" props=""/>
+<s type="C" name="Table7.A1" props=""/>
+<s type="C" name="Table7.B" props=""/>
+<s type="C" name="Table7.C" props=""/>
+<s type="C" name="Table7.D" props=""/>
+<s type="P" name="Text body" basedon="Normal" props="margin-bottom:0.212cm; margin-top:0cm"/>
+<s type="P" name="terp_default_2" basedon="terp_default_9" props="font-size:2pt"/>
+<s type="P" name="terp_default_8" basedon="terp_header" props="margin-top:0cm; font-weight:normal; margin-bottom:0cm; font-size:8pt; margin-right:0cm; margin-left:0cm"/>
+<s type="P" name="terp_default_9" basedon="terp_default_8" props="font-size:9pt"/>
+<s type="P" name="terp_default_9_30" basedon="terp_default_9" props="margin-top:0cm; margin-bottom:0cm; margin-left:0.3cm; margin-right:0cm"/>
+<s type="P" name="terp_default_Bold_8" basedon="terp_default_8" props="font-weight:bold"/>
+<s type="P" name="terp_default_Bold_9" basedon="terp_default_Bold_8" props="margin-top:0cm; font-size:9pt; margin-bottom:0cm; margin-right:0cm; margin-left:-0.101cm"/>
+<s type="P" name="terp_default_Bold_Right_9" basedon="terp_default_Bold_9" props="text-align:right"/>
+<s type="P" name="terp_default_Centre_8" basedon="terp_default_8" props="text-align:center"/>
+<s type="P" name="terp_default_Centre_9" basedon="terp_default_Centre_8" props="font-size:9pt"/>
+<s type="P" name="terp_default_Note" basedon="terp_default_9" props="margin-top:0cm; font-size:8pt; margin-bottom:0cm; margin-right:0cm; font-style:italic; margin-left:0.3cm"/>
+<s type="P" name="terp_default_Right_8" basedon="terp_default_8" props="text-align:right"/>
+<s type="P" name="terp_default_Right_9" basedon="terp_default_Right_8" props="font-size:9pt"/>
+<s type="P" name="terp_header" basedon="Heading" props="text-align:left; font-weight:bold; font-size:12pt"/>
+<s type="P" name="terp_tblheader_Details" basedon="terp_header" props="margin-top:0.212cm; font-size:9pt; margin-bottom:0.212cm"/>
+<s type="P" name="terp_tblheader_Details_Centre" basedon="terp_tblheader_Details" props="text-align:center"/>
+<s type="P" name="terp_tblheader_Details_Right" basedon="terp_tblheader_Details" props="text-align:right"/>
+<s type="P" name="terp_tblheader_General" basedon="terp_header" props="margin-top:0.212cm; font-size:8pt; margin-bottom:0.212cm"/>
+<s type="P" name="terp_tblheader_General_Centre" basedon="terp_tblheader_General" props="text-align:center"/>
+</styles>
+<pagesize pagetype="Letter" orientation="portrait" width="8.500000" height="11.000000" units="in" page-scale="1.000000"/>
+<section xid="1" props="page-margin-right:0.676cm; page-margin-left:0.751cm; page-margin-top:2.284cm; page-margin-bottom:0.339cm">
+<table xid="2">
+<cell xid="3" props="bot-attach:1; left-attach:0; right-attach:1; top-attach:0">
+<p xid="4" props="text-align:center; font-size:9pt; font-family:Lucida Console">[[repeatIn(objects,'o')]]</p>
+</cell>
+<cell xid="5" props="bot-attach:1; left-attach:1; right-attach:2; top-attach:0">
+<p xid="6" props="text-align:right; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="7" props="bot-attach:1; left-attach:2; right-attach:3; top-attach:0">
+<p xid="8" props="text-align:center; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+</table>
+<table xid="9">
+<cell xid="10" props="bot-attach:1; left-attach:0; right-attach:1; top-attach:0">
+<p xid="11" props="font-family:Lucida Console; font-size:9pt"><c></c></p>
+</cell>
+<cell xid="12" props="bot-attach:1; left-attach:1; right-attach:2; top-attach:0">
+<p xid="13" props="text-align:left; font-size:9pt; font-family:Lucida Console">[[ o.date_invoice ]]</p>
+</cell>
+<cell xid="14" props="bot-attach:1; left-attach:2; right-attach:3; top-attach:0">
+<p xid="15" props="font-family:Lucida Console; font-size:9pt"><c></c></p>
+</cell>
+<cell xid="16" props="bot-attach:1; left-attach:3; right-attach:4; top-attach:0">
+<p xid="17" props="font-family:Lucida Console; font-size:9pt"><c></c></p>
+</cell>
+</table>
+<table xid="18">
+<cell xid="19" props="bot-attach:1; left-attach:0; right-attach:1; top-attach:0">
+<p xid="20" props="font-family:Lucida Console; font-size:9pt"><c></c></p>
+</cell>
+<cell xid="21" props="bot-attach:1; left-attach:1; right-attach:2; top-attach:0">
+<p xid="22" props="font-family:Lucida Console; font-size:9pt">Cliente</p>
+</cell>
+<cell xid="23" props="bot-attach:1; left-attach:2; right-attach:3; top-attach:0">
+<p xid="24" props="font-family:Lucida Console; font-size:9pt"><c></c></p>
+</cell>
+<cell xid="25" props="bot-attach:1; left-attach:3; right-attach:4; top-attach:0">
+<p xid="26" props="font-family:Lucida Console; font-size:9pt">[[ o.partner_id.vat ]]</p>
+</cell>
+</table>
+<table xid="27">
+<cell xid="28" props="bot-attach:1; left-attach:0; right-attach:1; top-attach:0">
+<p xid="29" props="font-family:Lucida Console; font-size:9pt"><c></c></p>
+</cell>
+<cell xid="30" props="bot-attach:1; left-attach:1; right-attach:2; top-attach:0">
+<p xid="31" props="font-family:Lucida Console; font-size:9pt">[[ o.partner_id.street ]]</p>
+</cell>
+<cell xid="32" props="bot-attach:1; left-attach:2; right-attach:3; top-attach:0">
+<p xid="33" props="font-family:Lucida Console; font-size:9pt"><c></c></p>
+</cell>
+<cell xid="34" props="bot-attach:1; left-attach:3; right-attach:4; top-attach:0">
+<p xid="35" props="font-family:Lucida Console; font-size:9pt">[[ o.partner_id.phone ]]</p>
+</cell>
+</table>
+<table xid="36">
+<cell xid="37" props="bot-attach:1; left-attach:0; right-attach:1; top-attach:0">
+<p xid="38" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="39" props="bot-attach:1; left-attach:1; right-attach:2; top-attach:0">
+<p xid="40" props="text-align:center; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="41" props="bot-attach:1; left-attach:2; right-attach:3; top-attach:0">
+<p xid="42" props="text-align:center; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="43" props="bot-attach:1; left-attach:3; right-attach:4; top-attach:0">
+<p xid="44" props="text-align:center; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+</table>
+<p xid="45" props="font-family:Lucida Console; font-size:2pt">repeatIn removerpara</p>
+<table xid="46">
+<cell xid="47" props="bot-attach:1; left-attach:0; right-attach:1; top-attach:0">
+<p xid="48" props="text-align:center; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="49" props="bot-attach:1; left-attach:1; right-attach:2; top-attach:0">
+<p xid="50" props="text-align:left; font-size:9pt; font-family:Lucida Console">bla bla</p>
+</cell>
+<cell xid="51" props="bot-attach:1; left-attach:2; right-attach:3; top-attach:0">
+<p xid="52" props="text-align:center; font-size:9pt; font-family:Lucida Console">1</p>
+</cell>
+<cell xid="53" props="bot-attach:1; left-attach:3; right-attach:4; top-attach:0">
+<p xid="54" props="font-family:Lucida Console; font-size:9pt">1</p>
+</cell>
+<cell xid="55" props="bot-attach:1; left-attach:4; right-attach:5; top-attach:0">
+<p xid="56" props="text-align:right; font-size:9pt; font-family:Lucida Console">1.00</p>
+</cell>
+</table>
+<p xid="57"></p>
+</section>
+<section xid="58" props="page-margin-right:0.676cm; page-margin-left:0.751cm; page-margin-top:2.284cm; page-margin-bottom:0.339cm">
+<table xid="59">
+<cell xid="60" props="bot-attach:1; left-attach:0; right-attach:1; top-attach:0">
+<p xid="61" props="font-family:Lucida Console; font-size:11pt"><c></c></p>
+</cell>
+<cell xid="62" props="bot-attach:1; left-attach:1; right-attach:2; top-attach:0">
+<p xid="63" props="font-family:Lucida Console; font-size:11pt"><c></c></p>
+</cell>
+</table>
+<table xid="64">
+<cell xid="65" props="bot-attach:1; left-attach:0; right-attach:1; top-attach:0">
+<table xid="66">
+<cell xid="67" props="bot-attach:2; left-attach:0; right-attach:1; top-attach:1">
+<p xid="68" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+</table>
+<table xid="69">
+<cell xid="70" props="bot-attach:1; left-attach:0; right-attach:1; top-attach:0">
+<p xid="71" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="72" props="bot-attach:1; left-attach:1; right-attach:2; top-attach:0">
+<p xid="73" props="text-align:left; font-size:9pt; font-family:Lucida Console">Un dolar</p>
+</cell>
+</table>
+<p xid="74" props="text-align:left; font-size:11pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="75" props="bot-attach:0; left-attach:0; right-attach:1; top-attach:-1">
+<table xid="76">
+<cell xid="77" props="bot-attach:1; left-attach:0; right-attach:1; top-attach:0">
+<p xid="78" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="79" props="bot-attach:1; left-attach:1; right-attach:2; top-attach:0">
+<p xid="80" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="81" props="bot-attach:2; left-attach:0; right-attach:1; top-attach:1">
+<p xid="82" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="83" props="bot-attach:2; left-attach:1; right-attach:2; top-attach:1">
+<p xid="84" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="85" props="bot-attach:3; left-attach:0; right-attach:1; top-attach:2">
+<p xid="86" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="87" props="bot-attach:3; left-attach:1; right-attach:2; top-attach:2">
+<p xid="88" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="89" props="bot-attach:4; left-attach:0; right-attach:1; top-attach:3">
+<p xid="90" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="91" props="bot-attach:4; left-attach:1; right-attach:2; top-attach:3">
+<p xid="92" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="93" props="bot-attach:5; left-attach:0; right-attach:1; top-attach:4">
+<p xid="94" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="95" props="bot-attach:5; left-attach:1; right-attach:2; top-attach:4">
+<p xid="96" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+</table>
+<p xid="97" props="text-align:left; font-size:9pt; font-family:Lucida Console"><c></c></p>
+</cell>
+<cell xid="98" props="bot-attach:0; left-attach:0; right-attach:1; top-attach:-1">
+<table xid="99">
+<cell xid="100" props="bot-attach:1; left-attach:0; right-attach:1; top-attach:0">
+<p xid="101" props="text-align:right; font-size:9pt; font-family:Lucida Console">[[ formatLang(o.ivadoce ) ]]</p>
+</cell>
+<cell xid="102" props="bot-attach:2; left-attach:0; right-attach:1; top-attach:1">
+<p xid="103" props="text-align:right; font-size:9pt; font-family:Lucida Console">[[ formatLang(o.ivacero ) ]]</p>
+</cell>
+<cell xid="104" props="bot-attach:3; left-attach:0; right-attach:1; top-attach:2">
+<p xid="105" props="text-align:right; font-size:9pt; font-family:Lucida Console">[[ formatLang(o.amount_untaxed) ]]</p>
+</cell>
+<cell xid="106" props="bot-attach:4; left-attach:0; right-attach:1; top-attach:3">
+<p xid="107" props="text-align:right; font-size:9pt; font-family:Lucida Console">[[ formatLang(o.amount_tax) ]]</p>
+</cell>
+<cell xid="108" props="bot-attach:5; left-attach:0; right-attach:1; top-attach:4">
+<p xid="109" props="text-align:right; font-size:9pt; font-family:Lucida Console">[[ formatLang(o.amount_total) ]]</p>
+</cell>
+</table>
+<p xid="110" props="text-align:left; font-size:11pt; font-family:Lucida Console"><c></c></p>
+</cell>
+</table>
+<p xid="111" props="font-family:Lucida Console; font-size:11pt"></p>
+</section>
+</abiword>

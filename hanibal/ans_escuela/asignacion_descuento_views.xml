@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		
+
+	    <record id="view_asignacion_descuento_form" model="ir.ui.view">
+            <field name="name">descuento.alumno.form</field>
+            <field name="model">descuento.alumno</field>
+            <field name="arch" type="xml">
+                <form string="Asignación Descuento">
+                        <div class="oe_right oe_button_box" name="buttons" >
+                            <button class="oe_stat_button" string='Consultar' name="consultar_alumnos" type="object" icon="fa-bars">
+                            </button>
+                            <button class="oe_stat_button" string='Asignar' name="aplicar_descuento" type="object" icon="fa-check-square-o" attrs="{'invisible': [('consulto','=',False)]}" confirm='Se aplicara el descuento seleccionado a los alumnos que tenga el check en la columna de aplicar. Esta seguro de esta Accion?'>
+                            </button>
+                            <button class="oe_stat_button" string='Revocar' name="des_aplicar_descuento" type="object" icon="fa-circle-o" attrs="{'invisible': [('consulto','=',False)]}" confirm='Se quitaran el descuento seleccionado a los alumnos que tenga el check en la columna de aplicar. Esta seguro de esta Accion?'>
+                            </button>
+                        </div>
+                        <group>
+                            <field name="consulto" invisible='1' />
+                            <group>
+                                <field name="jornada_id" string="Jornada" options="{'no_create': True,'edit': False,'no_open':True}" required='0'  />
+                                <field name="curso_id" attrs="{'invisible': [('seccion_id','=',False)]}" 
+                                        options="{'no_create': True,'edit': False,'no_open':True}" domain="[('jornada_id', '=', jornada_id),('seccion_id','=',seccion_id)]"/>
+                            </group>
+                            <group>
+                                <field name="seccion_id" string="Sección" options="{'no_create': True,'edit': False,'no_open':True}" 
+                                                    attrs="{'invisible': [('jornada_id','=',False)]}"   />
+                                <field name="paralelo_id" attrs="{'invisible': [('curso_id','=',False)]}" 
+                                        options="{'no_create': True,'edit': False,'no_open':True}" domain="[('curso_id','=',curso_id)]" />
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name='descuento_id' required='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                <field name='representante_id' domain="[('tipo','=','P')]" options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                <field name="colaborador" options="{'no_create': True,'edit': False,'no_open':True}" />
+                            </group>
+                            <group>
+                                <field name='porcentaje' readonly='1' attrs="{'invisible': [('descuento_id','=',False)]}"/>
+                                <field name='alumno_id'  options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'invisible': [('representante_id','=',False)]}"/>
+                                <field name='alumno_ids' attrs="{'invisible': [('representante_id','!=',False)]}" options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                <field name="num_representados" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string='Resultados'>
+                                <field name="descuento_line" >
+                                    <tree editable="bottom" delete="false" create="false">
+                                        <field name="jornada_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="seccion_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="curso_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="paralelo_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="alumno_id" invisible='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="alumno_nombre" readonly='1'/>
+                                        <field name="representante_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="colaborador" readonly='1'/>
+                                        <field name="cant_representados" readonly='1'/>
+                                        <field name="descuentos_ids" widget='many2many_tags' readonly='1'/>
+                                        <field name="aplicar" string='Modificar'/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                </form>
+            </field>
+        </record>
+
+        
+
+        <record id="action_descuento_alumno" model="ir.actions.act_window">
+            <field name="name">Asignación de Descuentos</field>
+            <field name="res_model">descuento.alumno</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>            
+
+
+	<menuitem name="Asignación de Descuentos" action="action_descuento_alumno"
+            id="id_menu_asignacion_descuentos"
+            parent="menu_gestion_escolar" />
+
+
+    </data>
+</openerp>

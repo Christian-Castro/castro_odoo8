@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		
+	<!-- MENU -->
+    <menuitem name="Reportes" id="menu_reportes"
+            parent="ans_escuela.menu_escuela" sequence='5' />
+
+		
+	    <record id="view_reporte_archivo" model="ir.ui.view">
+            <field name="name">reporte.escuela.form</field>
+            <field name="model">reporte.escuela</field>
+            <field name="arch" type="xml">
+                <form string="Reporte">
+                        <div class="oe_right oe_button_box" name="buttons" >
+                            <button class="oe_stat_button" string='Consultar' name="consultar" type="object" icon="fa-bars">
+                            </button>
+                            <button class="oe_stat_button" string='Excel' name="generar_excel" type="object" icon="fa-file-text-o">
+                            </button>
+                            <button class="oe_stat_button" string='PDF' name="generar_pdf" type="object" icon="fa-file-o" >
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="usuario_id" invisible='1'/>
+                                <field name='fecha_emision' invisible='1'/>
+                            </group>
+                        </group>
+                        <group>
+
+                            <group>
+                                <field name="jornada_id" string="Jornada" options="{'no_create': True,'edit': False,'no_open':True}" 
+                                                    required='1'  />
+                                <field name="curso_id" attrs="{'invisible': [('seccion_id','=',False)]}" 
+                                        options="{'no_create': True,'edit': False,'no_open':True}" domain="[('jornada_id', '=', jornada_id),('seccion_id','=',seccion_id)]"/>
+                            </group>
+                            <group>
+                                <field name="seccion_id" string="Seccion" options="{'no_create': True,'edit': False,'no_open':True}" 
+                                                    attrs="{'invisible': [('jornada_id','=',False)]}"   />
+                                <field name="paralelo_id" attrs="{'invisible': [('curso_id','=',False)]}" 
+                                        options="{'no_create': True,'edit': False,'no_open':True}" domain="[('curso_id','=',curso_id)]" />
+                            </group>
+                        </group>
+                        <group>
+                            <group string='Excel' attrs="{'invisible': [('archivo_xls','=',False)]}">
+                                <field name="filename" invisible='1'/>
+                                <field name="archivo_xls"  filename="filename" readonly='1'/>
+                            </group>
+                            <group string='PDF' attrs="{'invisible': [('archivo_pdf','=',False)]}">
+                                <field name="filename_pdf" invisible='1'/>
+                                <field name="archivo_pdf"  filename="filename_pdf" readonly='1'/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string='Resultados'>
+                                <field name="reporte_line" readonly='1'>
+                                    <tree>
+                                        <field name="orden" invisible='1'/>
+                                        <field name="jornada_id" />
+                                        <field name="seccion_id" />
+                                        <field name="curso_id" />
+                                        <field name="paralelo_id" />
+                                        <field name="codigo" />
+                                        <field name="alumno" />
+                                        <field name="representante" />
+                                        <field name="correo" />
+                                        <field name="direccion" />
+                                        <field name="telefono" />
+                                        <field name="cedula" />
+                                        <field name="state" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                </form>
+            </field>
+        </record>
+
+        
+
+        <record id="action_reporte_archivo" model="ir.actions.act_window">
+            <field name="name">Reporte General</field>
+            <field name="res_model">reporte.escuela</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>            
+
+
+	<menuitem name="Directorio de Alumnos" action="action_reporte_archivo"
+            id="id_menu_reporte_archivo"
+            parent="menu_reportes" sequence='6'/>
+
+
+    </data>
+</openerp>

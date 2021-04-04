@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+       <record id="view_account_voucher_cruce_anticipos" model="ir.ui.view">
+            <field name="name">account.voucher.form</field>
+            <field name="model">account.voucher</field>
+           <field name="priority" eval="1"/>
+            <field name="inherit_id" ref="ans_escuela.view_cobros_clientes_ans" />
+             <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount']" position="replace">
+                   <field name="amount" class="oe_inline"
+                                string="Precio y valor "
+                                widget="monetary" options="{'currency_field': 'currency_id'}"
+                                attrs="{'readonly':['|',('is_cruce','=',True),('state','not in',['draft'])]}"
+                                on_change="onchange_amount(amount, payment_rate, partner_id, journal_id, currency_id, type, date, payment_rate_currency_id, company_id, context)"/>
+                </xpath>
+                 <xpath expr="//field[@name='journal_id']" position="after">
+                   <field name="is_cruce" invisible="1" />
+                   <field name="total_cruce"  widget="monetary" readonly="1" attrs="{'invisible':[('is_cruce','=',False)]}" />
+                </xpath>
+             </field>
+       </record>
+
+         <record id="view_journal_filter_custom_cruce_anticipo" model="ir.ui.view">
+            <field name="name">account.journal.form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form" />
+             <field name="arch" type="xml">
+                <xpath expr="//field[@name='group_invoice_lines']" position="after">
+                    <field name="is_cruce" attrs="{'invisible':[('type','=','in_refund')]}" />
+                     <field name="is_anticipo" />
+                </xpath>
+             </field>
+         </record>
+
+        <record id="view_res_partner_filter_cuenta_contable" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form" />
+             <field name="arch" type="xml">
+                <xpath expr="//field[@name='property_account_receivable']" position="after">
+                    <field name="cuenta_anticipo_c" />
+                </xpath>
+                 <xpath expr="//field[@name='property_account_payable']" position="after">
+                    <field name="cuenta_anticipo_p" />
+                </xpath>
+             </field>
+         </record>
+
+         <record id="ans_res_partner_filter_cuenta_contable" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="ans_escuela.view_partner_representantes_escuela_form" />
+             <field name="arch" type="xml">
+                <xpath expr="//field[@name='property_account_receivable']" position="after">
+                    <field name="cuenta_anticipo_c" />
+                </xpath>
+                 <xpath expr="//field[@name='property_account_payable']" position="after">
+                    <field name="cuenta_anticipo_p" />
+                </xpath>
+             </field>
+         </record>
+        <!--<record id="view_res_partner_filter_cuenta_contable" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="ans_escuela.view_partner_representantes_escuela_form" />
+             <field name="arch" type="xml">
+                <xpath expr="//field[@name='property_account_receivable']" position="after">
+                    <field name="cuenta_anticipo_c" />
+                </xpath>
+                 <xpath expr="//field[@name='property_account_payable']" position="after">
+                    <field name="cuenta_anticipo_p" />
+                </xpath>
+             </field>
+         </record>-->
+    </data>
+</openerp>

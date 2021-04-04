@@ -1,0 +1,32 @@
+<openerp>
+    <data>
+
+        <record id="account_invoice_lote_view" model="ir.ui.view">
+            <field name="name">account.invoice.lote.form</field>
+            <field name="model">account.invoice.lote</field>
+            <field name="arch" type="xml">
+                <form string="Confirm Draft Invoices">
+                    <p class="oe_grey">
+                        Este proceso generara las facturas correspondientes al periodo habilitado para los
+                        Representantes de los alumnos.
+                    </p>
+                    <group>
+                    	<field name="anio_id" />
+                    </group>
+                    <footer>
+                        <button string="Generar Facturas" name="invoice_confirm" type="object" default_focus="1" class="oe_highlight"/>
+                        or
+                        <button string="Cancelar" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="action_account_invoice_lote"
+            multi="True"
+            key2="client_action_multi" name="Generar facturas"
+            res_model="account.invoice.lote" src_model="res.partner"
+            view_mode="form" target="new" view_type="form" />
+
+    </data>
+</openerp>

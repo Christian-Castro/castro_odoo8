@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_move_form_inherit_escuela" model="ir.ui.view">
+            <field name="name">view.move.form.inherit.escuela</field>
+            <field name="model">account.move</field>
+            <field name="priority">16</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/notebook/page/field[@name='line_id']/tree/field[@name='partner_id']" position="after">
+                    <field name='alumno_id' readonly="1" domain="[('customer','=',True),('parent_id','!=',False)]"/>
+                        <field name="jornada_id" string="Jornada" options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'invisible': [('alumno_id','=',False)]}" required='1'/>
+                        <field name="seccion_id" options="{'no_create': True,'edit': False,'no_open':True}" required='1' attrs="{'invisible': [('jornada_id','=',False)]}" />
+                        <field name="curso_id" options="{'no_create': True,'edit': False,'no_open':True}" required='1' domain="[('jornada_id', '=', jornada_id),('seccion_id','=',seccion_id)]" attrs="{'invisible': [('seccion_id','=',False)]}" />
+                        <field name="paralelo_id" options="{'no_create': True,'edit': False,'no_open':True}" required='0' domain="[('curso_id','=',curso_id)]"  attrs="{'invisible': [('curso_id','=',False)]}"/>
+                        <field name="mes"  attrs="{'invisible': [('alumno_id','=',False)]}" />
+                        <field name="anio"  attrs="{'invisible': [('alumno_id','=',False)]}" />
+                </xpath>
+             </field>
+        </record>
+        <!-- <field name="amount_untaxed" sum="Untaxed Amount"/>  -->
+        <record id="view_acount_invoice_form_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//page[@string='Invoice Lines']" position="replace">
+                    <page string="Invoice Lines">
+                        <field name="invoice_line" nolabel="1" widget="one2many_list" context="{'type': type}">
+                            <tree string="Invoice Lines" editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="product_id"
+                                    on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, parent.company_id, context)"/>
+                                <field name="name"/>
+                                <field name="escuela" invisible="1"/>
+                                <field name="state" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="account_id" groups="account.group_account_user"
+                                    domain="[('company_id', '=', parent.company_id), ('journal_id', '=', parent.journal_id), ('type', '=', 'other')]"
+                                    on_change="onchange_account_id(product_id, parent.partner_id, parent.type, parent.fiscal_position,account_id)"/>
+                                <field name="account_analytic_id" groups="analytic.group_analytic_accounting"
+                                    domain="[('type','!=','view'), ('company_id', '=', parent.company_id), ('state','not in',('close','cancelled'))]"/>
+                                <field name="quantity"/>
+                                <field name="uos_id" groups="product.group_uom"
+                                    on_change="uos_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, parent.company_id, context)"/>
+                                <field name="descuentos_ids" widget='many2many_tags' readonly='0'/>
+                                <field name="precio_unitario" readonly='1' string='Precio unitario' />
+                                <field name="precio_unitario_nuevo" string='Precio antes descuento' readonly='1'/>
+                                <field name="descuento" readonly='1'/>
+                                <field name="precio_descuento" readonly='1' invisible='1'/>
+                                <field name="price_unit" readonly='1' invisible='1'/>
+                                <field name="discount" groups="sale.group_discount_per_so_line"/>
+                                <field name="factura_escuela" invisible='1'/>
+                                <field name="invoice_line_tax_id" widget="many2many_tags" context="{'type':parent.type}"
+                                    domain="[('parent_id','=',False),('company_id', '=', parent.company_id)]"/>
+                                <field name="price_subtotal" />
+                                <button name="action_from" type="object" class="oe_stat_button" string="..."/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <div>
+                                <label for="amount_tax"/>
+                                <button name="button_reset_taxes" states="draft,proforma2"
+                                    string="(update)" class="oe_link oe_edit_only"
+                                    type="object" help="Recompute taxes and total"/>
+                            </div>
+                            <field name="amount_tax" nolabel="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_total" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="residual" groups="account.group_account_user" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="reconciled" invisible="1"/>
+                        </group>
+                        <group>
+                                <field name="payment_term" class="oe_inline" on_change="onchange_payment_term_date_invoice(payment_term, date_invoice)"/>
+                        </group>
+                        <div class="oe_clear">
+                            <label for="comment"/>
+                        </div>
+                        <field name="comment" class="oe_inline" placeholder="Additional notes..."/>
+                    </page>
+                </xpath>
+                <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="replace">
+                    <group class="oe_subtotal_footer oe_right">
+                        <field name="total_pago" widget="monetary" readonly='1' options="{'currency_field': 'currency_id'}"/>
+                        <field name="subtotal_descuento" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <div>
+                            <label for="amount_tax"/>
+                            <button name="button_reset_taxes" states="draft,proforma2"
+                                string="(update)" class="oe_link oe_edit_only"
+                                type="object" help="Recompute taxes and total"/>
+                        </div>
+                        <field name="amount_tax" nolabel="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="amount_total" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="residual" groups="account.group_account_user" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="reconciled" invisible="1"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_journal_form_inherit" model="ir.ui.view">
+            <field name="name">account.journal.form.inherit</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="activa_venta_lote" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_invoice_form_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='invoice_open']" position="replace">
+                    <button name="invoice_open"  string="Validate" attrs="{'invisible': ['|',('state','!=','draft'),('escuela','=',True)]}" class="oe_highlight" groups="base.group_user" />
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="replace">
+                    <field string="Representante/Cliente" name="partner_id" on_change="onchange_partner_id(type, partner_id, date_invoice, payment_term, partner_bank_id, company_id, context)" context="{'search_default_customer':1, 'show_address': 1}" options="{&quot;always_reload&quot;: True}" attrs="{'readonly': [('alumno_id','=',False),('escuela','=',True)]}"/>
+                </xpath>
+                <xpath expr="//button[@name='invoice_open']" position="after">
+                    <button name="validar_nuevo"  string="Validar" type="object" attrs="{'invisible': ['|',('state','!=','draft'),('escuela','=',False)]}" class="oe_highlight" groups="base.group_user" />
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="before">
+		    <!--RERV attrs modificado para que no aparezca en type out_refund-->
+                    <field name="alumno_id" domain="[('customer', '=', True),('tipo','=','H')]" attrs="{'invisible': ['|', ('type', '=', 'out_refund'), ('escuela','=',False)],'required': [('type', '!=', 'out_refund'), ('escuela','=',True)], 'readonly': [('state', '!=', 'draft')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='account_id']" position="after">
+                    <field name="validar" invisible='1'/>
+		    <!--RERV attrs modificado para que no aparezca en type out_refund-->
+                    <field name="escuela"  attrs="{'readonly': [('validar','=',True)], 'invisible': [('type', '=', 'out_refund')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='fiscal_position']" position="after">
+		    <!--RERV attrs modificado para que no aparezca en type out_refund-->
+                    <field name="jornada_id" string="Jornada" options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'invisible': ['|', ('type', '=', 'out_refund'), ('escuela','=',False)],'required': [('escuela','=',True)]}" readonly='1' />
+                    <field name="seccion_id" options="{'no_create': True,'edit': False,'no_open':True}" required='0' attrs="{'invisible': ['|', '|', ('type', '=', 'out_refund'), ('jornada_id','=',False),('escuela','=',False)],'required': [('escuela','=',True)]}" readonly='1' />
+                    <field name="curso_id" options="{'no_create': True,'edit': False,'no_open':True}" required='0' domain="[('jornada_id', '=', jornada_id),('seccion_id','=',seccion_id),('escuela','=',True)]" attrs="{'invisible': ['|', '|', ('type', '=', 'out_refund'), ('seccion_id','=',False),('escuela','=',False)],'required': [('escuela','=',True)]}" readonly='1' />
+                    <field name="paralelo_id" options="{'no_create': True,'edit': False,'no_open':True}" required='0' domain="[('curso_id','=',curso_id)]"  attrs="{'invisible': ['|', '|', ('type', '=', 'out_refund'), ('curso_id','=',False),('escuela','=',False)],'required': [('escuela','=',True)]}" readonly='1' />
+                    <!-- <field name="mes" attrs="{'invisible': ['|', ('type', '=', 'out_refund'), ('escuela','=',False)]}" readonly='1'/>
+                    <field name="anio" attrs="{'invisible': ['|', ('type', '=', 'out_refund'), ('escuela','=',False)]}" readonly='1'/> -->
+                    <field
+                        name="mes_inicio_id"
+                        attrs="{'invisible': ['|', ('type', '=', 'out_refund'), ('escuela','=',False)], 'required': [('state', '=', 'draft'), ('escuela', '=', True), ('type', '=', 'out_invoice')], 'readonly': [('state', '!=', 'draft')]}"
+                        domain="[('year_id.active', '=', True)]"
+                    />
+                    <field
+                        name="mes_final_id"
+                        attrs="{'invisible': ['|', ('type', '=', 'out_refund'), ('escuela','=',False)], 'required': [('state', '=', 'draft'), ('escuela', '=', True), ('type', '=', 'out_invoice')], 'readonly': [('state', '!=', 'draft')]}"
+                        domain="[('year_id.active', '=', True)]"
+                    />
+                    <field name="anio_lectivo" attrs="{'invisible': ['|', ('type', '=', 'out_refund'), ('escuela','=',False)]}" readonly='1'/>
+                </xpath>
+                <xpath expr="//page[@string='Payments']" position="after">
+                    <page string='Descuentos' attrs="{'invisible': [('escuela','=',False)]}">
+                        <field name="descuentos_facturar">
+                            <tree string="Descuentos" editable="bottom" >
+                                <field name="descuento_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="monto" readonly='1' sum='Total'/>
+                                <field name="factura_id" invisible='1'/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+		<record id="view_generar_facturas_tree" model="ir.ui.view">
+            <field name="name">generar.facturas.tree</field>
+            <field name="model">generar.facturas</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Generar Facturas" delete='1'>
+                    <field name="usuario_id" invisible='1'/>
+                    <!-- <field name="anio" />
+                    <field name="mes" /> -->
+                    <field name="mes_inicio_id" domain="[('year_id.active', '=', True)]"/>
+                    <field name="mes_final_id" domain="[('year_id.active', '=', True)]"/>
+                    <field name="diario" string="Diario"/>
+                    <field name="punto_emision" string="Punto de Emision" />
+                    <field name="jornada_id" string="Jornada"/>
+                    <field name="curso_id" string="Curso"/>
+                    <field name="paralelo_id" string="Paralelo"/>
+                </tree>
+            </field>
+        </record>
+
+
+	    <record id="view_generar_facturas_form" model="ir.ui.view">
+            <field name="name">generar.facturas.form</field>
+            <field name="model">generar.facturas</field>
+            <field name="arch" type="xml">
+                <form string="Generar Facturas" delete='1'>
+                    <header>
+                        <button name="traer_informacion" string="Traer Información" type="object" class="oe_highlight" groups="base.group_user" attrs="{'invisible': [('estado','in',('2','1'))]}"/>
+                        <button name="generar_factura_borrador" string="Generar Factura Borrador" type="object" class="oe_highlight" groups="base.group_user" attrs="{'invisible': [('estado','in',('2','1',False))]}" confirm='Esta seguro de Generar la Facturas Borrador?'/>
+                        <button name="validar_facturas" string="Validar Facturas" type="object" class="oe_highlight" groups="base.group_user" attrs="{'invisible': [('estado','in',('2','0',False))]}"/>
+                    </header>
+                        <group col='4' string='Factura Venta Lotes'>
+                            <group>
+                                <field name="diario" options="{'no_create': True,'edit': False,'no_open':True}" required='1' attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="punto_emision" required="1" attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field
+                                    name="mes_inicio_id"
+                                    domain="[('year_id.active', '=', True)]"
+                                    required="1" attrs="{'readonly': [('estado','in',('1','2'))]}"
+                                />
+                                <!-- <field
+                                    name="mes_final_id"
+                                    domain="[('year_id.active', '=', True)]"
+                                    required="1"
+                                /> -->
+                                <field name="fecha_factura" required='1' attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="estado" invisible='1'/>
+                            </group>
+                            <group>
+                                <field name="jornada_id" string="Jornada" options="{'no_create': True,'edit': False,'no_open':True}" required='1' attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="seccion_id" options="{'no_create': True,'edit': False,'no_open':True}" required='0' attrs="{'invisible': [('jornada_id','=',False)],'readonly': [('estado','in',('1','2'))]}" />
+                                <field name="curso_id" options="{'no_create': True,'edit': False,'no_open':True}" required='0' domain="[('jornada_id', '=', jornada_id),('seccion_id','=',seccion_id)],'readonly': [('estado','in',('1','2'))]" attrs="{'invisible': [('seccion_id','=',False)],'readonly': [('estado','in',('1','2'))]}" />
+                                <field name="paralelo_id" options="{'no_create': True,'edit': False,'no_open':True}" required='0' domain="[('curso_id','=',curso_id)]"  attrs="{'invisible': [('curso_id','=',False)],'readonly': [('estado','in',('1','2'))]}"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string='Facturas a Generar'>
+                                <field name="detalle_facturar" >
+                                    <form>
+                                        <group>
+                                            <field name="codigo_interno" readonly='1' />
+                                             <field name="codigo_alumno" readonly='1' />
+                                        </group>
+                                        <group col='4'>
+                                            <group>
+                                                <field name="representante_nombre" readonly='1' />
+                                                <field name="jornada_id" string="Jornada" options="{'no_create': True,'edit': False,'no_open':True}" readonly='1' />
+                                                 <field name="curso_id" options="{'no_create': True,'edit': False,'no_open':True}" readonly='1' />
+                                            </group>
+                                            <group>
+                                                <field name="alumno_nombre" readonly='1' />
+                                                <field name="seccion_id" options="{'no_create': True,'edit': False,'no_open':True}" readonly='1' />
+                                                <field name="paralelo_id" options="{'no_create': True,'edit': False,'no_open':True}" readonly='1'/>
+                                            </group>
+                                        </group>
+                                        <group>
+                                            <field name="antes_descuento" readonly='1' />
+                                             <field name="descuento" readonly='1' />
+                                             <field name="subtotal" readonly='1' />
+                                             <field name="iva" readonly='1' />
+                                            <field name="total" readonly='1' />
+                                        </group>
+
+                                    </form>
+                                    <tree delete="1" create="false" open="false">
+                                        <field name="numero" invisible='0'/>
+                                        <field name="factura_id" invisible='1'/>
+                                        <field name="codigo_interno" invisible='1' />
+                                        <field name="number" readonly='1' />
+                                        <field name="numerofac" readonly='1' />
+                                        <field name="representante_id" readonly='1' options="{'no_create': False,'edit': False,'no_open':False}"/>
+                                        <field name="alumno_id" invisible='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="codigo_alumno" readonly='1' />
+                                        <field name="alumno_nombre" readonly='1'/>
+                                        <field name="antes_descuento" readonly='1'/>
+                                        <field name="descuento" readonly='1'/>
+                                        <field name="subtotal" readonly='1'/>
+                                        <field name="iva" readonly='1'/>
+                                        <field name="total" readonly='1' sum='Total'/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string='Alumnos con facturas'>
+                                <field name="factura_emitida_id">
+                                    <tree>
+                                        <!-- <field name="numero" invisible='0'/> -->
+                                        <field name="factura_id" invisible='1'/>
+                                        <!-- <field name="codigo_interno" readonly='1' /> -->
+                                        <!-- <field name="number" readonly='1' /> -->
+                                        <field name="representante_id" readonly='1' options="{'no_create': False,'edit': False,'no_open':False}"/>
+                                        <field name="alumno_id" readonly='1' invisible='0' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="codigo_alumno" readonly='1' />
+                                        <field name="invoice_ids" readonly='1' widget="many2many_tags"/>
+                                        <!-- <field name="alumno_nombre" readonly='1'/> -->
+                                    </tree>
+                                    <form>
+                                        <field name="representante_id" readonly='1' options="{'no_create': False,'edit': False,'no_open':False}"/>
+                                        <field name="alumno_id" readonly='1' invisible='0' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="codigo_alumno" readonly='1' options="{'no_open': False}" />
+                                        <field name="invoice_ids" readonly='1' widget="many2many_tags" options="{'no_open': False}"/>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                </form>
+            </field>
+        </record>
+
+        
+
+        <record id="action_generar_facturas" model="ir.actions.act_window">
+            <field name="name">Generar Facturas</field>
+            <field name="res_model">generar.facturas</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>            
+
+
+	<menuitem name="Generar Facturas" action="action_generar_facturas"
+            id="id_menu_generar_facturas"
+            parent="menu_gestion_escolar" sequence="6"/>
+
+
+    <!-- <record id="view_cambio_cuenta_form" model="ir.ui.view">
+        <field name="name">cambio.cuenta.form</field>
+        <field name="model">cambio.cuenta</field>
+        <field name="arch" type="xml">
+            <form string="cambio.cuenta">
+                    <group col='4' >
+                        <group>
+                            <field name="id_account" />
+                        </group>
+                        <group>
+                            <button name="cambio_cuenta" string="Traer Informacion" type="object" class="oe_highlight" />
+                        </group>
+                    </group>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_cambio_cuenta" model="ir.actions.act_window">
+        <field name="name">Cambio de Cuenta</field>
+        <field name="res_model">cambio.cuenta</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Cambio de Cuenta" action="action_cambio_cuenta"
+            id="id_menu_cambio_cuenta"
+            parent="menu_gestion_escolar" sequence="6"/> -->
+
+    <record id="view_descuentos_factura_cabezera_form" model="ir.ui.view">
+        <field name="name">descuentos.factura.cabezera.form</field>
+        <field name="model">descuentos.factura.cabezera</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="factura_id" invisible='1'/>
+                </group>
+                <notebook>
+                    <page string='Detalle Descuentos'>
+                        <field name="detalle_descuento" readonly='1'>
+                            <tree string="Detalle de Descuentos">
+                                <field name="factura_det_id" invisible='1'/>
+                                <field name="descuento_id" />
+                                <field name="porcentaje" />
+                                <field name="base" />
+                                <field name="monto" readonly='1' sum='Monto'/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+
+    </data>
+</openerp>

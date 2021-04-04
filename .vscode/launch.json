@@ -1,0 +1,41 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Odoo hanibal",
+            "type": "python",
+            "request": "launch",
+            "program": "odoo/openerp-server",
+            "console": "integratedTerminal",
+            "args": ["-c", "odoo.conf", "--log-handler=odoo.addons.queue_job:DEBUG"],
+        },
+        {
+            "name": "Odoo hanibal - Update",
+            "type": "python",
+            "request": "launch",
+            "program": "odoo/openerp-server",
+            "console": "integratedTerminal",
+            "args": ["-c", "odoo.conf", "--log-handler=odoo.addons.queue_job:DEBUG", "-u", ""],
+        },
+        {
+            "name": "Odoo 13 - Multi Process",
+            "type": "python",
+            "request": "launch",
+            "program": "server/odoo-bin",
+            "console": "integratedTerminal",
+            "args": ["-c", "odoo.conf", "--log-handler=odoo.addons.queue_job:DEBUG", "--workers=4", "-u", "wms_connect"],
+            "env": {"GEVENT_SUPPORT": "True", "TEST_QUEUE_JOB_NO_DELAY": "1"},
+        },
+        {
+            "name": "Odoo 13 - DB",
+            "type": "python",
+            "request": "launch",
+            "program": "server/odoo-bin",
+            "console": "integratedTerminal",
+            "args": ["-c", "odoo.conf", "--log-handler=odoo.addons.queue_job:DEBUG", "--load-language=es_ES", "-i", "demo_16-11-2020"],
+        },
+   ]
+}

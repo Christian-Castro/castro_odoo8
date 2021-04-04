@@ -1,0 +1,11 @@
+<openerp>
+        <data>
+                <report 
+					id="purchase_requisition.report_purchase_requisition"
+					model="purchase.requisition" 
+					name="requisicion.compra"
+					string="Purchase Requisition"
+					auto="False"
+					header="False" />
+        </data>
+</openerp>

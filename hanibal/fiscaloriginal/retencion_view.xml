@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_invoice_retencion_line_form" model="ir.ui.view">
+            <field name="name">fiscal.retencion.ln.form</field>
+            <field name="model">fiscal.retencion.ln</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Detalle de Retencion">
+                    <field name='name'/>
+	                <field name='account_id'/>
+	                <field name='base'/>
+	                <field name='amount'/>
+	                <field name='sequence'/>
+	                <field name='base_amount'/>
+	                <field name='tax_amount'/>
+	                <field name='base_code_id'/>
+	                <field name='tax_code_id'/>
+	                <field name='ejerciciofiscal'/>
+	                <field name='tipo'/>
+	                <field name='codigo'/>
+	                <field name='porcentaje'/>
+
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>

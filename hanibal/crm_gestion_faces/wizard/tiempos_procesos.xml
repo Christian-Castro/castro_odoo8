@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+
+    <record id="crm_tiempos_procesos_form2" model="ir.ui.view">
+         <field name="name">crm.tiempos.procesos.conf.form</field>
+         <field name="model">crm.tiempos.procesos.conf</field>
+         <field name="arch" type="xml">
+                <form string="Tiempos de procesos">
+                    <field name="name" string="Descripcionnn"/>
+                    <!--field name="d_identificar" string="Identificarrr"/>
+                    <field name="d_preparar" string="Prepararrr"/>
+                    <field name="d_primera_visita" string="Visitass"/>
+                    <field name="d_seguimiento" string="Seguimientooo"/>
+                    <field name="d_pruebas" string="Pruebasss"/>
+                    <field name="d_oferta" string="Ofertaaa"/>
+                    <field name="d_negociacion" string="Negociaciónnn"/-->
+
+                 </form>
+         </field>
+    </record>
+
+
+
+    <record id="crm_tiempos_procesos_tree2" model="ir.ui.view">
+         <field name="name">crm.tiempos.procesos.tree</field>
+         <field name="model">crm.tiempos.procesos.conf</field>
+         <field name="arch" type="xml">
+                <tree string="Tiempos de procesos">
+                    <field name="name" string="DescripcionE"/>
+                    <field name="d_identificar" string="IdentificarE"/>
+                    <field name="d_preparar" string="PrepararE"/>
+                    <field name="d_primera_visita" string="VisitaE"/>
+                    <field name="d_seguimiento" string="SeguimientoE"/>
+                    <field name="d_pruebas" string="PruebasE"/>
+                    <field name="d_oferta" string="OfertaE"/>
+                    <field name="d_negociacion" string="NegociaciónE"/>
+
+                 </tree>
+         </field>
+    </record>
+
+    <record id="view_crm_tiempos_procesos_filter2" model="ir.ui.view">
+        <field name="name">crm.tiempos.procesos.filter</field>
+        <field name="model">crm.tiempos.procesos.conf</field>
+        <field name="arch" type="xml">
+            <search string="Analisis">
+                <field name="d_identificar"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_crm_tiempos_procesos2" model="ir.actions.act_window">
+        <field name="name">Tiempos de Procesos</field>
+        <field name="res_model">crm.tiempos.procesos.conf</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_crm_tiempos_procesos_filter2"/>
+                                               
+        <field name="view_id" ref="crm_tiempos_procesos_tree2"/>
+        <field name="context">{}</field>
+        <field name="help">Tiempos de Procesos</field>
+    </record>
+
+    <menuitem action="action_crm_tiempos_procesos2" id="menu_crm_tiempos_procesos2" parent="reportes" sequence="3"/>
+
+</data>
+</openerp>

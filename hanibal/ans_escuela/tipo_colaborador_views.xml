@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <record model="ir.ui.view" id="tipo_colaborador_form_view">
+       <field name="name">tipo.colaborador.form</field>
+       <field name="model">tipo.colaborador</field>
+       <field name="type">tree</field>
+        <field name="priority">0</field>
+        <field name="arch" type="xml">
+             <tree editable="buttom">
+                <field name="name" />
+                <field name="active" />
+             </tree>
+        </field>
+    </record>
+
+    <record id="action_tipo_colaborador" model="ir.actions.act_window">
+            <field name="name">Tipo de Colaborador</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tipo.colaborador</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+    </record>
+  
+  <menuitem id="menu_tipo_colaborador" name="Tipo de Colaborador" 
+        action="action_tipo_colaborador" parent="menu_mentenimiento_escolar" sequence="1"/>
+
+
+
+    </data>
+</openerp>

@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        
+        <menuitem name="Reporting"
+            id="base.menu_reporting"
+            groups="base.group_user"
+            sequence="174"/>
+        
+            
+        <menuitem id="menu_report" name="Analisis Financiero" parent="base.menu_reporting" sequence="10"/>
+        
+   
+        
+        <record model="ir.ui.view" id="view_analisis_pedidos_di_graph">
+            <field name="name">analisis.pedidos.di.graph</field>
+            <field name="model">analisis.bitacora.pedidos</field>
+            <field name="arch" type="xml">
+                <graph string="ANALISIS DE PEDIDOS" type="bar">
+                    <field name="clase" string="Procedencia"/>                
+                    <field name="codigo" string= "Producto"/>
+                    <field name="cantidad" string= "Cantidad"/>
+
+                    
+                </graph>
+            </field>
+        </record>
+    
+    
+        <record id="view_analisis_pedidos_di_filter" model="ir.ui.view">
+            <field name="name">analisis.pedidos.di_filter</field>
+            <field name="model">analisis.bitacora.pedidos</field>
+            <field name="arch" type="xml">
+                <search string="ANALISIS DISPONIBILIDAD INMEDIATA">
+                    <field name="clase" string="Procedencia"/>
+                    <field name="codigo" string="Codigo"/>
+                    <field name="descripcion" string="Descripcion"/>
+                    <field name="dia" string="Fecha"/>
+                    <field name="cli_des" string="Cliente"/>
+                    <field name="vendedor" string="Vendedor"/>
+                    <field name="estado"/>
+                    <field name="estadofinal"/>
+                    <field name="calificacion"/>
+                    <field name="pedido" string="Pedido"/>
+                    <field name="horas" string="Horas"/>
+                    <field name="bodega" string="Bodega"/>
+                    <field name="periodo" string="Periodo"/>
+ 
+
+<group expand="1" string="Procedencia">
+<filter string="Compra Local" name="COMPLOCAL" domain="[('clase','=','Compra de producto local')]"/>
+<filter string="Diversey" name="Diversey" domain="[('clase','=','Diversey')]"/>
+<filter string="DW-Maquinas" name="DW-Maquinas" domain="[('clase','=','Diversey Maquinas')]"/>
+<filter string="Dutrion" name="Dutrion" domain="[('clase','=','Dutrion')]"/>
+<filter string="Enkador" name="Enkador" domain="[('clase','=','Enkador')]"/>
+<filter string="Equipos" name="Equipos" domain="[('clase','=','Equipos')]"/>
+<filter string="Impact" name="Impact" domain="[('clase','=','Impact')]"/>
+<filter string="Test Systems" name="Test Systems" domain="[('clase','=','Industrial Test Systems')]"/>
+<filter string="Institucional" name="Institucional" domain="[('clase','=','Institucional')]"/>
+<filter string="Jofel" name="Jofel" domain="[('clase','=','Jofel Mexico')]"/>
+<filter string="Kimberly" name="Kimberly" domain="[('clase','=','Kimberly')]"/>
+<filter string="Produccion" name="Produccion" domain="[('clase','=','Produccion')]"/>
+<filter string="Prominent" name="Prominent" domain="[('clase','=','Prominent')]"/>
+<filter string="Vikan" name="Vikan" domain="[('clase','=','Vikan')]"/>
+<filter string="Servicios" name="Servicios" domain="[('clase','=','Servicios')]"/>
+<filter string="Otros" name="Otros" domain="[('clase','=','Otros')]"/>
+</group>
+
+                   <separator/>
+                    
+                    <filter string="Cerrado" name="cerrado" domain="[('cerrado','=','Cerrado')]"/>
+                    <filter string="No Cerrado" name="cerrado" domain="[('cerrado','=','NO Cerrado')]"/>
+                    <newline/>
+		    <newline/>
+                    <separator/>
+<group string="Estado Inicial">   
+<!--filter string="Facturados" name="estado" domain="[('estado','=','FAC')]"/-->
+<!--filter string="Fact. Parcial" name="estado" domain="[('estado','=','FPA')]"/-->
+<filter string="Pend. Facturar" name="estado" domain="[('estado','=','PFA')]"/>
+<filter string="Suspendido por credito" name="estado" domain="[('estado','=','SCR')]"/>
+<filter string="Insuficiencia parcial" name="estado" domain="[('estado','=','SIP')]"/>
+<filter string="Insuficiencia total" name="estado" domain="[('estado','=','SIT')]"/>
+<!--filter string="Entrega Total" name="estado" domain="[('estado','=','ETO')]"/-->
+<!--filter string="Entrega Parcial" name="estado" domain="[('estado','=','EPA')]"/-->
+</group>
+<group string="Estado Actual">   
+<filter string="Facturados" name="estado" domain="[('estadofinal','=','FAC')]"/>
+<filter string="Fact. Parcial" name="estado" domain="[('estadofinal','=','FPA')]"/>
+<filter string="Pend. Facturar" name="estado" domain="[('estadofinal','=','PFA')]"/>
+<filter string="Suspendido por credito" name="estado" domain="[('estadofinal','=','SCR')]"/>
+<filter string="Insuficiencia parcial" name="estado" domain="[('estadofinal','=','SIP')]"/>
+<filter string="Insuficiencia total" name="estado" domain="[('estadofinal','=','SIT')]"/>
+</group>
+                    <separator/>
+<group expand="0" string="Group By">
+<filter string="Procedencia" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'clase'}"/>  
+<filter string="Bodega" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'bodega'}"/>    
+<filter string="Articulo" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'descripcion'}"/>  
+<filter string="Estado" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'estado'}"/>  
+<filter string="Estado Actual" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'estadofinal'}"/>  
+<filter string="Vendedor" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'vendedor'}"/>
+<filter string="Calificacion" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'calificacion'}"/>
+<filter string="Cliente" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'cli_des'}"/>
+<filter string="Fecha" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'dia'}"/>
+                   </group>
+
+
+
+
+ 
+                </search>
+
+            </field>
+        </record>
+
+        <record id="view_analisis_pedidos_di_tree" model="ir.ui.view">
+            <field name="name">analisis.pedidos.di.tree</field>
+            <field name="model">analisis.bitacora.pedidos</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="Analisis de pedidos" >
+                    <field name="clase" string="Procedencia"/>
+                    <field name="codigo" string="Codigo"/>
+                    <field name="descripcion" string="Descripcion"/>
+                    <field name="dia" string="Fecha"/>
+                    <field name="pedido" string="Pedido"/>
+                    <field name="vendedor" string="Vendedor"/>
+                    <field name="cli_des" string="Cliente"/>
+                    <field name="bodega" string="Bod"/>
+                    <field name="estado"/>
+                    <field name="estadofinal"/>
+                    <!--field name="cerrado" string="Cerrado"/-->
+                    <field name="cantidad" string="Cantidad"/>
+                    <field name="disponible_bod" string="Disponible"/>
+
+                    <field name="cantidadpedida" string="Pedido"/>
+                    <field name="cantidadfacturada" string="Facturado"/>
+                    <field name="total" string="Total"/>
+
+                    <field name="inicio" string="Inicio."/>
+                    <field name="fin" string="Fin"/>
+                    <field name="horas" string="Horas"/>
+                    <field name="calificacion" string="Calf"/>
+
+                    
+                    <!--field name="disponible_cia" string="Disponible"/>
+                    <field name="reservado_cia" string="Reservado"/-->
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_analisis_pedidos_di_form" model="ir.ui.view">
+            <field name="name">analisis.pedidos.di.form</field>
+            <field name="model">analisis.bitacora.pedidos</field>
+            <field name="arch" type="xml">
+                <form string="Analisis Disponibilidad inmediata">
+                <sheet>
+                	<group col="6" colspan ="4">
+                	
+                     	    <!--field name="compania" invisible="1" /-->
+	                    <field name="codigo" string="Pedido"/>
+                            <!--field name="estado_pedido" string="Estado"/>
+		             <field name="vendedor" string="Vendedor"/>
+
+                            <newline/>
+			    <field name="cliente_descripcion" string="Cliente"/>
+                            <field name="localidad" string="Ciudad"/>
+	                    <field name="atencion" string="Atencion"/>
+                            <newline/>
+	                    <field name="fecha_digita_pedido" string="Fecha"/>
+                            <field name="fecha_ultima_factura" string="Ult Factura"/>
+	                    <field name="diferencia" string="Dias"/-->
+                    </group>
+                                               
+
+			     <!--button name="import_data" type="object" string="Traer Informacion"/>
+                            <separator string="Articulos"/>
+
+			    <notebook colspan="1">
+			        <page string="Pedido">
+			            <field name="line_id" colspan='2' nolabel='1'>
+                                        <tree string="">
+                                          
+			                        
+			                        <field name="descripcion"/>
+			                        <field name ="estado_linea"/>
+			                        <field name ="existencia_actual"/>
+			                        <field name="bodega"/>
+			                        <field name="unidad"/>
+			                        <field name="cantidad"/>
+			                        <field name="precio"/>
+			                        <field name="total_art"/>
+                                         
+                                       </tree	>
+                                    </field>
+                                 </page>
+			        <page string="Historico">
+			            <field name="line_id_bit" colspan='2' nolabel='1'>
+                                        <tree string="">
+			                        <field name="clase"/>
+			                        <field name="codigo"/>
+			                        <field name="descripcion"/>
+			                        <field name="cantidad"/>
+			                        <field name="estado"/>
+			                        <field name="bodega"/>
+			                        <field name="disponible_cia"/>
+			                        <field name="reservado_cia"/>
+			                        <field name="disponible_bod"/>
+			                        <field name="reservado_bod"/>
+                                       </tree	>
+                                    </field>
+                                 </page>
+			    </notebook>
+
+			    <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+				    <field name="subtotal" string="Subotal"  widget='monetary' options="{'currency_field': 'currency_id'}"/>
+
+			            <field name="iva" string="Iva" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+
+				     <field name="total" string="Total"  widget='monetary' options="{'currency_field': 'currency_id'}"/>
+
+			    </group-->
+
+ 
+                </sheet>
+                </form>
+            </field>
+        </record>
+        
+        
+        <record id="action_analisis_disponibilidad_inmediata" model="ir.actions.act_window">
+            <field name="name">Analisis Disponibilida Inmediata</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">analisis.bitacora.pedidos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,graph,form</field>
+            <field name="search_view_id" ref="view_analisis_pedidos_di_filter"/>
+        </record>
+        
+        
+        <menuitem action="action_analisis_disponibilidad_inmediata" id="menu_analisis_disponibilidad_inmediata_form" parent="menu_report" sequence="1"/>
+        <!-- ANALISIS DE PEDIDOS -->
+        
+    </data>
+</openerp>
+

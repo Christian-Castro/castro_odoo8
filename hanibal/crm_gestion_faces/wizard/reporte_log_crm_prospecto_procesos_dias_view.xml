@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <record id="log_crm_prospecto_procesos_dias_graph" model="ir.ui.view">
+         <field name="name">log.crm.prospecto.procesos.dias.graph</field>
+         <field name="model">log.crm.prospecto.procesos.dias</field>
+         <field name="arch" type="xml">
+             <!--graph string="Analisis" type="pivot" stacked="True" _order="orden"-->
+             <graph string="Analisis" type="pivot" >
+                 <field name="estado" string="Proceso" type="col"/>
+                 <field name="periodo_iniciativa" string="Periodo"  type="row"/>
+                 <field name="comercial" string="Comercial"  type="row"/>
+                 <field name="prospecto" string="Prospecto"  type="row"/>
+                 <field name="titulo" string="Titulo"  type="row"/>
+                 <field name="dias_estado" string="Dias" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+ 
+    <record id="view_log_crm_prospecto_procesos_dias_filter" model="ir.ui.view">
+        <field name="name">log.crm.prospecto.procesos.dias.filter</field>
+        <field name="model">log.crm.prospecto.procesos.dias</field>
+        <field name="arch" type="xml">
+            <search string="Analisis">
+                <field name="ciudad"/>
+                <field name="comercial" string="Comercial"/>
+                <field name='periodo_iniciativa' />
+                <field name='prospecto' />
+                <field name='titulo' />
+                <group expand="0" string="Group by">
+
+
+                    <filter string="Periodo" context="{'group_by':'periodo_iniciativa'}"  />
+                    <filter string="Periodo Actual" domain="[('periodo_iniciativa','=',time.strftime('%Y%m'))]" context="{'group_by':'periodo_iniciativa'}"  />
+
+
+
+
+                    <filter string="Comercial" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'comercial'}"/>
+
+                    
+                   <filter string="Ciudad" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'ciudad'}"/>		
+
+                   <filter string="Proceso" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'estado'}"/>	
+
+                   <filter string="Prospecto" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'prospecto'}"/>
+
+                   <filter string="Titulo" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'titulo'}"/>          
+               </group>
+                
+            </search>
+        </field>
+    </record>
+
+    <record id="action_log_crm_prospecto_procesos_dias" model="ir.actions.act_window">
+        <field name="name">Dias de Prospectos por Proceso</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">log.crm.prospecto.procesos.dias</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,form</field>
+        <field name="search_view_id" ref="view_log_crm_prospecto_procesos_dias_filter"/>
+        <field name="graph_view_id" ref="log_crm_prospecto_procesos_dias_graph"/>
+        <field name="context">{}</field>
+        <field name="help">Dias de Prospectos por Proceso</field>
+    </record>
+
+
+
+
+
+
+           
+
+
+
+
+
+
+
+    <menuitem action="action_log_crm_prospecto_procesos_dias" id="menu_log_crm_prospecto_procesos_dias" parent="reportes" sequence="10"/>
+
+</data>
+</openerp>

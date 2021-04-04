@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--Menu Item-->
+        <menuitem id="sri_menu" name="Fiscal"/>
+        <menuitem id="sri_menu_configuracion" name="Configuracion" parent="sri_menu" sequence="15"/>
+
+	
+    	<record model="ir.ui.view" id="folios_config_search_view">
+		<field name="name">Configuracion Folios</field>
+		<field name="model">folios.configuracion</field>
+		<field name="arch" type="xml">
+		    <search string="Session Search">
+				<field name="id"/>		    
+		        <field name="company_id" />
+		    </search>
+		</field>
+	    </record>
+
+        <record model="ir.actions.act_window" id="folios_config_list_action">
+            <field name="name">Folios Configuracion</field>
+            <field name="res_model">folios.configuracion</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Configuracion de Folios.</field>
+            <field name="search_view_id" ref="folios_config_search_view"/>
+        </record>
+                
+
+        <record model="ir.ui.view" id="folios_config_view_form">
+            <field name="name">Folios Configuracion</field>
+            <field name="model">folios.configuracion</field>
+            <field name="arch" type="xml">
+                <form string="Tipo Documento" version="7.0" >
+				  <sheet>
+				  	<group colspan="1" col="2">
+					<field name="company_id" widget="selection" />
+					</group>
+                    <group colspan="1" col="2">
+                    <label for="id" string="Cod."  />
+                    <field name="id" nolabel="1" />
+                    </group>
+				    <newline/>
+			        <notebook colspan="4">
+			        	<page string="Sustento Tributario" >
+			        		<field name='sus_tributario' nolabel='1' >
+								<form string='Sustento Tributario'>
+									<group colspan="2" col="4" >	
+						        		<field name="codigofiscal"/>
+						            	<field name="name"/>
+								        <field name="habilitado" string="Habilitado" />
+							        </group>
+							     </form>
+							</field>
+					    </page>
+					    <page string="Tipo Documento" >
+					    	<field name="tipo_documento" nolabel="1">
+							 <form string="Tipo Documento" version="7.0" >
+								  <sheet>
+									<group colspan="4" col="6">
+								            	<field name="codigointerno"/>
+								            	<field name="name"/>
+										<field name="habilitado"/>
+										<field name="codigofiscal"/>
+										<field name="fechacreacion"/>
+								                <field name='esretencion' string='Es Retencion'/>
+										<field name='tipo' string='Tipo Retencion'/>
+								                <field name='porcentajeretencion' string='Porcentaje de Retencion'/>
+								                <field name='diasgraciarecepcion' string='Dias de Gracia de Recepcion'/>
+									</group>
+								  </sheet>
+				             </form>
+				             </field>
+				             </page>
+				             <page string="Tipo de Producto" >
+						    	<field name="tipo_producto" nolabel="1">
+									 <form string="Tipo Producto" version="7.0" >
+										  <sheet>
+											<group colspan="3" col="2" >
+											        <field name="codigofiscal" />
+											        <field name="habilitado" />
+								                    <newline/>
+											        <field name="name" />
+											</group>
+										   </sheet>
+		                			</form>
+					             </field>
+				             </page>
+				             <page string="Tipo de Identificacion" >
+						    	<field name="tipo_identificacion" nolabel="1">
+				                     <form string="Tipo de Identificacion" version="7.0" >
+										  <sheet>
+										     <group colspan="2" col="4" >
+											        <field name="sigla" />
+											        <field name="habilitado" />
+								                    <newline/>
+											        <field name="name" />
+											        <field name="codigofiscalcompra"/>
+										        	<field name="codigofiscalventa"/>
+										     </group>
+										   </sheet>
+					                </form>
+					                </field>
+				        		</page>
+				        		<page string="Tipo de Pago" >
+							    	<field name="tipo_pago" nolabel="1">
+						        		<form string="Tipo de Pago" version="7.0" >
+										   <sheet>
+							                    <separator string='Tipo de Pago' colspan='4'/>
+								                    <group>
+								                        <field name='name' />
+								                        <field name="codigofiscal" />
+								                        <field name='identificador' />
+								                        <field name='habilitado' />
+								                    </group>
+										   </sheet>
+		                				</form>
+	                				</field>
+                				</page>
+                				<page string="Forma de Pago" >
+							    	<field name="forma_pago" nolabel="1">
+							    		<form string="Forma de Pago" version="7.0" >
+										  <sheet>
+						                    <separator string='Forma de Pago' colspan='4'/>
+						                    <group>
+						                        <field name='name' />
+						                        <field name="codigofiscal" />
+						                        <field name='habilitado' />
+						                    </group>
+										  </sheet>
+               							</form>
+							    	
+							    	</field>
+							    </page>
+							    <page string="Ruta Comprobantes" >
+					    	<field name="ruta_comp" nolabel="1">
+					    		<form string="Ruta comprobantes" version="7.0" >
+								  <sheet>
+				                    <group>
+										<!--ACTUALIZADO 13-06-2017 -->
+				                    	<field name="comp_id"/>
+				                    	<!--ACTUALIZADO 13-06-2017 -->
+				                        <field name='name' />
+				                        <field name='tipo' />
+				                        <field name='active' />
+				                    </group>
+								  </sheet>
+	            				</form>
+	            				<tree string="Ruta comprobantes" version="7.0" >
+							        <field name='name' />
+			                        <field name='tipo' />
+			                    </tree>
+					    	</field>
+				    	</page>
+							    
+			        </notebook>
+				  </sheet>
+             	</form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="fiscal_tipodocumento_view_tree">
+            <field name="name">Folios Configuracion</field>
+            <field name="model">folios.configuracion</field>
+            <field name="arch" type="xml">
+                <tree string="Tipo Documento" >
+		            	<field name="id" string="Cod."/>
+		            	<field name="company_id" string="Compania"/>
+		        </tree>
+            </field>
+        </record>
+        
+        <menuitem id="folios_config_menu" 
+                    name="Folios Configuración" 
+                    parent="sri_menu_configuracion"
+                    action="folios_config_list_action" />
+	
+    </data>
+</openerp>

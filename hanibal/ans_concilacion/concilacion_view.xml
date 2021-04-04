@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+          <record id="view_ans_concilacion" model="ir.ui.view">
+              <field name="name">Conciliacion Bancaria</field>
+              <field name="model">concilacion.bancaria.ans</field>
+              <field name="type">form</field>
+              <field name="arch" type="xml">
+                  <form string="Concilacion Bancaria">
+                      <sheet>
+                          <group>
+                          <div class="oe_title">
+                              <h1>Cargar Archivo Txt Para Extracto Bancario</h1>
+                          </div>
+                          </group>
+
+                          <group col="7">
+                            <field name="saldo"  />
+                          </group>
+                          <group col="7">
+                              <field name="nombre_txt" readonly="1" invisible="1" />
+                              <field name="binario_txt" filename="nombre_txt" colspan="5" />
+                              <button class="oe_highlight" string='Cargar Documento' name="validacion" colspan="2" type="object" style="margin-right:20px" />
+                          </group>
+                      </sheet>
+                  </form>
+              </field>
+          </record>
+
+         <record id="action_conciliacion_bancaria_ans" model="ir.actions.act_window">
+            <field name="name">Conciliacion Bancaria</field>
+            <field name="res_model">concilacion.bancaria.ans</field>
+            <field name="view_type">form</field>
+             <field name="target">inline</field>
+            <field name="view_mode">form</field>
+         </record>
+
+        <record id="view_ans_tree_conciliacion" model="ir.ui.view">
+            <field name="name">extracto.bancario.ans.form</field>
+            <field name="model">extracto.bancario.ans</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Concilacion Bancaria">
+                    <header>
+                        <button class="oe_highlight" string='Cargar Movimientos' states="draft,pre" name="pre_conciliar" type="object" >
+                        </button>
+                        <button class="oe_highlight" string='Conciliar' states="pre" name="conciliar" confirm="Esta seguro de realizar este proceso? No se podra modificar el registro" type="object" >
+                        </button>
+                        <button class="oe_highlight" string='Reporte' states="pre,error" name="generar_reportes"  type="object" >
+                        </button>
+                        <button class="oe_highlight" string='Limpiar todo' states="pre,error" name="limpiar_todo" confirm="Estas Seguro de Limpiar?. Se eliminara todas las transacciones hechas" type="object" >
+                        </button>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,error,pre,con" />
+                    </header>
+                        <group>
+                            <div class="oe_title oe_left">
+                                <group col="2">
+                                    <field name="banco" />
+                                    <field name="cuenta" />
+                                    <field name="nombre_cliente" />
+                                    <field name="saldo_inicial" />
+                                </group>
+                            </div>
+                            <div class="oe_title oe_right">
+                                <group col="2">
+                                    <field name="fecha_inicial" />
+                                    <field name="fecha_final" />
+				    <field name="mes_periodo" />
+				    <field name="ano_periodo" />
+                                    <field name="nombre_oficial" />
+                                </group>
+                            </div>
+                            <field name="nombre_xls" invisible="1"/>
+                            <field name="nombre_txt" invisible="1"/>
+                             <group col="4" colspan="2">
+                                <field name="binario_xls" filename="nombre_xls" readonly="1"/>
+                                 <field name="binario_pdf" filename="nombre_txt" readonly="1"/>
+                             </group>
+                            <field name="texto" invisible="1"/>
+
+                            <group col="4" colspan="2">
+                                <field name="archivo" filename="texto" readonly="1"/>
+
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Notas de debito">
+                                <header>
+                                       <button class="oe_highlight" string='Pre conciliar' states="pre" name="pre_conciliar_notas_debitos" type="object" >
+                                    </button>
+                                   </header>
+                                <group col="4" nolabel="1" >
+                                    <div >
+                                        <h3 states="pre">Informe Bancario</h3>
+                                        <field name="extracto_line_debito" nolabel="1"
+                                               attrs="{'readonly':[('state','=','draft')]}"  create="1" >
+                                            <tree delete="false" create="false" limit="20">
+                                                <field name="fecha" />
+                                                <field name="descripcion" />
+                                                <field name="secuencial_part" />
+                                                <field name="valor" sum="Total de Notas de debito" />
+                                                 <field name="estado" />
+                                                <field name="diario"/>
+                                            </tree>
+                                        </field>
+                                    </div>
+                                    <div>
+                                        <h3 states="pre">Movimiento de la empresa</h3>
+                                    <field name="move_id_debito" nolabel="1" widget="one2many" create="1">
+                                        <tree create="false" delete="false" colors="red:estado_error=='red';blue:estado_error=='azul';" >
+                                            <field name="name" />
+					    <field name="date" />
+                                            <field name="total_conciliar" sum="Total Amount"/>
+                                            <field name="estado_concilacion" />
+
+                                            <field name="state" invisible="1" />
+                                            <field name="journal_id" />
+                                            <field name="estado_error" invisible="1" />
+                                        </tree>
+                                        <form>
+                                            <group>
+                                                <field name="name" readonly="1" />
+                                                <field name="date" />
+                                                <field name="total_conciliar" />
+                                                <field name="company_char"  />
+                                                <field name="journal_id" /> 
+                                                <field name="estado_concilacion" />
+                                                <field name="state" invisible="1" />
+                                            </group>
+                                            <group>
+                                                <field name="detalle_extracto" widget="many2many" options="{'no_open': True}"
+                                                       nolabel="1" domain="[('parametro_id.tipo_mov','=','ND'),('estado','!=','pen')
+                                                       ,('estado','=','no'),('parametro_id.journal_id','=',journal_id)]">
+                                                        <tree editable="bottom" create="false">
+                                                            <field name="valor" sum="Total" />
+                                                            <field name="fecha" />
+                                                            <field name="descripcion" />
+                                                            
+							    <field name="error_estado"  />
+                                                            <field name="secuencial_part" />
+                                                            <field name="estado" />
+                                                            <field name="diario"/>
+                                                        </tree>
+                                                </field>
+                                            </group>
+                                        </form>
+                                    </field>
+                                    </div>
+                                </group>
+                            </page>
+                            <page string="Notas de credito">
+                                <header>
+                                       <button class="oe_highlight" string='Pre conciliar' states="pre" name="pre_conciliar_notas_credito" type="object" >
+                                    </button>
+                                   </header>
+                                <group col="4" nolabel="1">
+                                    <div>
+                                     <h3 states="pre">Informe Bancario</h3>
+                                    <field name="extracto_line_credito" nolabel="1" attrs="{'readonly':[('state','=','draft')]}" create="1">
+                                        <tree  delete="false" create="false" limit="8">
+                                           <field name="fecha" />
+                                           <field name="descripcion" />
+                                           <field name="valor" sum="Total de Notas de credito" />
+                                              <field name="estado" readonly="1" />
+                                        </tree>
+                                        <!--
+                                        <form  create="false">
+                                           <group  colspan="4" >
+                                                <field name="fecha" readonly="1"/>
+                                                <field name="descripcion" readonly="1" />
+                                                <field name="valor" readonly="1" />
+                                           </group>
+                                           <field name="move_id_debitos" nolabel="1" domain="[('state', '=', 'posted'), ('estado_concilacion', '=', 'no'), ('journal_id.tipo_mov', '=', 'NC'),('estado_concilacion','=','no')]" />
+                                        </form>-->
+                                    </field>
+                                    </div>
+                                    <div>
+                                          <h3 states="pre">Movimiento de la empresa</h3>
+                                    <field name="move_id_credito" nolabel="1" widget="one2many" create="1">
+                                        <tree  create="false" delete="false" colors="red:estado_error=='red';blue:estado_error=='azul';" >
+                                            <field name="name" />
+                                            <field name="date" />
+                                            <field name="total_conciliar" sum="Total Amount"/>
+                                            <field name="estado_concilacion" />
+                                            <field name="state" invisible="1" />
+                                            <field name="journal_id" />
+                                             <field name="estado_error" invisible="1" />
+                                        </tree>
+                                        <form>
+                                            <group>
+                                                <field name="name" readonly="1" />
+                                                <field name="date" />
+                                                <field name="total_conciliar" />
+                                                <field name="company_char"  />
+                                                <field name="journal_id" />
+                                                <field name="estado_concilacion" />
+                                                <field name="state" invisible="1" />
+                                            </group>
+                                            <group>
+                                                <field name="detalle_extracto" widget="many2many" options="{'no_open': True}"
+                                                       nolabel="1" domain="[('parametro_id.tipo_mov','=','NC'),('estado','!=','pen')
+                                                       ,('estado','=','no'),('parametro_id.journal_id','=',journal_id)]">
+                                                        <tree editable="bottom" create="false" >
+                                                            <field name="valor" sum="Total" />
+                                                            <field name="fecha" />
+                                                            <field name="descripcion" />
+							    <field name="error_estado" />
+                                                            <field name="secuencial_part" />
+                                                            <field name="estado" />
+                                                        </tree>
+                                                </field>
+                                            </group>
+                                        </form>
+                                    </field>
+                                    </div>
+
+                                </group>
+                            </page>
+                            <page string="Depositos">
+                                <header>
+                                       <button class="oe_highlight" string='Pre conciliar' states="pre" name="pre_conciliar_depositos" type="object" >
+                                    </button>
+                                   </header>
+                                <group col="4" nolabel="1">
+                                    <div>
+                                     <h3 states="pre">Informe Bancario</h3>
+                                    <field name="extracto_line_depositos" nolabel="1"
+                                           attrs="{'readonly':[('state','=','draft')]}" create="1">
+                                    <tree  delete="false" create="false" limit="8">
+                                        <field name="fecha" />
+                                        <field name="descripcion" />
+                                        <field name="secuencial_part" />
+                                        <field name="valor" sum="Total de Deposito" />
+                                        <field name="estado" readonly="1" />
+                                    </tree>
+                                        <!--
+                                        <form create="false">
+                                                <group  colspan="4" >
+                                                    <field name="fecha" readonly="1"/>
+                                                    <field name="descripcion" readonly="1" />
+                                                    <field name="valor" readonly="1" />
+                                                </group>
+                                                <field name="move_id_debitos" nolabel="1" domain="[('state', '=', 'posted'), ('estado_concilacion', '=', 'no'), ('journal_id.tipo_mov', '=', 'DEP'),('estado_concilacion','=','no')]" />
+                                            </form>-->
+                                    </field>
+                                    </div>
+                                     <div>
+                                          <h3 states="pre">Movimiento de la empresa</h3>
+                                    <field name="move_id_deposito" nolabel="1" widget="one2many" create="1">
+                                        <tree   create="false" delete="false" colors="red:estado_error=='red';blue:estado_error=='azul';">
+                                            <field name="name" />
+                                            <field name="total_conciliar" sum="Total Amount"/>
+                                            <field name="estado_concilacion" />
+                                            <field name="state" invisible="1" />
+                                            <field name="journal_id" />
+                                            <field name="estado_error" invisible="1" />
+                                        </tree>
+                                        <form>
+                                            <group>
+                                                <field name="name" readonly="1" />
+                                                <field name="date" />
+                                                <field name="total_conciliar" sum="Total Amount"/>
+                                                <field name="company_char"  />
+                                                <field name="journal_id" />
+                                                <field name="estado_concilacion" />
+                                                <field name="state" invisible="1" />
+                                            </group>
+                                            <group>
+                                                <field name="detalle_extracto" widget="many2many" options="{'no_open': True}"
+                                                       nolabel="1" domain="[('parametro_id.tipo_mov','=','DEP'),('estado','!=','pen')
+                                                       ,('estado','=','no'),('parametro_id.journal_id','=',journal_id)]" >
+                                                        <tree editable="bottom" create="false">
+                                                            <field name="valor" sum="Total" />
+                                                            <field name="fecha" />
+                                                            <field name="descripcion" />
+                                                            <field name="secuencial_part" />
+                                                            <field name="error_estado"  />
+                                                            <field name="estado" />
+                                                        </tree>
+                                                </field>
+                                            </group>
+                                        </form>
+                                    </field>
+                                    </div>
+                                </group>
+                            </page>
+                            <page string="Cheques">
+                                <header>
+                                       <button class="oe_highlight" string='Pre conciliar' states="pre" name="pre_conciliar_cheque" type="object" >
+                                    </button>
+                                    <!--<button class="oe_highlight" string='Aplicar Movimientos' states="draft,pre" name="procesar_datos" type="object" >
+                                    </button>-->
+                                   </header>
+                                <group col="4" nolabel="1">
+                                    <div>
+                                     <h3 states="pre">Informe Bancario</h3>
+                                    <field name="extracto_line_cheques"
+                                           nolabel="1" attrs="{'readonly':[('state','=','draft')]}" create="1">
+                                    <tree delete="false" create="false" limit="8">
+                                        <field name="fecha" />
+                                        <field name="descripcion" />
+                                        <field name="ref" />
+                                        <field name="secuencial_part" />
+                                        <field name="valor" sum="Total de Cheques" />
+                                        <field name="estado" readonly="1" />
+                                    </tree>
+                                    <!--
+                                        <form create="false">
+                                                <group  colspan="4" >
+                                                    <field name="fecha" readonly="1"/>
+                                                    <field name="descripcion" readonly="1" />
+                                                    <field name="valor" readonly="1" />
+                                                </group>
+                                                <field name="move_id_debitos" nolabel="1"  domain="[('state', '=', 'posted'), ('estado_concilacion', '=', 'no'), ('journal_id.tipo_mov', '=', 'CHE'),('estado_concilacion','=','no')]" />
+                                        </form>-->
+                                    </field>
+                                    </div>
+                                 <div>
+                                      <h3 states="pre">Movimiento de la empresa</h3>
+                                    <field name="move_id_cheques" nolabel="1" widget="one2many" create="1">
+                                        <tree create="false" delete="false" colors="red:estado_error=='red';blue:estado_error=='azul';">
+                                            <field name="company_char" />
+                                            <field name="total_conciliar" sum="Total"/>
+                                            <field name="date" />
+                                            <field name="name" />
+                                            <field name="estado_concilacion" />
+                                            <field name="journal_id" />
+                                            <field name="state" invisible="1" />
+                                             <field name="estado_error" invisible="1" />
+                                        </tree>
+                                        <form>
+                                            <group>
+                                               <field name="company_char" />
+                                            <field name="total_conciliar" sum="Total"/>
+                                            <field name="date" />
+                                            <field name="name" />
+                                            <field name="estado_concilacion" />
+                                            <field name="journal_id" />
+                                            <field name="state" invisible="1" />
+                                             <field name="estado_error" invisible="1" />
+                                            </group>
+                                             <group>
+                                                <field name="detalle_extracto" widget="many2many" options="{'no_open': True}"
+                                                       nolabel="1" domain="[('parametro_id.tipo_mov','=','CHE'),('estado','!=','pen')
+                                                       ,('estado','=','no'),('parametro_id.journal_id','=',journal_id)]">
+                                                        <tree editable="bottom" create="false">
+                                                            <field name="fecha" />
+                                                            <field name="descripcion" />
+                                                            <field name="secuencial_part" />
+
+                                                            <field name="valor"  sum="Total"/>
+                                                            <field name="error_estado"  />
+                                                            <field name="estado" />
+                                                        </tree>
+                                                </field>
+                                            </group>
+                                        </form>
+                                    </field>
+                                 </div>
+                                </group>
+                            </page>
+                               <page string="Ordenes de pago">
+                                   <header>
+                                       <button class="oe_highlight" string='Pre conciliar' states="pre" name="pre_conciliar_ordenes" type="object" >
+                                    </button>
+                                   </header>
+                                <group col="4" nolabel="1">
+                                    <div>
+                                     <h3 states="pre">Informe Bancario</h3>
+                                    <field name="extracto_line_ordenes" nolabel="1" attrs="{'readonly':[('state','=','draft')]}" create="1">
+                                        <tree delete="false" create="false" limit="8">
+                                           <field name="fecha" />
+                                           <field name="descripcion" />
+                                            <field name="ref" />
+                                            <field name="secuencial_part" />
+                                           <field name="valor" sum="Total de Ordenes" />
+                                           <field name="estado" readonly="1" />
+                                        </tree>
+                                        <!--
+                                        <form  create="false">
+                                           <group  colspan="4" >
+                                                <field name="fecha" readonly="1"/>
+                                                <field name="descripcion" readonly="1" />
+                                                <field name="valor" readonly="1" />
+                                           </group>
+                                           <field name="move_id_debitos" nolabel="1" domain="[('state', '=', 'posted'), ('estado_concilacion', '=', 'no'), ('journal_id.tipo_mov', '=', 'NC'),('estado_concilacion','=','no')]" />
+                                        </form>-->
+                                    </field>
+                                    </div>
+                                    <div>
+                                          <h3 states="pre">Movimiento de la empresa</h3>
+                                    <field name="move_id_ordenes" nolabel="1" widget="one2many" create="1">
+                                       <tree   create="false" delete="false" colors="red:estado_error=='red';blue:estado_error=='azul';">
+                                            <field name="name" />
+                                            <field name="total_conciliar" sum="Total Amount"/>
+                                            <field name="estado_concilacion" />
+                                            <field name="state" invisible="1" />
+                                            <field name="journal_id" />
+                                            <field name="estado_error" invisible="1" />
+                                        </tree>
+                                        <form>
+                                            <group>
+                                                <field name="name" readonly="1" />
+                                                <field name="date" />
+                                                <field name="total_conciliar" sum="Total Amount"/>
+                                                <field name="company_char"  />
+                                                 <field name="journal_id" />
+                                                <field name="estado_concilacion" />
+                                                <field name="state" invisible="1" />
+                                            </group>
+                                            <group>
+                                                <field name="detalle_extracto"
+                                                       nolabel="1" domain="[('parametro_id.tipo_mov','=','ORD'),('estado','!=','pen')
+                                                       ,('estado','=','no'),('parametro_id.journal_id','=',journal_id)]" >
+                                                        <tree create="false">
+                                                            <field name="valor" sum="Total" />
+                                                            <field name="fecha" />
+                                                            <field name="descripcion" />
+                                                            <field name="secuencial_part" />
+                                                           <field name="error_estado"  />
+                                                            <field name="estado" />
+                                                        </tree>
+                                                </field>
+                                            </group>
+                                        </form>
+
+                                    </field>
+                                    </div>
+
+                                </group>
+                            </page>
+                        </notebook>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="view_detalle_extracti_bancario_ans_tree" model="ir.ui.view">
+             <field name="name">detalle.extracto.bancario.ans.tree</field>
+            <field name="model">detalle.extracto.bancario.ans</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Detalle Extracto" create="false">
+                    <field name="fecha" />
+                    <field name="ref" />
+                    <field name="secuencial" />
+                    <field name="valor" sum="Total"/>
+                    <field name="descripcion" />
+                    <field name="estado" />
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="detalle_extracto_view">
+            <field name="name">detalle.extracto.bancario.ans.search</field>
+            <field name="model">detalle.extracto.bancario.ans</field>
+            <field name="arch" type="xml">
+                <search string="Informe Bancario Search">
+                    <field name="descripcion" string="Descripcion"/>
+                    <field name="secuencial" string="Secuencial"/>
+                    <field name="ref" string="Referencia"/>
+                    <field name="fecha" string="Fecha"/>
+                    <field name="journal" string="Diario"/>
+                 <!--<group string="Filtros">
+                     <filter string="Hoy" icon="terp-stock_effects-object-colorize" domain="[['fecha','=',time.strftime('%Y-%m-%d')]]"/>
+                 </group>
+                         <group string="Estados">
+                                <filter string="Por enviar" icon="terp-stock_effects-object-colorize" domain="[['state','=','P']]"/>
+                    <filter string="Enviado" icon="terp-stock_effects-object-colorize" domain="[['state','=','E']]"/>
+                        <filter string="No Autorizado" icon="terp-stock_effects-object-colorize" domain="[['state','=','N']]"/>
+                        <filter string="Autorizado" icon="terp-stock_effects-object-colorize" domain="[['state','=','A']]"/>
+                     </group>
+                         <group string="Empresas">
+                                <filter string="uno" icon="terp-stock_effects-object-colorize" domain="[['compania_cod','=','DC']]"/>
+                    <filter string="dOS" icon="terp-stock_effects-object-colorize" domain="[['compania_cod','=','UD']]"/>
+                        <filter string="TRES" icon="terp-stock_effects-object-colorize" domain="[['compania_cod','=','MF']]"/>
+                        <filter string="CUATRO" icon="terp-stock_effects-object-colorize" domain="[['compania_cod','=','DW']]"/>
+                     </group>
+                        -->
+
+
+
+                    <group expand="0" string="Group By...">
+                         <filter string="Descripcion"  icon="terp-personal" context="{'group_by':'descripcion'}" />
+                         <filter string="Valor"  icon="terp-personal" context="{'group_by':'valor'}" />
+                        <filter string="Diario"  icon="terp-personal" context="{'group_by':'journal'}" />
+                    </group>
+                </search>
+            </field>
+	    </record>
+
+
+
+        <record id="view_extracto_bancario_tree" model="ir.ui.view">
+            <field name="name">extracto.bancario.ans.tree</field>
+            <field name="model">extracto.bancario.ans</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Extracto Bancario" create="false">
+                    <field name="banco" />
+                    <field name="cuenta" />
+                    <field name="fecha_inicial" />
+                    <field name="fecha_final" />
+                    <field name="nombre_cliente" />
+                    <field name="nombre_oficial" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_view_extracto" model="ir.actions.act_window">
+            <field name="name">Informe Bancario</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">extracto.bancario.ans</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+
+
+        <record id="view_tree_parametrizacion" model="ir.ui.view">
+            <field name="name">extracto.conf.ans.tree</field>
+            <field name="model">extracto.conf.ans</field>
+            <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                <tree string="Parametrizacion de Busqueda">
+                     <field name="cadena_bus" />
+                     <field name="tipo_mov" />
+                     <field name="banco_id" />
+                     <field name="cuenta_id" />
+                    <field name="journal_id" />
+                </tree>
+             </field>
+        </record>
+
+        <record id="view_ans_form_parametrizacion" model="ir.ui.view">
+            <field name="name">extracto.conf.ans.form</field>
+            <field name="model">extracto.conf.ans</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Parametrizacion de busqueda">
+                    <sheet>
+                        <group col="2">
+                            <field name="cadena_bus" />
+                            <field name="tipo_mov" />
+                            <field name="banco_id" />
+                            <field name="cuenta_id" />
+                            <field name="journal_id" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_parametrizacion" model="ir.actions.act_window">
+            <field name="name">Parametrizacion de Busquedad</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">extracto.conf.ans</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_conciliacion_bancaria_sub_ans" name="Concilacion Bancaria"
+            parent="menu_conciliacion_bancaria_ans"   sequence="0"/>
+
+        <menuitem id="menu_parametrizacion_busquedad_item" name="Tipos de Documentos Bancarios"
+action="action_view_parametrizacion" parent="menu_conciliacion_bancaria_sub_ans" sequence="1"/>
+
+          <menuitem id="menu_concilacion_bancaria_item" name="Informe Bancario"
+action="action_conciliacion_bancaria_ans" parent="menu_conciliacion_bancaria_sub_ans" sequence="2"/>
+
+    <menuitem id="menu_extracto_bancario_item" name="Concilacion"
+action="action_view_extracto" parent="menu_conciliacion_bancaria_sub_ans" sequence="3"/>
+
+
+                <!-- AGREGAR EL CAMPO DE MOVIMIENTO BANCARIO-->
+    <record model="ir.ui.view" id="view_inherit_account_journal">
+        <field name="name">account.journal.form</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="tipo_mov" />
+            </xpath>
+        </field>
+    </record>
+
+        <record model="ir.ui.view" id="view_inherit_account_move">
+        <field name="name">account.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='period_id']" position="after">
+                <field name="estado_concilacion" />
+            </xpath>
+        </field>
+    </record>
+
+    </data>
+</openerp>

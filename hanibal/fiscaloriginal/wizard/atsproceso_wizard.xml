@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="ats_to_xml_form2" model="ir.ui.view">
+            <field name="name">ats.to.xml.form</field>
+            <field name="model">atsprocesowizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Facturae Export">
+                    <field name="facturae_fname" invisible="1"/>
+                    <field name="facturae" filename="facturae_fname" nolabel="1"/>
+                    <group  rowspan="10" colspan="4">
+                        <field name="note" nolabel="1"/>
+                        <newline/>
+                        <button special="cancel" string="Ok" icon="terp-dialog-close" default_focus="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <act_window id="action_ats_to_xml"
+        	name="ATS en formarto XML SRI DIMM"
+            res_model="atsprocesowizard"
+            src_model="fiscal.ats_proceso"
+            view_mode="form"
+            target="new"
+            view_type="form"
+            />
+            
+        
+    </data>
+</openerp>

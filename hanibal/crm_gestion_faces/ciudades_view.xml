@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+    	<record model="ir.ui.view" id="ciudades_search_view">
+		<field name="name">ciudades.search</field>
+		<field name="model">ciudades</field>
+		<field name="arch" type="xml">
+		    <search string="Ciudades">
+
+                    <field name="name" />
+                    <field name="active" />
+                
+		    </search>
+		</field>
+	    </record>
+
+        <record model="ir.actions.act_window" id="ciudades_list_action">
+            <field name="name">Ciudades</field>
+            <field name="res_model">ciudades</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Ingreso de ciudades</field>
+            <field name="search_view_id" ref="ciudades_search_view"/>
+            <field name="context">{}</field>
+        </record>	
+
+        <menuitem id="ciudades_menu" 
+                    name="Ciudades" 
+                    parent="base.menu_base_config"
+                    action="ciudades_list_action" sequence="90"/>
+                    
+        <record model="ir.ui.view" id="ciudades_view_form">
+            <field name="name">ciudades.form</field>
+            <field name="model">ciudades</field>
+            <field name="arch" type="xml">
+                <form string="Ciudades" version="7.2">
+	                <sheet>
+	                	<group>
+		                	<field name="name" required="1" />
+		                	<field name="active"/>
+	                	</group>
+	                </sheet>
+				
+             </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="ciudades_view_tree">
+            <field name="name">ciudades.tree</field>
+            <field name="model">ciudades</field>
+            <field name="arch" type="xml">
+                <tree string="Factura">
+                    <field name="name" />
+                    <field name="active" />
+				</tree>
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

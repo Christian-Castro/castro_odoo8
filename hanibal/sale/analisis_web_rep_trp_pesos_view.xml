@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        
+        <menuitem name="Reporting"
+            id="base.menu_reporting"
+            groups="base.group_user"
+            sequence="180"/>
+        
+            
+        <menuitem id="menu_report" name="Análisis financiero" parent="base.menu_reporting" sequence="9"/>
+        
+        
+        
+        <!-- ANALISIS DE Capcidades de camione -->
+        
+        <record model="ir.ui.view" id="view_web_rep_trp_pesos_graph">
+            <field name="name">analisis.web.rep.trp.pesos.graph</field>
+            <field name="model">analisis.web.rep.trp.pesos</field>
+            <field name="arch" type="xml">
+                <graph string="ANALISIS DE USO CAPACIDAD CAMIONES" type="bar">
+                
+                    <field name="capacidad"  type="measure"/>
+                    <field name="peso"  type="measure"/>
+                    <field name="utilizacion"  type="measure"/>
+                    <field name="recomendacion"  type="measure"/>
+                    
+                </graph>
+            </field>
+        </record>
+    
+    
+        <record id="view_web_rep_trp_pesos_filter" model="ir.ui.view">
+            <field name="name">analisis.web.rep.trp.pesos.filter</field>
+            <field name="model">analisis.web.rep.trp.pesos</field>
+            <field name="arch" type="xml">
+                <search string="ANALISIS DE USO CAPACIDAD CAMIONES">
+                    <field name="compania" string="Compania"/>
+                    <field name="placa" string="Placa"/>
+                    <field name="fecha" string="Fecha"/>
+                    <field name="recomendacion" string="Recomendacion"/>                   
+
+                   <filter string="Hoy" icon="terp-stock_effects-object-colorize" domain="[['fecha','=',time.strftime('%Y-%m-%d')]]"/>
+<group string="Empresas">
+                  <filter string="Diversquim" icon="terp-stock_effects-object-colorize" domain="[['compania','=','DW']]"/>
+                  <filter string="Diversclean" icon="terp-stock_effects-object-colorize" domain="[['compania','=','DC']]"/>
+                  <filter string="Unilider" icon="terp-stock_effects-object-colorize" domain="[['compania','=','UD']]"/>
+                  <filter string="Meinforte" icon="terp-stock_effects-object-colorize" domain="[['compania','=','MF']]"/>
+                    </group> 
+                  <group string="Origen">
+                     <filter string="Ventas" icon="terp-stock_effects-object-colorize" domain="[['pla_numvia','!=','TRA']]"/>
+                     <filter string="Transferencias" icon="terp-stock_effects-object-colorize" domain="[['pla_numvia','=','TRA']]"/>
+                  </group> 
+                  <group string="Tipo Transporte">
+                     <filter string="Propios" icon="terp-stock_effects-object-colorize" domain="[['tipo_transporte','!=','Contratado']]"/>
+                     <filter string="Contratados" icon="terp-stock_effects-object-colorize" domain="[['tipo_transporte','=','Contratado']]"/>
+                  </group>
+<group string="Group By">
+                  <filter string="Placa" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'placa'}"/>
+                    	<filter string="Anio" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'anio'}"/>
+                        <!--filter string="Mes" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'mes'}"/-->
+                        <filter string="Mes" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'fecha:month'}"/>
+
+<!--ilter string="Order Month" context="{'group_by':'date:month'}" help="Ordered date of the sales order"/-->
+
+                        <filter string="Recomendacion" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'recomendacion'}"/>
+                    </group> 
+                </search>
+
+            </field>
+        </record>
+
+        <record id="view_web_rep_trp_pesos_tree" model="ir.ui.view">
+            <field name="name">analisis.web.rep.trp.pesos.tree</field>
+            <field name="model">analisis.web.rep.trp.pesos</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="ANALISIS DE USO CAPACIDAD CAMIONES">
+                    <field name="compania"/> 
+                    <field name="placa" string="Placa"/>
+                   <field name="fecha" string="Fecha"/>
+                   <field name="tipo_transporte" string="Tipo Transporte"/>
+                    <field name="mes"/>
+                    <field name="anio"/>
+                    <field name="pla_numvia" string="Viaje"/>
+                    <field name="tipo" string="Tipo"/>
+                    <field name="capacidad" string="Capacidad"/>
+                    <field name="peso" string="Peso"/>
+                    <field name="utilizacion" string="Utilizacion"/>
+                    <field name="recomendacion" string="Recomendacion"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_web_rep_trp_pesos_form" model="ir.ui.view">
+            <field name="name">analisis.web.rep.trp.pesos.form</field>
+            <field name="model">analisis.web.rep.trp.pesos</field>
+            <field name="arch" type="xml">
+                <form string="Analisis de guias">
+                <sheet>
+                	<group>
+                     	    <!--field name="compania"/>
+	                    <field name="placa"/>
+	                    <field name="fecha"/>
+	                    <field name="mes"/-->
+			     <button name="import_data" type="object" string="Traer informacion"/>
+                    	<!--ield name="anio"/>
+	                    <field name="pla_numvia"/>
+	                    <field name="tipo"/>
+	                    <field name="capacidad"/>
+	                    <field name="peso"/-->
+
+                    </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+        
+        
+        <record id="action_web_rep_trp_pesos" model="ir.actions.act_window">
+            <field name="name">Uso Capacidad Flota</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">analisis.web.rep.trp.pesos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,graph,form</field>
+            <field name="search_view_id" ref="view_web_rep_trp_pesos_filter"/>
+        </record>
+        
+        
+        <menuitem action="action_web_rep_trp_pesos" id="menu_web_rep_trp_pesos_form" parent="menu_report" sequence="1"/>
+        <!-- ANALISIS DE capacidad camiones -->
+        
+    </data>
+</openerp>
+

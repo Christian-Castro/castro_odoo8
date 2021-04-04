@@ -1,0 +1,14 @@
+<openerp>
+        <data>
+        
+        	<report 
+        		auto="False" 
+        		id="ride_factura_electronica_fiscal" 
+        		model="account.invoice" 
+        		name="ride.factura.electronica.fiscal" 
+        		rml="fiscal/report/ride_facturas_electronica.rml" 
+        		string="Ride de factura electronica" 
+        		header="False"/>         
+        	                        
+        </data>
+</openerp>

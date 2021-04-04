@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+       
+       
+	<record model="ir.ui.view" id="formapago_search_view">
+		    <field name="name">fiscal.formapago.search.view</field>
+		    <field name="model">fiscal.formapago</field>
+		    <field name="type">search</field>
+		    <field name="arch" type="xml">
+		        <search string="Tipo pago">
+		            <field name="habilitado"/>
+                       </search>
+		    </field>
+        </record>
+
+        <record model="ir.ui.view" id="formapago_view_tree">
+            <field name="name">fiscal.formapago.view.tree</field>
+            <field name="model">fiscal.formapago</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <tree string="Forma de Pago" >
+	            	<field name='name'/>
+                    <field name='codigofiscal'/>
+                    
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="formapago_view_form">
+            <field name="name">fiscal.formapago.view.form</field>
+            <field name="model">fiscal.formapago</field>
+            <field name="type">form</field>
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <form string="Forma de Pago" version="7.0" >
+		  <sheet>
+                    <separator string='Forma de Pago' colspan='4'/>
+                    <group>
+                        <field name='name' />
+                        <field name="codigofiscal" />
+                        <field name='habilitado' />
+                        
+                    </group>
+		  </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="formapago_list_action">
+            <field name="name">Forma de pago</field>
+            <field name="res_model">fiscal.formapago</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Configuracion de los formas de pagos.</field>
+            <field name="search_view_id" ref="formapago_search_view"/>
+            <!--<field name="context">{'search_default_my_reglaretencion':1}</field>-->
+        </record>
+        
+	
+	<menuitem id="formapago_menu" 
+                    name="Forma de pago" 
+                    parent="sri_menu_configuracion"
+                    action="formapago_list_action" />
+                    
+                    
+		
+    </data>
+</openerp>

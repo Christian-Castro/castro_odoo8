@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_cobros_factura_cabezera_form" model="ir.ui.view">
+            <field name="name">pagos.automaticos.detalle.form</field>
+            <field name="model">pagos.automaticos.detalle</field>
+            <field name="arch" type="xml">
+                <form create='0' class="o_form_project_tasks">
+                    <sheet>
+                        <field name="estado" invisible='1'/>
+                        <group>
+                            <group>
+                                <field name="num_orden" readonly='1'/>
+                                <field name="concepto" readonly='1'/>
+                                <field name="estudiante_id" readonly='1'/>
+                                <field name="identificacion" readonly='1'/>
+                            </group>
+                            <group>
+                                <field name="valor" readonly='1'/>
+                                <field name="saldo" readonly='1'/>
+                                <field name="fecha_creacion" readonly='1'/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string='Facturas'>
+                                <field name="pagos_facturas" attrs="{'readonly': [('estado','in',('1','2'))]}" context= "{'default_estudiante_id':estudiante_id}">
+                                    <tree string="Detalle de Facturas" editable="bottom">
+                                        <field name="cabecera_id" invisible='1'/>
+                                        <field name="estudiante_id" invisible='1'/>
+                                        <field name="factura_id" options="{'no_create': True,'edit': False,'no_open':True}" />
+                                        <field name="fecha_factura" />
+                                        <field name="saldos" sum='Saldos' />
+                                        <field name="total" sum='Total'/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <footer>  
+                            <button name="guardar_facturas" type="object" string="Guardar" class="btn-primary" attrs="{'invisible': [('estado','in',('1','2'))]}" /> 
+                            <button string="Salir" class="oe_link" special="cancel" invisible="0" />
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_cobros_factura_detalle_form" model="ir.actions.act_window">
+        <field name="name">Detalle de Factura</field>
+        <field name="res_model">pagos.automaticos.detalle</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="view_cobros_factura_cabezera_form"/>
+        <field name="target">new</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+          </p>
+        </field>
+    </record>
+
+
+		<record id="view_pagos_automaticos_tree" model="ir.ui.view">
+            <field name="name">pagos.automaticos.tree</field>
+            <field name="model">pagos.automaticos</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Pagos Automaticos">
+                    <field name="usuario_id" invisible='1'/>
+                    <field name="codigo" />
+                    <field name="banco_id" />
+                    <field name="cuenta_banco"/>
+                    <field name="fecha_creacion"/>
+                    <field name="pagos_line" />
+                </tree>
+            </field>
+        </record>
+
+
+	    <record id="view_pagos_automaticos_form" model="ir.ui.view">
+            <field name="name">pagos.automaticos.form</field>
+            <field name="model">pagos.automaticos</field>
+            <field name="arch" type="xml">
+                <form string="Generar Facturas">
+                    <header name='header'>
+                        <button name="cargar_archivo" string="Traer Archivo" type="object" class="oe_highlight" groups="base.group_user" attrs="{'invisible': [('estado','in',('1'))]}"/>
+                        <button name="validar_cobros" string="Validar" type="object" class="oe_highlight" groups="base.group_user" attrs="{'invisible': [('estado','in',('1',False))]}" confirm='Esta seguro de realizar los pagos?'/>
+                        <field name="estado" widget="statusbar" statusbar_visible="0,1,2" statusbar_colors='{"invoice_except":"red","waiting_date":"blue"}'/>
+                        <!--field name="estado" widget="statusbar" statusbar_visible="0,1" statusbar_colors='{"invoice_except":"red","waiting_date":"blue"}'/-->
+                    </header>
+                        <group col='4' name='grupo_principal'>
+                            <field name="usuario_id" options="{'no_create': True,'edit': False,'no_open':True}" invisible='1' attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                            <group>
+                                <field name="codigo" readonly='1' attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="banco_id" required='1' attrs="{'readonly': [('estado','in',('1','2'))]}" options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                <field name="journal_id" required='1' options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="filename" invisible='1'/>
+                                <field name="archivo" filename="filename" required="True" attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <!--field name="estado" invisible='1'/-->
+                            </group>
+                            <group>
+                                <field name="fecha_creacion" readonly='1' attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="cuenta_banco" readonly='1'/>
+                                <field name="account_journal_caja_id" required='1' domain="[('usuarios_ids','in',usuario_id)]" options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="fecha_cobro" required='1' attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="exigir_doc_banco" invisible='1'/>
+                                <field name="usuario_id" invisible='1'/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string='Detalle'>
+                                <field name="pagos_line" attrs="{'readonly': [('estado','in',('1','2'))]}" >
+                                    <tree editable='bottom' delete="false" create="false" colors="red:error == 'S'" >
+                                        <field name="pagos_id" invisible='1'/>
+                                        <field name="num_orden" invisible='1' />
+                                        <field name="fecha_creacion" readonly='1'/>
+                                        <field name="num_contrato" readonly='1'/>
+                                        <field name="servicios" invisible='1' />
+                                        <field name="concepto" readonly='1'/>
+                                        <field name="identificacion" readonly='1'/>
+                                        <field name="estudiante_id" invisible='1'/>
+                                        <field name="nom_benef" readonly='1'/>
+                                        <field name="forma_cobro" readonly='1'/>
+                                        <field name="cuenta_banco" readonly='1'/>
+                                        <field name="moneda" invisible='1'/>
+                                        <field name="valor" readonly='1' sum='Total'/>
+                                        <field name="descripcion" readonly='0'/>
+                                        <field name="saldo" invisible='1'/>
+                                        <field name="est_detale" invisible='1'/>
+                                        <field name="cod_error" readonly='1' string="Error banco"/>
+                                        <field name="desc_error" invisible='1'/>
+                                        <field name="texto1" invisible='1'/>
+                                        <field name="error" invisible='1'/>
+                                        <field name="factura_id"  widget='many2many_tags' on_change="llenar_descripcion()" context="{'nombre_especial_para_mostrar':True}" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="error_sistema" readonly='1'/>
+                                        <button name="action_from" type="object" class="oe_stat_button" string="..."/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string='Notas'>
+                                <field name="notas" />
+                            </page>
+                        </notebook>
+                </form>
+            </field>
+        </record>
+        
+
+        <record id="action_pagos_automaticos" model="ir.actions.act_window">
+            <field name="name">Cobros Automaticos</field>
+            <field name="res_model">pagos.automaticos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>            
+
+
+	<menuitem name="Cobros Automaticos" action="action_pagos_automaticos"
+            id="id_menu_pagos_automaticos"
+            parent="ans_escuela.menu_gestion_escolar" sequence="6"/>
+
+
+    <record id="cerrar_ventana_cobros_falla" model="ir.ui.view">
+        <field name="name">Transaccion Realizada.</field>
+        <field name="model">close.window.purchase</field>
+        <field name="arch" type="xml">
+          <form string="Confirmada">
+            <footer >
+              <button name="cerrar_ventana" string="Aceptar" type="object" class="btn-primary"/>
+            </footer>
+          </form>
+        </field>
+      </record>
+
+    </data>
+</openerp>

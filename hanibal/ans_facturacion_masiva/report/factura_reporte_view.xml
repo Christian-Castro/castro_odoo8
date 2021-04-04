@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<openerp>
+        <data>
+                      
+             <report
+                   id="report_factura"
+                   string="Factura preimpresa"
+                   model="account.invoice"
+                   name="factura.reporte"
+                   rml="account_invoice/report/factura_preimpreso_reporte_res.rml"
+                   header="False"
+                   />
+                        
+       </data>
+</openerp>

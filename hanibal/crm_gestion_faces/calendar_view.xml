@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <!-- CRM Meeting Tree View  -->
+
+    <record model="ir.ui.view" id="view_calendar_event_tree_faces">
+        <field name="name">CRM - Meetings Tree</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_tree"/>
+        <field name="arch" type="xml">
+        <xpath expr="//tree[@string='Meetings']" position="replace">
+            <tree string="Meetings" fonts="bold:message_unread==True">
+                <field name="name" string="Subject"/>
+                <field name="allday" invisible="True"/>
+                <field name="start_date" string="Date"/>
+                <field name="start_datetime" string="Date"/>
+                <field name="user_id"/>
+                <field name="location"/>
+                <field name="show_as"/>
+                <field name="class" string="Privacy"/>
+                <field name="state" invisible="True"/>
+                <field name="duration"/>
+                <field name="message_unread" invisible="1"/>
+            </tree>
+	</xpath>
+        </field>
+    </record>
+
+    <!-- CRM Meeting Search View  -->
+    <record id="view_calendar_event_search_faces" model="ir.ui.view">
+        <field name="name">CRM - Meetings Search</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_search"/>
+        <field name="arch" type="xml">
+	    <xpath expr="//search[@string='Search Meetings']" position="replace">
+            <search string="Search Meetings">
+                <field name="name" string="Meeting" filter_domain="[('name','ilike',self)]"/>
+                <field name="partner_ids"/>
+                <field name="categ_ids"/>
+                <field name="user_id"/>
+                <field name="show_as"/>
+                <field name="class" string="Privacy"/>
+                <filter icon="terp-go-today" string="My Events" domain="[('user_id','=',uid)]" help="My Events"/>
+                <filter string="My Meetings" help="My Meetings" name="mymeetings" context='{"mymeetings": 1}'/>
+                <filter string="Unread Messages" name="message_unread" domain="[('message_unread','=',True)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Responsible" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>
+                    <filter string="Availability" icon="terp-camera_test" domain="[]" context="{'group_by':'show_as'}"/>
+                    <filter string="Privacy" icon="terp-locked" domain="[]" context="{'group_by':'class'}"/>                    
+                </group>
+            </search>
+	    </xpath>
+        </field>
+    </record>
+
+    <!-- Calendar Events Form View -->
+
+    <record model="ir.ui.view" id="view_calendar_event_form_faces">
+        <field name="name">Calendar - Event Form</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+        <xpath expr="//form[@string='Meetings']" position="replace">
+            <form string="Meetings">
+                <sheet>
+                    <field name="state" invisible="1"/>
+                    <field name="is_attendee" invisible="1"/>
+                    <field name="attendee_status" invisible="1"/>
+                    <div class="oe_title">
+                        <div class="oe_edit_only">
+                            <label for="name"/>
+                        </div>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <label for="partner_ids" string="Attendees" class="oe_edit_only"/>
+                        <h2>
+                            <field name="partner_ids" widget="many2manyattendee"
+                                context="{'force_email':True}"
+                                on_change="onchange_partner_ids(partner_ids)"
+                                class="oe_inline"/>
+                        </h2>
+                    </div>
+                    <notebook>
+                        <page string="Meeting Details">
+                            <group attrs="{'invisible': [('recurrency','==',False)]}" class="oe_edit_only ">
+                                <p class='alert alert-warning'> This event is linked to a recurrence...<br/>
+                                    <button type="object" name="open_after_detach_event"  string="Update only this instance"  help="Click here to update only this instance and not all recurrences. " class="oe_link"/>
+                                </p>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="start" attrs="{'invisible': True}"/>
+                                    <field name="stop" attrs="{'invisible': True}"/>
+
+                                    <field name="start_date" string="Starting at" on_change="onchange_dates('start', start_date, stop_date, allday, True)" attrs="{'invisible': [('allday','=',False)]}"/>
+                                    <field name="stop_date" string="Ending at" on_change="onchange_dates('stop', start_date, stop_date, allday, True)" attrs="{'invisible': [('allday','=',False)]}"/>
+
+                                    <field name="start_datetime" string="Starting at" on_change="onchange_dates('start', start_datetime, stop_datetime, allday, False)" attrs="{'invisible': [('allday','=',True)]}"/>
+                                    <field name="stop_datetime" string="Ending at" on_change="onchange_dates('stop', start_datetime, stop_datetime, allday, False)" attrs="{'invisible': [('allday','=',True)]}"/>
+                                    <label for="allday"/>
+                                    <div>
+                                        <field name="allday"  class="oe_inline" on_change="onchange_allday(start, stop, start_date, stop_date, start_datetime, stop_datetime, allday)"/>
+                                    </div>
+                                    <field name="duration" widget="float_time" class="oe_inline" attrs="{ 'invisible': True }"/>
+                <field name="create_date" string="Creacion" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="categ_ids" widget="many2many_tags" />
+                                    <field name="alarm_ids" widget="many2many_tags" />
+                                    <field name="location" />
+                                    
+                                    <field name="primera_visita" readonly="1"/>
+                                    <field name="lead_id" readonly="1"/>
+                                    <field name="otras_visitas" attrs="{'invisible': [('primera_visita','==',True)]}" />
+                                    
+                                </group>
+
+                            </group>
+                            <label for="description"/>
+                            <field name="description"/>
+                        </page>
+                        <page string="Options">
+                            <group>
+                                <group col="1">
+                                    <group>
+                                        <field name="recurrency"/>
+                                    </group>
+                                    <group attrs="{'invisible': [('recurrency','=',False)]}">
+                                        <label for="interval"/>
+                                        <div>
+                                            <field name="interval" attrs="{'required': [('recurrency','==',True)]}" class="oe_inline"/>
+                                            <field name="rrule_type" attrs="{'required': [('recurrency','==',True)]}" class="oe_inline"/>
+                                        </div>
+                                        <label string="Until" for="end_type"/>
+                                        <div>
+                                            <field name="end_type" attrs="{'required': [('recurrency','==',True)]}" class="oe_inline"/>
+                                            <field name="count" attrs="{'invisible': [('end_type', '!=', 'count')], 'required': [('recurrency','==',True)]}" class="oe_inline"/>
+                                            <field name="final_date" attrs="{'invisible': [('end_type', '!=', 'end_date')], 'required': [('end_type', '=', 'end_date')]}" class="oe_inline"/>
+                                        </div>
+                                        <label string="Select Weekdays" attrs="{'invisible' :[('rrule_type','not in', ['weekly'])]}"/>
+                                        <group col="2" colspan="1" name="weekdays" attrs="{'invisible' :[('rrule_type','not in', ['weekly'])]}" >
+                                            <field name="mo" />
+                                            <field name="tu" />
+                                            <field name="we" />
+                                            <field name="th" />
+                                            <field name="fr" />
+                                            <field name="sa" />
+                                            <field name="su" />
+                                        </group>
+    
+                                        <label string="Day of Month"
+                                            attrs="{'invisible': [('rrule_type','!=','monthly')]}"/>
+    
+                                        <div attrs="{'invisible': [('rrule_type','!=','monthly')]}">
+                                            <field name="month_by"/>
+                                            <field name="day"
+                                                attrs="{'required': [('month_by','=','date'), ('rrule_type','=','monthly')],
+                                                    'invisible': [('month_by','=','day')]}"/>
+                                            <field name="byday" string="The"
+                                                attrs="{'required': [('month_by','=','day'), ('rrule_type','=','monthly')], 'invisible': [('month_by','=','date')]}"/>
+                                            <field name="week_list" nolabel="1"
+                                                attrs="{'required': [('month_by','=','day'), ('rrule_type','=','monthly')], 'invisible': [('month_by','=','date')]}"/>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="class"/>
+                                    <field name="show_as"/>
+                                    <field name="rrule" invisible="1" readonly="0" />                                    
+                                    <field name="recurrent_id" invisible="1" />
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <page string="Invitations" groups="base.group_no_one">
+                            <button name="do_sendmail" type="object" string="Send mail" icon="terp-mail-message-new" class="oe_link"/>
+                            <field name="attendee_ids" widget="one2many" >
+                                <tree string="Invitation details" editable="top" create="false" delete="false">
+                                    <field name="partner_id" />
+                                    <field name="state" />
+                                    <field name="email" widget="email"/>
+                                     
+                                    <button name="do_tentative" states="needsAction,declined,accepted" string="Uncertain" type="object" icon="terp-crm" />
+                                    <button name="do_accept" string="Accept" states="needsAction,tentative,declined" type="object" icon="gtk-apply"/>
+                                    <button name="do_decline" string="Decline" states="needsAction,tentative,accepted" type="object" icon="gtk-cancel"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Misc" groups="base.group_no_one">
+                            <label string="Owner"/>
+                            <field name="user_id" />
+                            
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </xpath>
+        </field>
+    </record>
+    
+    
+    </data>
+</openerp>

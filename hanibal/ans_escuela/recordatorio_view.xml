@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_mails_form" model="ir.ui.view">
+            <field name="name">mail.mail.form</field>
+            <field name="model">mail.mail</field>
+            <field eval="50" name="priority"/>
+            <field name="arch" type="xml">
+                <form create='0' string="Email message">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="outgoing,sent,received,exception,cancel"/>
+                    </header>
+                    <sheet>
+                        <field name="mail_message_id" required="0" invisible="1"/>
+                        <label for="subject" class="oe_edit_only"/>
+                        <h2><field name="subject" readonly="1"/></h2>
+                        <!--div style="vertical-align: top;">
+                            by <field name="author_id" class="oe_inline" string="User"/> on <field name="date" readonly="1" class="oe_inline"/>
+                        </div-->
+                        <group>
+                            <field name="email_from" readonly='1'/>
+                            <field name="email_to" readonly='1'/>
+                            <field name="recipient_ids" widget="many2many_tags" readonly='1' invisible="1"/>
+                            <field name="email_cc" readonly='1' invisible="1"/>
+                            <field name="reply_to" readonly='1' invisible="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Body">
+                                <field name="body_html" widget="html" readonly='1'/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_mail_mails_form" model="ir.actions.act_window">
+        <field name="name">Detalle de Email</field>
+        <field name="res_model">mail.mail</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="view_mails_form"/>
+        <field name="target">new</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+          </p>
+        </field>
+    </record>
+
+    	<record id="view_generar_recordatorio_tree" model="ir.ui.view">
+            <field name="name">recordatorio.tree</field>
+            <field name="model">recordatorio</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Generar Recordatorios" delete='1'>
+                    <field name="usuario_id" invisible='1'/>
+                    <field name="sequence" />
+                    <field name="fecha_desde" />
+                    <field name="fecha_hasta"/>
+                    <field name="numero_facturas" />
+                    <field name="jornada_id" string="Jornada"/>
+                    <field name="curso_id" string="Curso"/>
+                    <field name="paralelo_id" string="Paralelo"/>
+                    <field name="alumno_id" />
+                    <field name="representante_id" />
+                </tree>
+            </field>
+        </record>
+
+
+	    <record id="view_generar_recordatorio_form" model="ir.ui.view">
+            <field name="name">recordatorio.form</field>
+            <field name="model">recordatorio</field>
+            <field name="arch" type="xml">
+                <form string="Generar Recordatorios" delete='1'>
+                    <header name='header'>
+                        <button name="traer_informacion" string="Traer Información" type="object" class="oe_highlight" groups="base.group_user" attrs="{'invisible': [('estado','in',('2','1'))]}"/>
+                        <button name="generar_correos" string="Generar Envio de Correo" type="object" class="oe_highlight" groups="base.group_user" attrs="{'invisible': [('estado','in',('2','1',False))]}" confirm='Esta seguro de Generar el envio de correos masivo?'/>
+                        <!--button name="validar_facturas" string="Validar Facturas" type="object" class="oe_highlight" groups="base.group_user" attrs="{'invisible': [('estado','in',('2','0',False))]}"/-->
+                    </header>
+                        <group  string='Recordatorios'>
+                        	<field name="sequence" readonly='1' />
+                        </group>
+                        <group col='4' name='grupo_principal'>
+                            <group>    
+                                <field name="fecha_desde" required='1' attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="numero_facturas" required='1' attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="jornada_id" string="Jornada" options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="curso_id" options="{'no_create': True,'edit': False,'no_open':True}"  domain="[('jornada_id', '=', jornada_id),('seccion_id','=',seccion_id)],'readonly': [('estado','in',('1','2'))]" attrs="{'invisible': [('seccion_id','=',False)],'readonly': [('estado','in',('1','2'))]}" />
+                                <field name="representante_id" options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="estado" invisible='1'/>
+                            </group>
+                            <group>
+                            	<field name="fecha_hasta" required='1' attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                            	<field name="plantilla_correo_id" required='1' options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="seccion_id" options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'invisible': [('jornada_id','=',False)],'readonly': [('estado','in',('1','2'))]}" />
+                                <field name="paralelo_id" options="{'no_create': True,'edit': False,'no_open':True}" domain="[('curso_id','=',curso_id)]"  attrs="{'invisible': [('curso_id','=',False)],'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="alumno_id" options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'readonly': [('estado','in',('1','2'))],'invisible': [('representante_id','=',False)]}"/>
+                                
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string='Recordatorios a Generar' >
+                                <field name="recordatorio_detalle" attrs="{'readonly': [('estado','in',('1','2'))]}">
+                                    <!--tree delete="1" create="false" open="false"-->
+                                    <tree delete="1" create="false" open="false" editable="buttom">
+                                        <field name="recordatorio_cabecera" invisible='1'/>
+                                        <field name="fecha_emision" invisible='1' />
+                                        <field name="mail_id" invisible='1' />
+                                        <field name="jornada_id" invisible='1'/>
+                                        <field name="seccion_id" invisible='1'/>
+                                        <field name="curso_id" invisible='1'/>
+                                        <field name="paralelo_id" invisible='1'/>
+                                        <field name="descripcion" readonly='1' />
+                                        <field name="alumno_id" invisible='0' options="{'no_create': True,'edit': False,'no_open':True}" readonly='1'/>
+                                        <field name="representante_id" readonly='1' options="{'no_create': False,'edit': False,'no_open':False}"/>
+                                        <field name="correo_repres" readonly='1' />
+                                        <field name="factura_id" invisible='1'/>
+                                        <field name="numerofac" readonly='1'/>
+                                        <field name="fecha_factura" readonly='1'/>
+                                        <field name="concepto" readonly='1'/>
+                                        <field name="monto" readonly='1' />
+                                        <field name="saldo" readonly='1' sum='Total'/>
+                                        <field name="cant_notificacion" readonly='1' />
+                                        <field name="fecha_envio_correo" readonly='1' />
+                                        <button name="action_from" type="object" string="Email"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string='Recordatorios detalle' groups="base.group_no_one">
+                                <field name="recordatorio_detalle_extra" >
+                                    <form>
+                                        <group>
+                                            <field name="alumno_id" readonly='1' />
+                                            <field name="representante_id" readonly='1' />
+                                            <field name="descripcion" readonly='1' />
+                                        </group>
+
+                                        <notebook>
+                                            <page string='Recordatorios a Generar'>
+                                                <field name="recordatorio_detalle_ext" >
+                                                    <tree delete="1" create="false" open="false">
+                                                        <field name="recordatorio_extra_cabecera" invisible='1'/>
+                                                        <field name="concepto" readonly='1'/>
+                                                        <field name="monto" readonly='1' />
+                                                        <field name="fecha_factura" readonly='1' />
+                                                    </tree>
+                                                </field>
+                                            </page>
+                                        </notebook>                
+
+                                    </form>
+                                    <tree delete="1" create="false" open="false">
+                                        <field name="alumno_id" invisible='0'/>
+                                        <field name="representante_id" readonly='1' options="{'no_create': False,'edit': False,'no_open':False}"/>
+                                        <field name="correo_repres" />
+                                        <field name="descripcion" readonly='1' />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                </form>
+            </field>
+        </record>
+    	
+    	<record id="action_recordatorio" model="ir.actions.act_window">
+            <field name="name">Generar Recordatorios</field>
+            <field name="res_model">recordatorio</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>            
+
+
+	<menuitem name="Generar de Recordatorios" action="action_recordatorio"
+            id="id_menu_generar_recordatorio"
+            parent="menu_gestion_escolar" sequence="6"/>
+    </data>
+</openerp>

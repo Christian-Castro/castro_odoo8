@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="formulario_103_form_view" model="ir.ui.view">
+            <field name="name">formulario.103.form.view</field>
+            <field name="model">reporte.formulario.103</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button 
+                            name="generar_archivo_xlsx"
+                            string="Generar formulario 103 Excel"
+                            type="object"
+                            class="oe_highlight"
+                            groups="base.group_user"
+                        />
+                        <button 
+                            name="%(ans_reporte_tributacion.action_formulario_103_template)d"
+                            string="Generar formulario 103 PDF"
+                            type="action"
+                            class="oe_highlight"
+                            groups="base.group_user"
+                        />
+                    </header>
+                    <sheet>
+                        <field name="name" invisible="True" />
+                        <group>
+                            <group>
+                                <field name="tipo_retencion" domain="[('tipo', '=', 'fte')]"/>
+                                <field name="fecha_inicio" required="True"/>
+                            </group>
+                            <group>
+                                <field name="proveedor_id" domain="[('supplier', '=', True)]" />
+                                <field name="fecha_fin" required="True" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_formulario_103" model="ir.actions.act_window">
+            <field name="name">Formulario 103</field>
+            <field name="res_model">reporte.formulario.103</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+            <field name="domain">[]</field>
+            <field name="context">\{}</field>
+        </record>
+        
+        <menuitem id="menu_formulario_103" name="Formulario 103" sequence="1" action="action_formulario_103" parent="menu_ans_reporte"/>
+    </data>
+</openerp>

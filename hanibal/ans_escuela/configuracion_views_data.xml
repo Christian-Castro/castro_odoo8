@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+    	<record id="id_pais" model="configuracion">
+            <field name="id_pais">64</field>
+        </record>
+
+        <record id="id_provincia" model="res.country.state">
+            <field name="name">Guayas</field>
+            <field name="code">GUA</field>
+            <field name="country_id">64</field>
+        </record>
+
+        <record id="id_secuencial_code" model="ir.sequence.type">
+            <field name="name">Recordatorio</field>
+            <field name="code">recordatorio</field>
+        </record>
+
+        <record id="id_secuencial_recordatorio" model="ir.sequence">
+            <field name="name">Recordatorio</field>
+            <field name="active">True</field>
+            <field name="prefix">%(year)s/</field>
+            <field name="padding">6</field>
+            <field name="code">recordatorio</field>
+            <field name="number_next_actual">1</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">no_gap</field>
+        </record>
+
+    </data>
+</openerp>

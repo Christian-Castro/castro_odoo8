@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <record id="log_crm_prospecto_procesos_resultado_graph" model="ir.ui.view">
+         <field name="name">log.crm.prospecto.procesos.resultado.graph</field>
+         <field name="model">log.crm.prospecto.procesos.resultado</field>
+         <field name="arch" type="xml">
+             <graph string="Analisis" type="pivot" stacked="True">
+                 <field name="fecha" interval="year" type="col"/>
+                 <field name="fecha" interval="month" type="col"/>
+                 <field name="resultado" string="Resultado" type="col"/>
+                 <!--field name="estado" string="Proceso" type="col"/-->
+                 <field name="comercial" string="Comercial"  type="row"/>
+                 <field name="prospecto" string="Prospecto"  type="row"/>
+
+
+             </graph>
+         </field>
+    </record>
+
+    <!-- Custom reports (aka filters) -->
+    
+	<!--<record id="filter_sale_report_sales_funnel" model="ir.filters">
+        <field name="name">Sales Funnel</field>
+        <field name="model_id">sale.report</field>
+        <field name="domain">['&amp;', ('date','&lt;=', time.strftime('%%Y-12-31')), '&amp;', ('date','&gt;=',time.strftime('%%Y-01-01')), ('state','not in',('cancel',))]</field>
+        <field name="user_id" eval="False"/>
+        <field name="context">{'group_by': ['state'], 'measures': ['price_total']}</field>
+    </record>
+    <record id="filter_isale_report_product" model="ir.filters">
+        <field name="name">By Product</field>
+        <field name="model_id">sale.report</field>
+        <field name="user_id" eval="False"/>
+        <field name="context">{'group_by': ['date:month', 'product_id']}</field>
+    </record>-->
+
+    <record id="view_log_crm_prospecto_procesos_resultado_search" model="ir.ui.view">
+        <field name="name">log.crm.prospecto.procesos.resultado.search</field>
+        <field name="model">log.crm.prospecto.procesos.resultado</field>
+        <field name="arch" type="xml">
+            <search string="Analisis">
+                <field name="fecha"/>
+                
+            </search>
+        </field>
+    </record>
+
+    <record id="action_log_crm_prospecto_procesos_resultado" model="ir.actions.act_window">
+        <field name="name">Resultado de Prospectos por Comercial</field>
+        <field name="res_model">log.crm.prospecto.procesos.resultado</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph</field>
+        <field name="search_view_id" ref="view_log_crm_prospecto_procesos_resultado_search"/>
+        <field name="view_id" ref="log_crm_prospecto_procesos_resultado_graph"/>
+        <field name="context">{}</field>
+        <field name="help">resultado de Prospectos por Proceso</field>
+    </record>
+
+    <menuitem action="action_log_crm_prospecto_procesos_resultado" id="menu_log_crm_prospecto_procesos_resultado" parent="reportes" sequence="10"/>
+
+</data>
+</openerp>

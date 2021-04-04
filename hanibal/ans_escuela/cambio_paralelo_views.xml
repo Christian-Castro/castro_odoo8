@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_cambio_paralelo_escuela_filter" model="ir.ui.view">
+            <field name="name">cambio.paralelo.select</field>
+            <field name="model">cambio.paralelo</field>
+            <field name="arch" type="xml">
+                <search string="Filtros">
+                    <field name="jornada_actual_id" string="Jornada Actual"/>
+                    <field name="seccion_actual_id" string="Sección Actual"/>
+                    <field name="curso_actual_id" string="Curso Actual"/>
+                    <field name="paralelo_actual_id" string="Paralelo Actual"/>
+                    <field name="jornada_nuevo_id" string="Jornada Nuevo"/>
+                    <field name="seccion_nuevo_id" string="Sección Nuevo"/>
+                    <field name="curso_nuevo_id" string="Curso Nuevo"/>
+                    <field name="paralelo_nuevo_id" string="Paralelo Nuevo"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter name="jornada_actual_id" string="Jornada Actual" context="{'group_by': 'jornada_actual_id'}"/>
+                        <filter name="seccion_actual_id" string="Sección Actual" context="{'group_by': 'seccion_actual_id'}"/>
+                        <filter name="curso_actual_id" string="Curso Actual" context="{'group_by': 'curso_actual_id'}"/>
+                        <filter name="paralelo_actual_id" string="Paralelo Actual" context="{'group_by': 'paralelo_actual_id'}"/>
+                        <filter name="jornada_nuevo_id" string="Jornada Nuevo" context="{'group_by': 'jornada_nuevo_id'}"/>
+                        <filter name="seccion_nuevo_id" string="Sección Nuevo" context="{'group_by': 'seccion_nuevo_id'}"/>
+                        <filter name="curso_nuevo_id" string="Curso Nuevo" context="{'group_by': 'curso_nuevo_id'}"/>
+                        <filter name="paralelo_nuevo_id" string="Paralelo Nuevo" context="{'group_by': 'paralelo_nuevo_id'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+
+		<record id="view_cambio_paralelo_tree" model="ir.ui.view">
+            <field name="name">cambio.paralelo.tree</field>
+            <field name="model">cambio.paralelo</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Cambio Paralelo">
+                    <field name="usuario_id" invisible='1'/>
+                    <field name="jornada_actual_id" string="Jornada Actual"/>
+                    <field name="seccion_actual_id" string="Sección Actual" />
+                    <field name="curso_actual_id" string="Curso Actual"/>
+                    <field name="paralelo_actual_id" string="Paralelo Actual"/>
+                    <field name="jornada_nuevo_id" string="Jornada Nuevo"/>
+                    <field name="seccion_nuevo_id" string="Sección Nuevo" />
+                    <field name="curso_nuevo_id" string="Curso Nuevo"/>
+                    <field name="paralelo_nuevo_id" string="Paralelo Nuevo"/>
+                    <field name="estado" />
+                </tree>
+            </field>
+        </record>
+
+
+	    <record id="view_cambio_paralelo_form" model="ir.ui.view">
+            <field name="name">cambio.paralelo.form</field>
+            <field name="model">cambio.paralelo</field>
+            <field name="arch" type="xml">
+                <form string="Cambio de Paralelo">
+                    <header>
+                        <button name="consultar" string="Consultar" type="object" class="oe_highlight" groups="base.group_user" attrs="{'invisible': [('estado','in',('2','1'))]}"/>
+                        <button name="ejecutar" string="Ejecutar" type="object" class="oe_highlight" groups="base.group_user" attrs="{'invisible': [('estado','in',('2','1',False))]}"/>
+                        <button name="anular" string="Anular" type="object" class="oe_highlight" groups="base.group_user" attrs="{'invisible': [('estado','in',('2','0',False))]}"/>
+                        <field name="estado" widget="statusbar" statusbar_visible="0,1,2" statusbar_colors='{"invoice_except":"red","waiting_date":"blue"}'/>
+                    </header>
+                        <group col='4'>
+                            <group string='Actual' col='2'>
+                                <field name="jornada_actual_id" string="Jornada" options="{'no_create': True,'edit': False,'no_open':True}" required='1'  attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="seccion_actual_id" options="{'no_create': True,'edit': False,'no_open':True}" required='1' attrs="{'invisible': [('jornada_actual_id','=',False)],'readonly': [('estado','in',('1','2'))]}" />
+                                <field name="curso_actual_id" options="{'no_create': True,'edit': False,'no_open':True}" required='1' domain="[('jornada_id', '=', jornada_actual_id),('seccion_id','=',seccion_actual_id)]" attrs="{'invisible': [('seccion_actual_id','=',False)],'readonly': [('estado','in',('1','2'))]}" />
+                                <field name="paralelo_actual_id" options="{'no_create': True,'edit': False,'no_open':True}" required='1' domain="[('curso_id','=',curso_actual_id)]"  attrs="{'invisible': [('curso_actual_id','=',False)],'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="alumno_id" options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="accion" required='1' attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                            </group>
+                            <group string='Nuevo' attrs="{'invisible': [('accion','!=','0')]}">
+                                <field name="jornada_nuevo_id" string="Jornada" options="{'no_create': True,'edit': False,'no_open':True}" required='0'  attrs="{'readonly': [('estado','in',('1','2'))]}"/>
+                                <field name="seccion_nuevo_id" attrs="{'invisible': [('jornada_nuevo_id','=',False)],'readonly': [('estado','in',('1','2'))]}" options="{'no_create': True,'edit': False,'no_open':True}" required='0'/>
+                                <field name="curso_nuevo_id" options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'invisible': [('seccion_nuevo_id','=',False)],'readonly': [('estado','in',('1','2'))]}"  required='0' domain="[('jornada_id', '=', jornada_nuevo_id),('seccion_id','=',seccion_nuevo_id)]"/>
+                                <field name="paralelo_nuevo_id" options="{'no_create': True,'edit': False,'no_open':True}" attrs="{'invisible': [('curso_nuevo_id','=',False)],'readonly': [('estado','in',('1','2'))]}" required='0' domain="[('curso_id','=',curso_nuevo_id)]"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string='Resultados'>
+                                <field name="paralelo_line" attrs="{'readonly': [('estado','in',('1','2'))]}">
+                                    <tree editable="bottom" delete="false" create="false">
+                                        <field name="contador" readonly='1'/>
+                                        <field name="jornada_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="seccion_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="curso_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="paralelo_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="alumno_id" invisible='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="alumno_nombre" readonly='1'/>
+                                        <field name="codigo_alumno" readonly='1' />
+                                        <field name="facturar" readonly='1'/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string='Nuevo Cambio' attrs="{'invisible': [('estado','in',('0',False)),('accion','in',('1','2'))]}">
+                                <field name="paralelos_line_nuevo" attrs="{'readonly': [('estado','in',('1','2'))]}">
+                                    <tree editable="bottom" delete="false" create="false">
+                                        <field name="contador" readonly='1'/>
+                                        <field name="jornada_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="seccion_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="curso_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="paralelo_id" readonly='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="alumno_id" invisible='1' options="{'no_create': True,'edit': False,'no_open':True}"/>
+                                        <field name="alumno_nombre" readonly='1'/>
+                                        <field name="codigo_alumno" readonly='1' />
+                                        <field name="facturar" readonly='1'/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                </form>
+            </field>
+        </record>
+
+        
+
+        <record id="action_cambio_paralelo" model="ir.actions.act_window">
+            <field name="name">Cambio de Paralelo</field>
+            <field name="res_model">cambio.paralelo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>            
+
+
+	<menuitem name="Cambio de Paralelo" action="action_cambio_paralelo"
+            id="id_menu_cambio_paralelo"
+            parent="menu_estructura_escolar" sequence="5"/>
+
+
+    </data>
+</openerp>

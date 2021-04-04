@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+    	<record model="ir.ui.view" id="tipo_search_view">
+		<field name="name">tipo.search</field>
+		<field name="model">tipo.opp</field>
+		<field name="arch" type="xml">
+		    <search string="Ciudades">
+
+                    <field name="name" />
+                    <field name="active" />
+                
+		    </search>
+		</field>
+	    </record>
+
+        <record model="ir.actions.act_window" id="tipo_list_action">
+            <field name="name">Tipo</field>
+            <field name="res_model">tipo.opp</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Ingreso de tipo de oportunidades</field>
+            <field name="search_view_id" ref="tipo_search_view"/>
+            <field name="context">{}</field>
+        </record>	
+
+        <menuitem id="tipo_menu" 
+                    name="Tipo Oportunidad" 
+                    parent="base.menu_base_config"
+                    action="tipo_list_action" sequence="100"/>
+                    
+        <record model="ir.ui.view" id="tipo_view_form">
+            <field name="name">tipo.form</field>
+            <field name="model">tipo.opp</field>
+            <field name="arch" type="xml">
+                <form string="Tipo" version="7.2">
+	                <sheet>
+	                	<group>
+		                	<field name="name" required="1" />
+		                	<field name="active"/>
+	                	</group>
+	                </sheet>
+				
+             </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="tipo_view_tree">
+            <field name="name">tipo.tree</field>
+            <field name="model">tipo.opp</field>
+            <field name="arch" type="xml">
+                <tree string="Factura">
+                    <field name="name" />
+                    <field name="active" />
+				</tree>
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

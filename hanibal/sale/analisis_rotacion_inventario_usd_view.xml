@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+         <menuitem name="Reporting"
+            id="base.menu_reporting"
+            groups="base.group_user"
+            sequence="2000"/>
+        <menuitem id="menu_report" name="Análisis financiero" parent="base.menu_reporting" sequence="11"/>
+        
+        
+        
+        <!-- ROTACION DE inventario usd bodega -->
+        
+        <record model="ir.ui.view" id="view_analisis_rotacion_inventario_usd_graph">
+            <field name="name">analisis.rotacion.inventario.usd.graph</field>
+            <field name="model">analisis.rotacion.inventario.usd</field>
+            <field name="arch" type="xml">
+                <graph string="ANALISIS ROTACION INVENTARIO" type="bar">
+                    <!--field name="cliente_descripcion" type="pivot"/-->
+                    <!--field name="cliente_limite" type="row"/-->
+                    <field name="bodega" type="measure"/>
+
+                     
+                </graph>
+            </field>
+        </record>
+    
+    
+        <record id="view_rotacion_inventario_usd_filter" model="ir.ui.view">
+            <field name="name">analisis.rotacion.inventario.usd.filter</field>
+            <field name="model">analisis.rotacion.inventario.usd</field>
+            <field name="arch" type="xml">
+                <search string="ANALISIS ROTACION INVENTARIOS">
+
+                    <field name="codigo" string="Codigo"/>
+                    <field name="descripcion" string="Descripcion"/>
+                    <field name="bodega" string="Bodega"/>
+                    <field name="valorclasificacion"  string="Clase"/>
+                    <field name="calificacion"  string="Calificacion"/>
+                    
+                    <group expand="1" string="Tipo Analisis">
+		            <filter string="Productos" name="productos" domain="[('tipoanalisis','=','PRODUCTO')]"/>
+		            <filter string="Mes" name="mes" domain="[('tipoanalisis','=','MES')]"/>
+                    </group>
+
+                    <group expand="1" string="Bodega">
+		            <filter string="BG1" name="BG1" domain="[('bodega','=','BG1')]"/>
+		            <filter string="BQ1" name="BQ1" domain="[('bodega','=','BQ1')]"/>
+		            <filter string="BG17" name="BG17" domain="[('bodega','=','BG17')]"/>
+		            <filter string="BG10" name="BG10" domain="[('bodega','=','BG10')]"/>
+                    </group>
+
+                    <group expand="1" string="Calificacion">
+		            <filter string="Alto" name="alto" domain="[('calificacion','=','Alto')]"/>
+		            <filter string="Medio" name="medio" domain="[('calificacion','=','Medio')]"/>
+		            <filter string="Regular" name="regular" domain="[('calificacion','=','Regular')]"/>
+		            <filter string="Bajo" name="bajo" domain="[('calificacion','=','Bajo')]"/>
+		            <filter string="Revision" name="revision" domain="[('calificacion','=','Revision')]"/>
+		            <filter string="Problemas" name="problemasa" domain="[('calificacion','=','Problemas')]"/>
+                    </group>
+
+
+
+
+                    <group expand="1" string="Procedencia">
+		            <filter string="Compra Local" name="COMPLOCAL" domain="[('valorclasificacion','=','Compra de producto local')]"/>
+		            <filter string="Diversey" name="Diversey" domain="[('valorclasificacion','=','Diversey')]"/>
+		            <filter string="DW-Maquinas" name="DW-Maquinas" domain="[('valorclasificacion','=','Diversey Maquinas')]"/>
+		            <filter string="Dutrion" name="Dutrion" domain="[('valorclasificacion','=','Dutrion')]"/>
+		            <filter string="Enkador" name="Enkador" domain="[('valorclasificacion','=','Enkador')]"/>
+		            <filter string="Equipos" name="Equipos" domain="[('valorclasificacion','=','Equipos')]"/>
+		            <filter string="Impact" name="Impact" domain="[('valorclasificacion','=','Impact')]"/>
+		            <filter string="Test Systems" name="Test Systems" domain="[('valorclasificacion','=','Industrial Test Systems')]"/>
+		            <filter string="Institucional" name="Institucional" domain="[('valorclasificacion','=','Institucional')]"/>
+		            <filter string="Jofel" name="Jofel" domain="[('valorclasificacion','=','Jofel Mexico')]"/>
+		            <filter string="Kimberly" name="Kimberly" domain="[('valorclasificacion','=','Kimberly')]"/>
+		            <filter string="Produccion" name="Produccion" domain="[('valorclasificacion','=','Produccion')]"/>
+		            <filter string="Prominent" name="Prominent" domain="[('valorclasificacion','=','Prominent')]"/>
+		            
+		            <filter string="Vikan" name="Vikan" domain="[('valorclasificacion','=','Vikan')]"/>
+                            <filter string="Servicios" name="Servicios" domain="[('valorclasificacion','=','Servicios')]"/>
+
+		            <filter string="Otros" name="Otros" domain="[('valorclasificacion','=','Otros')]"/>
+                    </group>
+
+
+
+
+                    <group expand="1" string="Group By">
+                       <filter string="Bodega" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'bodega'}"/>
+                       
+                       <filter string="Mes" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'fechahistorico:month'}"/> 
+                       <filter string="Producto" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'codigo'}"/>
+                        <filter string="Clasificacion" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'valorclasificacion'}"/>
+                        <filter string="Calificacion" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'calificacion'}"/>
+                    </group>
+                </search>
+
+            </field>
+        </record>
+
+        <record id="view_analisis_rotacion_inventario_usd_tree" model="ir.ui.view">
+            <field name="name">analisis.rotacion.inventario.usd.tree</field>
+            <field name="model">analisis.rotacion.inventario.usd</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="Analisis Rotacion Inventaross" >
+
+                <!--field name="compania" invisible="1"/-->
+                    <field name="bodega" string="Bodega"/>
+                    <field name="valorclasificacion" string="Clase"/>
+                    <field name="codigo" string="Codigo"/>                   
+                    <field name="descripcion" string="Descripcion"/>                   
+                    <field name="fechahistorico" string="Fecha"/>  
+
+		    <field name="costopromedio" invisible="0" string="Costo" />                    
+		    <field name="saldofinalperiodo" invisible="0" string="Saldo" />
+		    <field name="ventasnetas" invisible="0"  string="Ventas"/>
+
+		    <field name="promsaldo" invisible="0" string="Prom Saldo" />
+		    <field name="acmfacturado" invisible="0"  string="T. Ventas"/>
+		    <field name="diasmes" invisible="0"  string="N Dias"/>
+
+		    <field name="rotacion" invisible="0"  string="Rotacion"/>
+		    <field name="diasrec" invisible="0"  string="Días Recuperacion"/>
+		    <field name="calificacion" invisible="0"  string="Cali."/>
+
+		 
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_analisis_rotacion_inventario_usd_form" model="ir.ui.view">
+            <field name="name">analisis.rotacion.inventario.usd.form</field>
+            <field name="model">analisis.rotacion.inventario.usd</field>
+            <field name="arch" type="xml">
+                <form string="Analisis Rotacion Inventario">
+                <sheet>
+                	<group>
+			    <button name="import_data" type="object" string="Generar informacion"/>
+                    </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+        
+        
+        <record id="action_rotacion_inventario_usd" model="ir.actions.act_window">
+            <field name="name">Analisis Rotacion Inventarios</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">analisis.rotacion.inventario.usd</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,graph,form</field>
+            <field name="search_view_id" ref="view_rotacion_inventario_usd_filter"/>
+        </record>
+        
+        
+        <menuitem action="action_rotacion_inventario_usd" id="menu_rotacion_inventario_usd_form" parent="menu_report" sequence="1"/>
+               
+
+
+
+
+    </data>
+</openerp>
+

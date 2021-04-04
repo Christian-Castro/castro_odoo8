@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="formulario_104_form_view" model="ir.ui.view">
+            <field name="name">formulario.104.form.view</field>
+            <field name="model">reporte.formulario.104</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button 
+                            name="generar_archivo_xlsx"
+                            string="Formulario 104 Excel"
+                            type="object"
+                            class="oe_highlight"
+                            groups="base.group_user"
+                        />
+                        <button 
+                            name="generar_archivo_pdf"
+                            string="Formulario 104 PDF"
+                            type="object"
+                            class="oe_highlight"
+                            groups="base.group_user"
+                        />
+                    </header>
+                    <sheet>
+                        <field name="name" invisible="True" />
+                        <group>
+                            <group>
+                                <field name="tipo_retencion" domain="[('tipo', '=', 'iva')]" />
+                                <field name="fecha_inicio" required="True"/>
+                            </group>
+                            <group>
+                                <field name="proveedor_id" domain="[('supplier', '=', True)]" />
+                                <field name="fecha_fin" required="True" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_formulario_104" model="ir.actions.act_window">
+            <field name="name">Formulario 104</field>
+            <field name="res_model">reporte.formulario.104</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+            <field name="domain">[]</field>
+            <field name="context">\{}</field>
+        </record>
+        
+        <menuitem id="menu_formulario_104" name="Formulario 104" sequence="2" action="action_formulario_104" parent="menu_ans_reporte"/>
+    </data>
+</openerp>

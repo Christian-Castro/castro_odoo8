@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+	
+	<record id="view_pagocliente_inherit" model="ir.ui.view">
+            <field name="name">sri.pagocliente.view.inherit</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
+            <field name="arch" type="xml">
+
+		<field name='journal_id' position='replace'>
+            		<field name="journal_id"
+                            domain="[('type','in',['bank', 'cash'])]"
+                            widget="selection" select="1"
+                            on_change="onchange_journal2(journal_id, line_cr_ids, False, partner_id, date, amount, type, company_id, context)"
+							string="Payment Method"/>
+            	</field>
+ 
+ 		
+ 				<field name='account_id' position='replace'>
+	            	<field name="account_id" widget="selection" />
+            	</field>
+            	
+		 		<xpath expr="/form//notebook/page[@string='Payment Information']" position="replace">
+		 			    <page string="Payment Information" groups="base.group_user">
+                            <label for="line_cr_ids" invisible="context.get('line_type', False)"/>
+                            <field name="line_cr_ids" context="{'journal_id':journal_id, 'type':type, 'partner_id':partner_id}" on_change="onchange_line_ids(line_dr_ids, line_cr_ids, amount, currency_id, type, context)">
+                                <tree string="Invoices and outstanding transactions" editable="bottom" colors="gray:amount==0">
+                                    
+									<field name="move_line_id" context="{'journal_id':parent.journal_id, 'partner_id':parent.partner_id}"
+                                        on_change="onchange_move_line_id(move_line_id)"
+                                        domain="[('account_id.type','in',('receivable','payable')), ('reconcile_id','=', False), ('partner_id','=',parent.partner_id)]"
+                                        required="1"
+                                        groups="account.group_account_user"/>
+                                    <field name="account_id"  groups="base.group_no_one" domain="[('type','=','receivable')]"/>
+                                    <field name="date_original" readonly="1"/>
+                                    <field name="date_due" readonly="1"/>
+                                    <field name="amount_original" readonly="1"/>
+                                    <field name="amount_unreconciled" readonly="1" groups="account.group_account_user"/>
+                                    <field name="reconcile" on_change="onchange_reconcile(reconcile, amount, amount_unreconciled, context)" groups="account.group_account_user"/>
+                                    <field name="amount" sum="Total Allocation" on_change="onchange_amount(amount, amount_unreconciled, context)" string="Allocation"/>
+                                </tree>
+                            </field>
+                            <label for="line_dr_ids" attrs="{'invisible': [('pre_line','=',False)]}"/>
+                            <field name="line_dr_ids" attrs="{'invisible': [('pre_line','=',False)]}" context="{'journal_id':journal_id, 'partner_id':partner_id}" on_change="onchange_line_ids(line_dr_ids, line_cr_ids, amount, currency_id, type, context)">
+                                <tree string="Credits" editable="bottom" colors="gray:amount==0">
+                                    <field name="move_line_id" context="{'journal_id':parent.journal_id, 'partner_id':parent.partner_id}"
+                                        on_change="onchange_move_line_id(move_line_id)"
+                                        domain="[('account_id.type','in',('receivable','payable')), ('reconcile_id','=', False), ('partner_id','=',parent.partner_id)]"
+                                        required="1"/>
+                                    <field name="account_id"  groups="base.group_no_one" domain="[('type','=','receivable')]"/>
+                                    <field name="date_original" readonly="1"/>
+                                    <field name="date_due" readonly="1"/>
+                                    <field name="amount_original" readonly="1"/>
+                                    <field name="amount_unreconciled" readonly="1"/>
+                                    <field name="reconcile" on_change="onchange_reconcile(reconcile, amount, amount_unreconciled, context)"/>
+                                    <field name="amount" sum="Total Allocation" on_change="onchange_amount(amount, amount_unreconciled, context)" string="Allocation"/>
+                                </tree>
+                            </field>
+							
+							
+                            <group col="3">
+                                <group>
+                                    <field name="narration" colspan="2" nolabel="1"/>
+                                </group>
+								
+                                <group col="4" attrs="{'invisible':[('is_multi_currency','=',False)]}">
+                                    <field name="is_multi_currency" invisible="1"/>
+									<label for="payment_rate" colspan="1"/>
+									<div>
+                                        <field name="payment_rate" required="1" class="oe_inline" on_change="onchange_amount(amount, payment_rate, partner_id, journal_id, currency_id, type, date, payment_rate_currency_id, company_id, context)"/>
+                                        <field name="payment_rate_currency_id" class="oe_inline" on_change="onchange_payment_rate_currency(currency_id, payment_rate, payment_rate_currency_id, date, amount, company_id, context)" groups="base.group_multi_currency"/>
+                                    </div>
+                                    <field name="currency_help_label" colspan="2" nolabel="1" class="oe_grey"/>
+                                    <field name="paid_amount_in_company_currency" colspan="4" invisible="1"/>
+                                </group>
+								
+								
+                                <group>
+                                    <field name="writeoff_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="payment_option" required="1" attrs="{'invisible':[('writeoff_amount','=',0)]}"/>
+                                    <field name="writeoff_acc_id"
+                                           attrs="{'invisible':['|', ('payment_option','!=','with_writeoff'), ('writeoff_amount','=',0)], 'required':[('payment_option','=','with_writeoff')]}"
+                                           domain="[('type','=','other')]"/>
+                                    <field name="comment"
+                                           attrs="{'invisible':['|', ('payment_option','!=','with_writeoff'), ('writeoff_amount','=',0)]}"/>
+                                    <field name="analytic_id"
+                                           groups="analytic.group_analytic_accounting"
+                                           attrs="{'invisible':['|', ('payment_option','!=','with_writeoff'), ('writeoff_amount','=',0)]}"/>
+                                </group>
+                            </group>
+                        </page>
+					<page string="SRI">
+		                <separator string="Tipo Retencion" colspan="4"/>
+				        <group colspan='4' col='4'>
+						    <field name='puntoemision_id' widget='selection' on_change='on_change_puntoemision_id(puntoemision_id)' domain="[('tipodocumento_id.esretencion','=',True),('habilitado','=',True)]"/>
+						    <field name='tipodocumento_id' widget='selection'  readonly='True'/>
+				            <field name='porcentajeretencion' string='Porcentaje' readonly='True'/>
+				            <field name='codigofiscal' string='Codigo SRI'  readonly='True'/>
+				            <field name='esretencion' />
+				            <field name='tiporet' attrs="{'required':[('esretencion','=',True)]}"/>
+				        </group> 
+		                <separator string="Comprobante" colspan="4"/>
+		                <group colspan='4' col='6'>
+				    		<group colspan='1' col='5'>
+			                <field name='establecimiento' attrs="{'readonly':[('esretencion','=',False),]}" string='Pre-impreso' colspan='1' />
+			               	<field name='puntoemision' attrs="{'readonly':[('esretencion','=',False),]}" nolabel='1' colspan='1' />
+			               	<field name='secuencial' attrs="{'readonly':[('esretencion','=',False),]}" nolabel='1' colspan='2' />
+		                     </group> 
+				            <field name='Numautorizacion' attrs="{'readonly':[('esretencion','=',False),]}" string='Aut. Numero'/>
+				            <field name='vencautorizacion' attrs="{'readonly':[('esretencion','=',False),]}" string='Vence'/>
+				            <field name='numeAutImp' attrs="{'readonly':[('esretencion','=',False),]}" />
+				 </group> 			       
+	  	</page>
+
+	       </xpath>
+	     </field>
+	</record>
+	
+		<record id="view_voucher_inherit" model="ir.ui.view">
+            <field name="name">sri.voucher.inherit</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_check_writing.view_vendor_payment_check_form"/> 
+            <field name="arch" type="xml">
+             	
+             	<field name="amount_in_word" position='replace' >
+             		 <field name="amount_in_word" attrs="{'invisible':[('allow_check','!=',True)]}" string="Total Texto" colspan="2"/>
+				</field>
+
+             </field>
+		</record>	
+	
+    </data>
+</openerp>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+	<!--Tipo documento Info-->
+
+    	<record model="ir.ui.view" id="comprobantesanulados_search_view">
+		<field name="name">comprobantesanulados.search</field>
+		<field name="model">fiscal.comprobantesanulados</field>
+		<field name="arch" type="xml">
+		    <search string="Session Search">
+		        <field name="puntoemision"/>
+		    </search>
+		</field>
+	    </record>
+
+        <record model="ir.ui.view" id="fiscal_comprobantesanulados_view_form">
+            <field name="name">fiscal.comprobantesanulados.form</field>
+            <field name="model">fiscal.comprobantesanulados</field>
+            <field name="arch" type="xml">
+	            <form string="Comprobantes Anulados" version="7.0" >
+					<sheet>
+	            	<group colspan='2' col='4'>
+	            		<separator string='General' colspan='4'/>
+						<newline/>
+						<field name="manual" invisible='1'/>
+						<field name='puntoemision_id' colspan='4' attrs="{'readonly':[('manual', '=', False)]}" on_change='onchange_puntoemision_id(puntoemision_id)'/>
+						<field name="tipodocumento_id" widget='selection' readonly='1' colspan='4' on_change='onchange_tipodocumento_id(tipodocumento_id)'/>
+						<field name='tipocomprobante' invisible='1'/>
+						<field name="autorizacion" colspan='4' readonly='1'/>
+						<field name="establecimiento" colspan='2' readonly='1'/>
+						<field name="puntoemision" colspan='2' readonly='1'/>
+						<field name="secuencialinicio" colspan='2' attrs="{'readonly':[('|'),('manual', '=', False),('puntoemision_id','=',False)]}" on_change='onchange_secuencial(puntoemision_id, secuencialinicio,secuencialfin)'/>
+						<field name="secuencialfin" colspan='2' attrs="{'readonly':[('|'),('manual', '=', False),('puntoemision_id','=',False)]}" on_change='onchange_secuencial(puntoemision_id, secuencialinicio,secuencialfin)'/>
+						<label string='' colspan='2'/>
+	            	</group>
+					</sheet>
+	            </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="fiscal_tipodocumento_view_tree">
+            <field name="name">fiscal.comprobantesanulados.tree</field>
+            <field name="model">fiscal.comprobantesanulados</field>
+            <field name="arch" type="xml">
+                <tree string="Comprobantes Anulados" >
+	            	<field name="tipodocumento_id"/>
+					<field name="puntoemision"/>
+					<field name="establecimiento"/>
+					<field name="secuencialinicio"/>
+					<field name="secuencialfin"/>
+					<field name="autorizacion"/>
+		        </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>

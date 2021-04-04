@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <template id="formulario_103_template">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <!-- <t t-call="report.internal_layout"> -->
+                        <div class="page">
+                            <!-- cabecera -->
+                            <table class="table-condensed">
+                                <tr>
+                                    <th class="text-left" width="50%">
+                                        FORMULARIO 103 POR COMPRAS (del
+                                        <span t-field="o.fecha_inicio"/>
+                                        al <span t-field="o.fecha_fin"/>)
+                                    </th>
+                                    <th/><th/><th/>
+                                    <th class="text-right" width="50%">
+                                        Módulo de Compras
+                                    </th>
+                                </tr>
+                                <tr class="text-left">
+                                    <t t-if="o.proveedor_id">
+                                        <th>
+                                            <span t-field="o.proveedor_id" />
+                                        </th>
+                                    </t>
+                                    <t t-if="not o.proveedor_id">
+                                        <th>TODOS LOS PROVEEDORES</th>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d')" />
+                                    </th>
+                                </tr>
+                                <tr style="content: '';display: block;height: 20px;" />
+                            </table>
+                            <p></p>
+                            <t t-set="data" t-value="o.data_formulraio_103_pdf()"/>
+                            <!-- tabla -->
+                            <table class="table table-sm page-break-inside:avoid; page-break-after:auto">
+                                <thead>
+                                    <tr>
+                                        <th style="vertical-align: middle;border: 1px solid black" rowspan="2">No. COMPRO</th>
+                                        <th style="border: 1px solid black" class="text-center" colspan="2">FECHA</th>
+                                        <th style="border: 1px solid black" class="text-center" colspan="2">DOCUMENTO</th>
+                                        <th class="text-center" style="vertical-align: middle;border: 1px solid black" rowspan="2">PROVEEDOR</th>
+                                        <th class="text-center" style="vertical-align: middle;border: 1px solid black" rowspan="2">BASE IMPONIBLE</th>
+                                        <th class="text-center" style="vertical-align: middle;border: 1px solid black" rowspan="2">I.V.A</th>
+                                        <th class="text-center" style="vertical-align: middle;border: 1px solid black" rowspan="2">TOTAL COMPRA</th>
+                                        <th style="border: 1px solid black" class="text-center" colspan="3">RETENCION FUENTE</th>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid black" class="text-center">REGISTRO</th>
+                                        <th style="border: 1px solid black" class="text-center">EMISION</th>
+                                        <th style="border: 1px solid black" class="text-center">TIPO</th>
+                                        <th style="border: 1px solid black" class="text-center">No.</th>
+                                        <th style="border: 1px solid black" class="text-center">VALOR</th>
+                                        <th style="border: 1px solid black" class="text-center">%</th>
+                                        <th style="border: 1px solid black" class="text-center">No.</th>
+                                    </tr>
+                                </thead>
+                                <t t-set="total_general_base_imponible" t-value="0"/>
+                                <t t-set="total_general_iva" t-value="0"/>
+                                <t t-set="total_general_compra" t-value="0"/>
+                                <t t-set="total_general_valor" t-value="0"/>
+                                <t t-foreach="data" t-as="cabecera">
+                                    <tbody>
+                                        <t t-set="total_base_imponible" t-value="0"/>
+                                        <t t-set="total_iva" t-value="0"/>
+                                        <t t-set="total_compra" t-value="0"/>
+                                        <t t-set="total_valor" t-value="0"/>
+                                        <tr>
+                                            <td class="text-center">
+                                                <strong>Código:</strong>
+                                            </td>
+                                            <td class="text-center">
+                                                <strong><span t-esc="cabecera['retencion'][0]['codigo']" /></strong>
+                                            </td>
+                                            <td class="text-center" colspan="4">
+                                                <strong><span t-esc="cabecera['retencion'][0]['tipo_retencion']" /></strong>
+                                            </td>
+                                            <td colspan="6"></td>
+                                        </tr>
+                                        <!-- detalle -->
+                                        <t t-foreach="cabecera['detalle']" t-as="line">
+                                            <tr>
+                                                <td class="text-center"><span t-esc="line['comprobante']" /></td>
+                                                <td class="text-center"><span t-esc="line['registro']" /></td>
+                                                <td class="text-center"><span t-esc="line['emision']" /></td>
+                                                <td class="text-center"><span t-esc="line['tipo']" /></td>
+                                                <td class="text-center"><span t-esc="line['numero_documento']" /></td>
+                                                <td class="text-center"><span t-esc="line['proveedor']" /></td>
+                                                <td class="text-right"><span t-esc="'%.2f' % line['base_imponible']" /></td>
+                                                <td class="text-right"><span t-esc="'%.2f' % line['iva']" /></td>
+                                                <td class="text-right"><span t-esc="'%.2f' % line['total_compra']" /></td>
+                                                <td class="text-right"><span t-esc="'%.2f' % line['valor']" /></td>
+                                                <td class="text-center"><span t-esc="'%.2f' % line['porcentaje']" /></td>
+                                                <td class="text-center"><span t-esc="line['numero_retencion']" /></td>
+                                            </tr>
+                                            <!-- suma de totales -->
+                                            <t t-set="total_base_imponible" t-value="total_base_imponible + line['base_imponible']"/>
+                                            <t t-set="total_iva" t-value="total_iva + line['iva']"/>
+                                            <t t-set="total_compra" t-value="total_compra + line['total_compra']"/>
+                                            <t t-set="total_valor" t-value="total_valor + line['valor']"/>
+                                        </t>
+                                        <!-- total detalle -->
+                                        <tr>
+                                            <td colspan="6"></td>
+                                            <td style="border-top: 1px solid black" class="text-right"><strong><span t-esc="'%.2f' % total_base_imponible" /></strong></td>
+                                            <td style="border-top: 1px solid black" class="text-right"><strong><span t-esc="'%.2f' % total_iva" /></strong></td>
+                                            <td style="border-top: 1px solid black" class="text-right"><strong><span t-esc="'%.2f' % total_compra" /></strong></td>
+                                            <td style="border-top: 1px solid black" class="text-right"><strong><span t-esc="'%.2f' % total_valor" /></strong></td>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr style="content: '';display: block;height: 20px;" />
+                                        <p/>
+                                        <!-- suma total general -->
+                                        <t t-set="total_general_base_imponible" t-value="total_general_base_imponible + total_base_imponible"/>
+                                        <t t-set="total_general_iva" t-value="total_general_iva + total_iva"/>
+                                        <t t-set="total_general_compra" t-value="total_general_compra + total_compra"/>
+                                        <t t-set="total_general_valor" t-value="total_general_valor + total_valor"/>
+                                    </tbody>
+                                </t>
+                                <tfoot>
+                                    <!-- total general -->
+                                    <tr>
+                                        <td colspan="4"/>
+                                        <td colspan="2" class="text-right"><strong>TOTAL COMPRA</strong></td>
+                                        <td style="border-top: 1px solid black;border-bottom: 1px solid black" class="text-right"><strong><span t-esc="'%.2f' % total_general_base_imponible" /></strong></td>
+                                        <td style="border-top: 1px solid black;border-bottom: 1px solid black" class="text-right"><strong><span t-esc="'%.2f' % total_general_iva" /></strong></td>
+                                        <td style="border-top: 1px solid black;border-bottom: 1px solid black" class="text-right"><strong><span t-esc="'%.2f' % total_general_compra" /></strong></td>
+                                        <td style="border-top: 1px solid black;border-bottom: 1px solid black" class="text-right"><strong><span t-esc="'%.2f' % total_general_valor" /></strong></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    <!-- </t> -->
+                </t>
+            </t>
+        </template>
+        
+        <report
+            id="action_formulario_103_template"
+            model="reporte.formulario.103"
+            report_type="qweb-pdf"
+            string="Fomrulario 103 PDF"
+            name="ans_reporte_tributacion.formulario_103_template"
+            file="ans_reporte_tributacion.formulario_103_template"
+            menu="False"
+            auto="False"
+        />
+        <record id="action_formulario_103_template" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="ans_reporte_tributacion.paperformat_formulario_103" />
+        </record>
+    </data>
+</openerp>

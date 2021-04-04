@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		
+	<!-- MENU -->
+	
+
+        <menuitem id="menu_conciliacion_bancaria_ans" name="Procesos Bancarios"
+            parent="ans_escuela.menu_escuela"   sequence="0"/>
+
+
+
+
+
+    </data>
+</openerp>

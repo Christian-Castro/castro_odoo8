@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+	
+	<record id="importar_archivo_factura_search_view" model="ir.ui.view">
+        <field name="name">importar.archivo.factura.search</field>
+        <field name="model">importar.archivo.factura</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+	            <field name="numerofactura" />
+	        <separator/>
+			 </search>
+        </field>
+    </record>
+
+	
+	<record model="ir.ui.view" id="importar_archivo_factura_tree_view">
+        <field name="name">importar.archivo.factura.tree</field>
+        <field name="model">importar.archivo.factura</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="tree_string">
+                <field name="numerofactura" />
+            </tree>
+        </field>
+    </record>
+
+	
+	<record model="ir.ui.view" id="importar_archivo_factura_form_view">
+       <field name="name">importar.archivo.factura.form</field>
+       <field name="model">importar.archivo.factura</field>
+       <field name="type">form</field>
+       <field name="arch" type="xml">
+           <form string="form_string">
+			<sheet>
+				<group colspan="2" col="4">
+					<field name="numerofactura" />
+				</group>
+              </sheet>
+           </form>
+       </field>
+    </record>
+
+
+    <record id="action_importar_archivo_factura" model="ir.actions.act_window">
+            <field name="name">Periodo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">importar.archivo.factura</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="importar_archivo_factura_search_view"/>
+    </record>
+
+	
+	<menuitem id="menu_importar_archivo_factura" name="Data a pasar" 
+				action="action_importar_archivo_factura" parent="account.menu_finance_configuration" sequence="2"/>
+    
+
+    </data>
+</openerp>

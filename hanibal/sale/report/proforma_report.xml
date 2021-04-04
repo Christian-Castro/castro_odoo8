@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report id="sale.proforma_report"
+            model="sale.order" 
+            name="cotizacion.venta"
+            rml="sale/report/proforma_report.rml" 
+            auto="False" 
+            header="False"
+            string="Cotización"/>
+
+
+	<report id="sale.proforma_report_cr"
+            model="sale.order" 
+            name="cotizacion.venta.crm"
+            rml="sale/report/proforma_crm_report.rml" 
+            auto="False" 
+            header="False"
+            string="Cotización"/>
+
+
+    </data>
+</openerp>

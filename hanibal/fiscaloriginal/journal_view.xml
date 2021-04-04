@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_journal_inherit" model="ir.ui.view">
+            <field name="name">sri.journal.view.inherit</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+            	<!--<field name='allow_date' position='after'>
+                    <field name='dist_analitica'/>
+                </field>-->
+                <xpath expr="/form//notebook/page[@string='Cash Registers']" position="after">
+                	<page string='Fiscal'>
+	                	<group colspan="2" col="2">
+	                        <separator string='Tipo de Documento' colspan='4'/>
+	                        <field name='tipodocumento_id' string='Documento Generado' widget='selection'/>
+	                        <field name='tipodocumentosri_id' string='Documento SRI' widget='selection'/>
+	                    </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_journal_inherit2" model="ir.ui.view">
+            <field name="name">sri.journal.view.inherit</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+            	<field name='type' position='after'>
+                    <field name='categoria_reporte'/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

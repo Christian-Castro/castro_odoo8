@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		
+	<!-- MENU -->
+    <menuitem name="Descargas de facturas" id="menu_facturacion_masiva"
+            sequence='7' />
+    <menuitem id="masiva_menu_banco" name="Banco" parent="ans_facturacion_masiva.menu_facturacion_masiva" sequence="1"/>
+		
+	    <record id="view_carga_archivo" model="ir.ui.view">
+            <field name="name">carga.archivo.form</field>
+            <field name="model">carga.archivo</field>
+            <field name="arch" type="xml">
+                <form string="Facturacion Masiva">
+                    <group>
+                            <field name="x_fecha_subida" />
+		           			<field name="x_anio" required='1' attrs="{'readonly': [('x_bandera','=',True)]}"/>
+                            <field name="x_mes" required='1' attrs="{'readonly': [('x_bandera','=',True)]}"/>
+                            <field name="x_banco" required='1' attrs="{'readonly': [('x_bandera','=',True)]}"/>
+                            <field name="x_tipo_factura" required='1' attrs="{'readonly': [('x_bandera','=',True)]}"/>
+                            <field name="x_codigo_banco" readonly='1' />
+                            <field name="x_enviado_banco" readonly='1' />
+                            <field name="x_id_transaccion" readonly='1'/>
+                    </group>
+                    <group col='4' string='Archivo Txt' attrs="{'invisible': [('x_bandera','=',False)]}">
+                        <field name="x_binario_txt" readonly='1' filename="x_archivo_txt"/>
+                        <field name="x_bandera" invisible='1'/>
+                    </group>
+                    <footer attrs="{'invisible': [('x_bandera','=',True)]}">
+                        <button string="Mostrar" name="mostrar_datos" type="object" class="oe_highlight"/>
+                        <button string="Generar archivo txt" name="descarga_txt" type="object" class="oe_highlight"/>
+                    </footer>
+                    <notebook >
+						<page string='Facturas'>
+							<field name='x_id_line' nolabel='1' >
+								<tree string='Facturas' create='0' delete='0'>
+                                    <field name="x_id_account_invoice" />
+									<field name='x_codigo_alumno' readonly='1' />
+									<field name='x_fecha_emision' readonly='1'/>	
+									<field name="x_id_nombre_alumno" readonly='1' />
+									<field name="x_vencimiento" readonly='1'/>
+									<field name='x_curso' readonly='1'/>
+                                    <field name='x_valor' readonly='1' widget='monetary'/>
+								</tree>
+							</field>
+						</page>
+					</notebook> 
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="carga_archivo_view_tree">
+            <field name="name">carga.archivo.tree</field>
+            <field name="model">carga.archivo</field>
+            <field name="arch" type="xml">
+                <tree >                      
+                    <field name="x_banco" />                  
+                    <field name="x_fecha_subida" />
+                    <field name="x_anio"/>
+                    <field name="x_mes"/>
+                </tree>
+            </field>
+        </record>
+        
+
+        <record id="action_carga_archivo" model="ir.actions.act_window">
+            <field name="name">Descarga Archivo</field>
+            <field name="res_model">carga.archivo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>            
+
+
+	<menuitem name="Filtro Descarga Masiva" action="action_carga_archivo"
+            id="id_menu_carga_archivo"
+            parent="ans_facturacion_masiva.masiva_menu_banco" />
+
+
+    </data>
+</openerp>

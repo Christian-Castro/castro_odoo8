@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+         <menuitem name="Reporting"
+            id="base.menu_reporting"
+            groups="base.group_user"
+            sequence="2000"/>
+        <menuitem id="menu_report" name="Análisis financiero" parent="base.menu_reporting" sequence="10"/>
+        
+        
+        
+        <!-- ROTACION DE CARTERA -->
+        
+        <record model="ir.ui.view" id="view_rotacion_cartera_graph">
+            <field name="name">analisis.rotacion.cartera.graph</field>
+            <field name="model">analisis.rotacion.cartera</field>
+            <field name="arch" type="xml">
+                <graph string="ANALISIS ROTACION CARTERA" type="bar">
+                    <!--field name="prom_saldos"  type="measure"/>
+                    <field name="facturado"  type="measure"/-->
+                    <field name="cliente_descripcion" type="pivot"/>
+                    <!--field name="cliente_limite" type="row"/-->
+                    <field name="sal_mes" type="measure"/>
+                    <field name="fac_mes" type="measure"/>
+                     
+                </graph>
+            </field>
+        </record>
+    
+    
+        <record id="view_rotacion_cartera_filter" model="ir.ui.view">
+            <field name="name">analisis.rotacion.cartera.filter</field>
+            <field name="model">analisis.rotacion.cartera</field>
+            <field name="arch" type="xml">
+                <search string="ANALISIS ROTACION CARTERA">
+
+                    <field name="cliente_descripcion" string="Cliente"/>
+                    <field name="mes" string="Mes"/>
+                    <field name="periodo" string="Período"/>
+                    <field name="en_problemas"  string="Plazo"/>
+                    <field name="cliente_diacre" string="D.Cre"/>
+                    <field name="cliente_limite" string="Cupo"/>  
+                    <group expand="1" string="Cumplimiento">
+		            <filter string="Dentro de Plazo" name="en_problemas" domain="[('en_problemas','=','DENTRO DE PLAZO')]"/>
+		            <filter string="Fuera de Plazo" name="en_problemas" domain="[('en_problemas','=','FUERA DE PLAZO')]"/>
+                    </group>
+                    <group expand="1" string="Tipo Informe">
+		            <filter string="Cliente" name="grupo" domain="[('grupo','=','XX1')]"/>
+		            <filter string="Mes" name="grupo" domain="[('grupo','=','XX0')]"/>
+                    </group>
+                    <group expand="1" string="Dias Crédito">
+                   	    <filter string="Contado" name="cliente_diacre" domain="[('cliente_diacre','=',0)]"/>
+		            <filter string="Crédito" name="cliente_diacre" domain="[('cliente_diacre','>',0)]"/>
+
+                    </group>
+                    <group expand="1" string="Cupo">
+		            <filter string="Sin Cupo" name="cliente_limite" domain="[('cliente_limite','=',0)]"/>
+		            <filter string="Con cupo" name="cliente_limite" domain="[('cliente_limite','!=',0)]"/>                            
+		    </group>
+
+
+                    <group expand="1" string="Group By">
+                       <filter string="Año" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'anio'}"/>
+                       <!--filter string="Mes" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'mes'}"/-->
+                       <filter string="Mes" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'sal_fecha:month'}"/> 
+                       <filter string="Plazo" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'en_problemas'}"/>
+                        <filter string="Cliente" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'cliente_descripcion'}"/>
+                    </group>
+                </search>
+
+            </field>
+        </record>
+
+        <record id="view_analisis_rotacion_cartera_tree" model="ir.ui.view">
+            <field name="name">analisis.rotacion.cartera.tree</field>
+            <field name="model">analisis.rotacion.cartera</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="Analisis Rotacion Cartera" >
+
+                <field name="compania" invisible="1"/>
+                    <field name="cliente_descripcion" string="Cliente"/>
+                    <field name="cliente_diacre" string="D.Cre"/>
+                    <field name="cliente_limite" string="Cupo"/>                   
+                    <field name="mes" invisible="0" string="Mes"/>
+                    <field name="anio" invisible="0" string="Año"/>
+		    <field name="sal_mes" invisible="0" string="Saldo" />
+		    <field name="fac_mes" invisible="0"  string="Facturado"/>
+		    <field name="prom_saldos" invisible="0" string="S. Prom"/>
+		    <field name="facturado" invisible="0" string="T. Fac"/>
+		    <field name="dias" invisible="0" string="Días"/>
+		    <field name="rotacion" invisible="0" string="Rotación"/>
+		    <field name="dr" invisible="0" string="D Rec"/>
+		    <field name="en_problemas" invisible="0" string="Plazo"/>
+		    <field name="cod_vendedor" invisible="1" string="Ven"/>
+		    <field name="user_id" invisible="1" string="Id Ven"/>
+		 
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_analisis_rotacion_cartera_form" model="ir.ui.view">
+            <field name="name">analisis.rotacion.cartera.form</field>
+            <field name="model">analisis.rotacion.cartera</field>
+            <field name="arch" type="xml">
+                <form string="Analisis Rotacion Cartera">
+                <sheet>
+                	<group>
+			    <button name="import_data" type="object" string="Generar informacion"/>
+                    </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+        
+        
+        <record id="action_rotacion_cartera" model="ir.actions.act_window">
+            <field name="name">Analisis Rotacion Cartera</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">analisis.rotacion.cartera</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,graph,form</field>
+            <field name="search_view_id" ref="view_rotacion_cartera_filter"/>
+        </record>
+        
+        
+        <menuitem action="action_rotacion_cartera" id="menu_rotacion_cartera_form2" parent="menu_report" sequence="1"/>
+        <!-- ANALISIS rotacion cartera -->
+        
+
+
+
+
+    </data>
+</openerp>
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="id_secuencial_code" model="ir.sequence.type">
+            <field name="name">Account Voucher</field>
+            <field name="code">account.voucher</field>
+        </record>
+    	<record id="id_secuencial_egreso" model="ir.sequence">
+            <field name="name">EGRESO</field>
+            <field name="active">True</field>
+            <field name="prefix">%(year)s/</field>
+            <field name="padding">6</field>
+            <field name="code">account.voucher</field>
+            <field name="number_next_actual">1</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">no_gap</field>
+        </record>
+
+
+    </data>
+</openerp>

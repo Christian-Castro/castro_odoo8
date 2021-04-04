@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+	
+	<record id="periodo_search_view" model="ir.ui.view">
+        <field name="name">periodo.search</field>
+        <field name="model">periodo</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+	            <field name="name" />
+	            <field name="mes" />
+	            <field name="active" />
+	        <separator/>
+			 </search>
+        </field>
+    </record>
+
+	
+	<record model="ir.ui.view" id="periodo_name_tree_view">
+        <field name="name">periodo.tree</field>
+        <field name="model">periodo</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="tree_string">
+                <field name="name" />
+                <field name="mes" />
+	            <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+	
+	<record model="ir.ui.view" id="periodo_name_form_view">
+       <field name="name">periodo.form</field>
+       <field name="model">periodo</field>
+       <field name="type">form</field>
+       <field name="arch" type="xml">
+           <form string="form_string">
+			<sheet>
+				<group colspan="2" col="4">
+					<field name="name" required="1" />
+					<field name="mes" required="1" />
+	            	<field name="active" />
+				</group>
+                <notebook>
+                    <page string="Periodos Fiscales">
+                        <field name="periodo_id">
+                            <tree editable="bottom">
+                                <field name="mes"/>
+                                <field name="anio"/>
+                                <field name="habilitado"/>
+                                <field name="factura_emitida" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+           </form>
+       </field>
+    </record>
+
+
+    <record id="action_periodo" model="ir.actions.act_window">
+            <field name="name">Periodo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">periodo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="periodo_search_view"/>
+    </record>
+
+	
+	<menuitem id="menu_periodo" name="Año Escolar" 
+				action="action_periodo" parent="menu_estructura_escolar" sequence="0"/>
+    
+
+    </data>
+</openerp>

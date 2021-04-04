@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+	
+	<record id="descuentos_search_view" model="ir.ui.view">
+        <field name="name">descuentos.search</field>
+        <field name="model">descuentos</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+	            <field name="name" />
+	            <field name="porcentaje" />
+	        <separator/>
+			 </search>
+        </field>
+    </record>
+	
+	<record model="ir.ui.view" id="descuentos_name_tree_view">
+        <field name="name">descuentos.tree</field>
+        <field name="model">descuentos</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="tree_string">
+              <!--field name="sequence" widget="handle"/-->
+                 <field name="name" />
+	               <field name="porcentaje" />
+                 <field name="cuenta_id" required="1" />
+                <field name="is_pronto_pago" />
+                <field name="dias" />
+            </tree>
+        </field>
+    </record>
+	
+	<record model="ir.ui.view" id="descuentos_name_form_view">
+       <field name="name">descuentos.form</field>
+       <field name="model">descuentos</field>
+       <field name="type">form</field>
+       <field name="arch" type="xml">
+           <form string="form_string">
+			<sheet>
+				<group>
+                <field name="sequence"
+                />
+					     <field name="name" required="1" />
+	             <field name="porcentaje" required="1" />
+               <field name="cuenta_id" required="1" />
+                    <field name="is_pronto_pago" />
+                     <field name="dias" />
+				</group>
+              </sheet>
+           </form>
+       </field>
+    </record>
+
+   
+    <record id="action_descuentos" model="ir.actions.act_window">
+            <field name="name">Descuentos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">descuentos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="descuentos_search_view"/>
+    </record>
+	
+	<menuitem id="menu_descuentos" name="Descuentos" 
+				action="action_descuentos" parent="menu_mentenimiento_escolar" sequence="1"/>
+	
+  <record model="ir.ui.view" id="descuentos_alumno_tree_view">
+        <field name="name">descuentos.tomar.tree</field>
+        <field name="model">descuentos.tomar</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="tree_string">
+              <!--field name="sequence" widget="handle"/-->
+                 <field name="sequence" />
+                 <field name="descuento_id" />
+                 <field name="porcentaje" />
+                <field name="partner_ids" />
+            </tree>
+        </field>
+    </record>
+  
+  <record model="ir.ui.view" id="descuentos_alumno_form_view">
+       <field name="name">descuentos.tomar.form</field>
+       <field name="model">descuentos.tomar</field>
+       <field name="type">form</field>
+       <field name="arch" type="xml">
+           <form string="form_string">
+      <sheet>
+        <group>
+                <field name="sequence" />
+                <field name="descuento_id" />
+                <field name="porcentaje" />
+                <field name="partner_ids" />
+        </group>
+              </sheet>
+           </form>
+       </field>
+    </record>
+
+   
+    <record id="action_descuentos_alumno" model="ir.actions.act_window">
+            <field name="name">Descuentos Alumnos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">descuentos.tomar</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+    </record>
+  
+  <menuitem id="menu_descuentos_alumno" name="Descuentos Alumnos" 
+        action="action_descuentos_alumno" parent="menu_mentenimiento_escolar" sequence="1" groups="base.group_no_one"/>
+
+    </data>
+</openerp>

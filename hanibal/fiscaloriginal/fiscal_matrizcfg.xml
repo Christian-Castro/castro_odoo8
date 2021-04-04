@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+       	<record model="ir.ui.view" id="tipopago_search_view">
+		    <field name="name">fiscal.tipopago.search.view</field>
+		    <field name="model">fiscal.tipopago</field>
+		    <field name="type">search</field>
+		    <field name="arch" type="xml">
+		        <search string="Tipo pago">
+		            <field name="habilitado"/>
+                </search>
+		    </field>
+	    </record>
+
+        <record model="ir.ui.view" id="tipopago_view_tree">
+            <field name="name">fiscal.tipopago.view.tree</field>
+            <field name="model">fiscal.tipopago</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <tree>
+	            	<field name='name'/>
+                    <field name='codigofiscal'/>
+                    
+                    <field name='identificador'/>
+                    
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tipopago_view_form">
+            <field name="name">fiscal.tipopago.view.form</field>
+            <field name="model">fiscal.tipopago</field>
+            <field name="type">form</field>
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <form>
+                    <separator string='Tipo de Pago' colspan='4'/>
+                    <group>
+                        <field name='name' />
+                        <field name="codigofiscal" />
+                        <field name='identificador' />
+                        <field name='habilitado' />
+                        
+                        
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="tipopago_list_action">
+            <field name="name">Tipo de pago</field>
+            <field name="res_model">fiscal.tipopago</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Configuracion de los tipos de pagos.</field>
+            <field name="search_view_id" ref="tipopago_search_view"/>
+            <!--<field name="context">{'search_default_my_reglaretencion':1}</field>-->
+        </record>
+        
+	
+		   <menuitem id="tipopago_menu" 
+                    name="Tipo de pago" 
+                    parent="fiscal_menu_configuracion"
+                    action="tipopago_list_action" />
+                    
+                    
+		
+    </data>
+</openerp>

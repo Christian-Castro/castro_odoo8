@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--Menu Item-->
+        <menuitem id="sri_menu" name="Fiscal"/>
+        <menuitem id="sri_menu_configuracion" name="Configuracion" parent="sri_menu" sequence="15"/>
+
+	<!--Tipo de producto Info-->
+    	<record model="ir.ui.view" id="tipoproducto_search_view">
+		<field name="name">fiscal.tipoproducto.search</field>
+		<field name="model">fiscal.tipoproducto</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Session Search">
+		        <field name="codigofiscal"/>
+		        <field name="name"/>
+		        <field name="habilitado"/>
+		    </search>
+		</field>
+	    </record>
+
+        <record model="ir.actions.act_window" id="tipoproducto_list_action">
+            <field name="name">Tipos de Producto</field>
+            <field name="res_model">fiscal.tipoproducto</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Configuracion de los Tipos de Producto.</field>
+            <field name="search_view_id" ref="tipoproducto_search_view"/>
+            <field name="context">{'search_default_my_tipoproducto':1}</field>
+        </record>
+
+        <!-- <menuitem id="tipoproducto_menu" 
+                    name="Tipo de Producto" 
+                    parent="sri_menu_configuracion"
+                    action="tipoproducto_list_action" /> -->
+                
+
+        <record model="ir.ui.view" id="tipoproducto_view_form">
+            <field name="name">fiscal.tipoproducto.view.form</field>
+            <field name="model">fiscal.tipoproducto</field>
+            <field name="type">form</field>
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <form string="Tipo Producto" version="7.0" >
+		  <sheet>
+			<group colspan="3" col="2" >
+			        <field name="codigofiscal" />
+			        <field name="habilitado" />
+                    <newline/>
+			        <field name="name" />
+			</group>
+		   </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tipoproducto_view_tree">
+            <field name="name">tipoproducto.view.tree</field>
+            <field name="model">fiscal.tipoproducto</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <tree string="Tipo Producto" >
+	            	<field name="codigofiscal"/>
+	            	<field name="name"/>
+			        <field name="habilitado"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>

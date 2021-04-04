@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--menuitem name="Reportes" id="menu_reportes"
+            parent="ans_escuela.menu_reportes" sequence='5' /-->
+        <menuitem id="menu_ans_reporte" name="Tributarios" parent="ans_reporte.menu_reportes" sequence="5"/>
+    </data>
+</openerp>

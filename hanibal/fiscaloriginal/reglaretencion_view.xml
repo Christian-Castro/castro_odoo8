@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    	<record model="ir.ui.view" id="reglaretencion_search_view">
+		    <field name="name">fiscal.reglaretencion.search.view</field>
+		    <field name="model">fiscal.reglaretencion</field>
+		    <field name="type">search</field>
+		    <field name="arch" type="xml">
+		        <search string="Relaciones">
+		            <field name="habilitado"/>
+                    	    <field name='tipoproducto_id'/>
+                    	    <field name='posicionfiscal_id'/>
+		        </search>
+		    </field>
+	    </record>
+
+        <record model="ir.ui.view" id="reglaretencion_view_tree">
+            <field name="name">fiscal.reglaretencion.view.tree</field>
+            <field name="model">fiscal.reglaretencion</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <tree string="Regla Retencion" >
+	            	<field name='posicionfiscal_id'>
+                        <field name='name'/>
+                    </field>
+                    <field name='tipoproducto_id'>
+                        <field name='name'/>
+                    </field>
+                    <field name="habilitado"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="reglaretencion_view_form">
+            <field name="name">fiscal.reglaretencion.view.form</field>
+            <field name="model">fiscal.reglaretencion</field>
+            <field name="type">form</field>
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <form string="Regla Retencion" version="7.0" >
+		  <sheet>
+                    <separator string='Regla de Retencion' colspan='4'/>
+                    <group>
+                        <field name='posicionfiscal_id' colspan='2' widget='selection'/>
+                        <field name="habilitado" colspan='1'/>
+                        <field name='tipoproducto_id' colspan='2' widget='selection'/>
+                        <field name="name" colspan='4'/>
+                    </group>
+		  </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="reglaretencion_list_action">
+            <field name="name">Relacion de Impuestos</field>
+            <field name="res_model">fiscal.reglaretencion</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Configuracion de las relaciones entre impuestos.</field>
+            <field name="search_view_id" ref="reglaretencion_search_view"/>
+            <field name="context">{'search_default_my_reglaretencion':1}</field>
+        </record>
+
+
+    </data>
+</openerp>

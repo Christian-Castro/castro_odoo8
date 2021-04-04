@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<openerp>
+    <data>
+
+        <record id="ats_wkf" model="workflow">
+            <field name="name">fiscal.ats.wkf</field>
+            <field name="osv">fiscal.ats_proceso</field>
+            <field name="on_create">False</field>
+        </record>
+	
+		<record id="ats_act_borrador" model="workflow.activity">
+            <field name="wkf_id" ref="ats_wkf"/>
+            <field name="name">draft</field>
+            <field name="flow_start">True</field>
+        </record>
+        
+        <record id="ats_act_abierto" model="workflow.activity">
+            <field name="wkf_id" ref="ats_wkf"/>
+            <field name="name">abierto</field>
+            <field name="action">write({'state':'abierto'})
+ats_procesar()</field>
+            <field name="kind">function</field>
+        </record>
+        
+        <record id="ats_act_cerrado" model="workflow.activity">
+            <field name="wkf_id" ref="ats_wkf"/>
+            <field name="name">cerrado</field>
+            <field name="action">cerrar_ats()</field>
+            <field name="kind">function</field>
+        </record>
+		
+		<record id="ats_act_reabierto" model="workflow.activity">
+            <field name="wkf_id" ref="ats_wkf"/>
+            <field name="name">reabierto</field>
+            <field name="action">write({'state':'abierto'})</field>
+            <field name="kind">function</field>
+        </record>
+		
+        <record id="ats_borrador_to_abierto" model="workflow.transition">
+            <field name="act_from" ref="ats_act_borrador"/>
+            <field name="act_to" ref="ats_act_abierto"/>
+            <field name="condition">True</field>
+            <field name="signal">ats_procesar</field>
+        </record>
+        
+        <record id="ats_abierto_to_cerrado" model="workflow.transition">
+            <field name="act_from" ref="ats_act_abierto"/>
+            <field name="act_to" ref="ats_act_cerrado"/>
+			<field name="signal">ats_cerrar</field>
+        </record>
+        
+        <record id="ats_cerrado_to_reabierto" model="workflow.transition">
+            <field name="act_from" ref="ats_act_cerrado"/>
+            <field name="act_to" ref="ats_act_reabierto"/>
+			<field name="signal">ats_reabrir</field>
+        </record>   
+        
+        <record id="ats_reabierto_to_cerrado" model="workflow.transition">
+            <field name="act_from" ref="ats_act_reabierto"/>
+            <field name="act_to" ref="ats_act_cerrado"/>
+			<field name="signal">ats_cerrar</field>
+        </record>     
+        
+	</data>
+</openerp>

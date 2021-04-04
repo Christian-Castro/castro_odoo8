@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+	
+	<record id="seccion_search_view" model="ir.ui.view">
+        <field name="name">seccion.search</field>
+        <field name="model">seccion</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+	            <field name="codigo" />
+	            <field name="name" />
+            <separator/>
+			 </search>
+        </field>
+    </record>
+
+	<record id="jornada_search_view" model="ir.ui.view">
+        <field name="name">jornada.search</field>
+        <field name="model">jornada</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+	            <field name="codigo" />
+	            <field name="name" />
+            <separator/>
+			 </search>
+        </field>
+    </record>
+
+
+	
+	<record model="ir.ui.view" id="seccion_name_tree_view">
+        <field name="name">seccion.tree</field>
+        <field name="model">seccion</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="tree_string">
+                <field name="codigo" />
+	            <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+
+   
+	
+   <record model="ir.ui.view" id="jornada_name_tree_view">
+        <field name="name">jornada.tree</field>
+        <field name="model">jornada</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="jornada_string">
+                <field name="codigo" />
+	        <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+
+
+
+
+	
+	
+  <record model="ir.ui.view" id="seccion_name_form_view">
+       <field name="name">seccion.form</field>
+       <field name="model">seccion</field>
+       <field name="type">form</field>
+       <field name="arch" type="xml">
+           <form string="form_string">
+			<sheet>
+				<group>
+					<field name="codigo" required="1" />
+	            	<field name="name" required="1" />
+				</group>
+              </sheet>
+           </form>
+       </field>
+   </record>
+   
+
+  <record model="ir.ui.view" id="jornada_name_form_view">
+       <field name="name">jornada.form</field>
+       <field name="model">jornada</field>
+       <field name="type">form</field>
+       <field name="arch" type="xml">
+           <form string="form_string">
+			<sheet>
+				<group>
+					<field name="codigo" required="1" />
+	            	<field name="name" required="1" />
+				</group>
+              </sheet>
+           </form>
+       </field>
+   </record>
+
+
+
+   
+      <record id="action_seccion" model="ir.actions.act_window">
+            <field name="name">Seccion</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">seccion</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="seccion_search_view"/>
+        </record>
+	
+	<menuitem id="menu_seccion" name="Sección" 
+				action="action_seccion" parent="menu_estructura_escolar" sequence="2"/>
+	
+	<!-- seccion -->
+
+
+_________________________
+
+      <record id="action_jornada" model="ir.actions.act_window">
+            <field name="name">Jornada</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">jornada</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="jornada_search_view"/>
+        </record>
+	
+	<menuitem id="menu_jornada" name="Jornada" 
+				action="action_jornada" parent="menu_estructura_escolar" sequence="1"/>
+__________________________
+
+
+
+
+	
+		<record id="curso_search_view" model="ir.ui.view">
+        <field name="name">curso.search</field>
+        <field name="model">curso</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+	            <field name="codigo" />
+	            <field name="name" />
+            <separator/>
+			 </search>
+        </field>
+    </record>
+	
+	<record model="ir.ui.view" id="curso_name_tree_view">
+        <field name="name">curso.tree</field>
+        <field name="model">curso</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="tree_string">
+	            <field name="seccion_id" />
+	            <field name="jornada_id" />
+              <field name="codigo" />
+	            <field name="name" />
+              <field name="producto_id" />
+            </tree>
+        </field>
+    </record>
+	
+	
+	<record model="ir.ui.view" id="curso_name_form_view">
+       <field name="name">curso.form</field>
+       <field name="model">curso</field>
+       <field name="type">form</field>
+       <field name="arch" type="xml">
+           <form string="form_string">
+			         <sheet>
+        				<group>
+        					<field name="seccion_id" required="1"/>
+                  <field name="jornada_id" required="1" />
+        					<field name="codigo" required="1" />
+        	        <field name="name" required="1" />
+                  <field name="producto_id" options="{'no_create': True,'edit': False,'no_open':True}" required='1'/>
+        				</group>
+              </sheet>
+           </form>
+       </field>
+   </record>
+   
+   
+      <record id="action_curso" model="ir.actions.act_window">
+            <field name="name">Curso</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">curso</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="curso_search_view"/>
+        </record>
+	
+	<menuitem id="menu_curso" name="Curso" 
+				action="action_curso" parent="menu_estructura_escolar" sequence="3"/>
+	
+	
+	<!-- CURSO -->	
+	
+		
+		<record id="paralelo_search_view" model="ir.ui.view">
+        <field name="name">paralelo.search</field>
+        <field name="model">paralelo</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+	            <field name="codigo" />
+            <separator/>
+			 </search>
+        </field>
+    </record>
+	
+	<record model="ir.ui.view" id="paralelo_name_tree_view">
+        <field name="name">paralelo.tree</field>
+        <field name="model">paralelo</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="tree_string">
+              <field name="jornada_id" />
+              <field name="seccion_id" />
+              <field name="curso_id" />  
+              <field name="codigo" />
+            </tree>
+        </field>
+    </record>
+	
+	
+	<record model="ir.ui.view" id="paralelo_name_form_view">
+       <field name="name">paralelo.form</field>
+       <field name="model">paralelo</field>
+       <field name="type">form</field>
+       <field name="arch" type="xml">
+           <form string="form_string">
+			<sheet>
+				<group>
+          <field name="jornada_id" readonly='1'/>
+          <field name="seccion_id" readonly='1'/>
+					<field name="curso_id" required="1" />
+					<field name="codigo" required="1" />
+				</group>
+              </sheet>
+           </form>
+       </field>
+   </record>
+   
+   
+      <record id="action_paralelo" model="ir.actions.act_window">
+            <field name="name">Paralelo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">paralelo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="paralelo_search_view"/>
+        </record>
+	
+	<menuitem id="menu_paralelo" name="Paralelo" 
+				action="action_paralelo" parent="menu_estructura_escolar" sequence="4"/>
+	
+	<!-- PARALELO -->
+    </data>
+</openerp>

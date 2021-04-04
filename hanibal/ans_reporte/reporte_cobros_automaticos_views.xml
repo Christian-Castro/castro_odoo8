@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_cobros_automatico_form" model="ir.ui.view">
+            <field name="name">pagos.automaticos.form.reporte</field>
+            <field name="model">pagos.automaticos</field>
+            <field name="inherit_id" ref="ans_cobros_banco.view_pagos_automaticos_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header[@name='header']" position="after">
+                    <div class="oe_right oe_button_box" name="buttons" >
+                        <button class="oe_stat_button" string='PDF' name="generar_pdf" type="object" icon="fa-file-o" >
+                        </button>
+                    </div>
+                </xpath>
+                <xpath expr="//group[@name='grupo_principal']" position="after">
+                    <group>
+                        <group string='PDF' attrs="{'invisible': [('archivo_pdf','=',False)]}">
+                            <field name="filename_pdf" invisible='1'/>
+                            <field name="archivo_pdf"  filename="filename_pdf" readonly='1'/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

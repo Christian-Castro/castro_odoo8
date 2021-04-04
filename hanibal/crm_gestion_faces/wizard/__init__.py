@@ -1,0 +1,19 @@
+
+#import reporte_log
+#import reporte_grafico_faces
+import reporte_log_crm_prospecto_procesos_cantidad
+import reporte_log_crm_prospecto_procesos_dias
+import crm_make_sale
+import reporte_log_crm_prospecto_procesos_resultado
+import crm_lead_to_opportunity_faces
+import rt_genera_reporte
+import analisis_precios
+import reporte_log_crm_listado_clientes
+import crm_tiempos_procesos
+import reporte_log_crm_prospecto_proceso_exceso_dias
+
+
+
+
+
+
