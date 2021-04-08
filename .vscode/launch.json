@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Odoo hanibal",
+            "name": "Odoo 8",
             "type": "python",
             "request": "launch",
             "program": "odoo/openerp-server",
@@ -13,12 +13,12 @@
             "args": ["-c", "odoo.conf", "--log-handler=odoo.addons.queue_job:DEBUG"],
         },
         {
-            "name": "Odoo hanibal - Update",
+            "name": "Odoo 8 - Update",
             "type": "python",
             "request": "launch",
             "program": "odoo/openerp-server",
             "console": "integratedTerminal",
-            "args": ["-c", "odoo.conf", "--log-handler=odoo.addons.queue_job:DEBUG", "-u", ""],
+            "args": ["-c", "odoo.conf", "--log-handler=odoo.addons.queue_job:DEBUG", "-u", "fiscaloriginal"],
         },
         {
             "name": "Odoo 13 - Multi Process",

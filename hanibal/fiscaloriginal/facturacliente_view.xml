@@ -97,7 +97,6 @@
                 <field name='date_invoice' position='replace'>
                     <field name='date_invoice' required='True'/>
                 </field>
-                 
                 <field name='journal_id' position='replace'>
                     <field name='journal_id' on_change='on_change_journal_id(journal_id)'/>
 					<!-- 			BF -->
@@ -360,7 +359,13 @@
                         </group>
                         <group colspan='2' col='4'>
                             <field name='tipodocumento_id' readonly='True' widget='selection'/>
-                            <field name='puntoemision_id' attrs="{'readonly':[('state','!=','draft')]}" on_change='on_change_puntoemision_id(puntoemision_id)' domain="[('tipodocumento_id.esretencion','=','True'),('habilitado','=',True)]" />
+                            <!-- <field name='puntoemision_id' attrs="{'readonly':[('state','!=','draft')]}" on_change='on_change_puntoemision_id(puntoemision_id)' domain="[('tipodocumento_id.esretencion','=','True'),('habilitado','=',True)]" /> -->
+                            
+                            <!-- CDCM -->
+                            <!-- para crear facturas desde solicitud sin punto de emision -->
+                            <field name='puntoemision_id' attrs="{'required':[('requerido_pto_emisison','=',True)]}"/>
+                            <field name='requerido_pto_emisison' invisible='0'/>
+                            <!-- CDCM  -->
                         </group>
                         <group col="1" colspan="4"> 
                             <field name="retencion_line" nolabel="1" options='{"quick_create": false}'>

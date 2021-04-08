@@ -603,6 +603,29 @@
                 </xpath>
             </field>
         </record>
-
+        <!-- CDCM -->
+        <!-- 07-04-2021 -->
+        <!-- para poder hacer el email requerido en los proveedores -->
+        <record id="res_partner_suppliers" model="ir.ui.view">
+            <field name="name">res.partner.suppliers</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='email']" position="replace">
+                    <field name="email" required="1"/>
+                    <field name="carga_pais" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='email']" position="before">
+                    <field name="carga_pais" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='vat']" position="replace">
+                    <field name="vat" required="1"/>
+                </xpath>
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="longitud_vat" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+        <!-- CDCM -->
     </data>
 </openerp>

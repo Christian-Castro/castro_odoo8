@@ -97,6 +97,11 @@
 											        <field name="name" />
 											        <field name="codigofiscalcompra"/>
 										        	<field name="codigofiscalventa"/>
+													<!-- CDCM -->
+													<!-- 07-04-2021 -->
+													<!-- agg el campo longitud en la pantalla de folios de configuracion -->
+													<field name="longitud"/>
+													<!-- CDCM -->
 										     </group>
 										   </sheet>
 					                </form>

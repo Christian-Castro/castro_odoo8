@@ -3,6 +3,11 @@
 import logging
 from openerp.osv import osv,fields
 from openerp import models, fields, api, _
+#CDCM
+#07-04-2021
+#Se agg libreria para poder usar el ValidationError
+from openerp.exceptions import ValidationError
+#CDCM
 _logger = logging.getLogger(__name__)
 
 class respartnerHistorico(models.Model):
@@ -73,7 +78,24 @@ class respartner(models.Model):
     historico_id = fields.One2many('res.partner.historico','alumno_id',string="Historico")
     #RERV factura para controlar las facturas emitidas para el alumno
     factura_emitida_ids = fields.Many2many("academic.month", ondelete="restrict")
+    #CDCM
+    #07-04-2021
+    #para que el campo street se requerido en la vista de proveedores
+    street = fields.Char(required=True)
+    vat = fields.Char(required=True)
+    longitud_vat =fields.Integer(compute='_compute_longitud_tipoid')
 
+    @api.one
+    @api.depends('tipoid')
+    def _compute_longitud_tipoid(self):
+        self.longitud_vat = self.tipoid.longitud
+
+    @api.constrains('vat')
+    def verificar_longitud_vat(self):
+        if self.longitud_vat != len(self.vat):
+            raise ValidationError ('Por favor verifique la longitud del campo NIF, la longuitud debe ser igual a %s'%self.longitud_vat)
+
+    #CDCM
 
     @api.onchange('jornada_id')
     def onchange_jornada(self):
@@ -141,17 +163,20 @@ class respartner(models.Model):
         
         return a
 
-
+    #CDCM 
+    #07-04-2021
+    # se cambia el api.one por el api.multi para verificar que escoja mas de un record
     @api.one
+    #CDCM 
     @api.depends('name')
     def _carga_pais(self):
         for l in self:
-            if l.tipo!=False:
-                obj_pais=self.env['configuracion'].search([('id_pais','!=',None)])
-                l.country_id=obj_pais.id_pais.id
-                l.state_id=obj_pais.id_provincia.id
-                l.zip=l.country_id.codigo
-                l.city=obj_pais.ciudad
+            # if l.tipo!=False:
+            obj_pais=self.env['configuracion'].search([('id_pais','!=',None)])
+            l.country_id=obj_pais.id_pais.id
+            l.state_id=obj_pais.id_provincia.id
+            l.zip=l.country_id.codigo
+            l.city=obj_pais.ciudad
 
     carga_pais = fields.Boolean(string="Cargo",compute='_carga_pais',readonly='0')
 
@@ -161,7 +186,7 @@ class respartner(models.Model):
     
 
     _defaults = {  
-        'tipo': 'C',  
+        'tipo': 'C',
         }
     
     _sql_constraints = [

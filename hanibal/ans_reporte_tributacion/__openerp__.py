@@ -3,7 +3,6 @@
     "version" : "1.0",
     "depends" :[
         "ans_escuela",
-        #"ans_reporte",
         "account",
         "purchase",
     ],

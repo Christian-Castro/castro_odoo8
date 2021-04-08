@@ -46,3 +46,10 @@ import fiscal_ats_ventaptoemision
 import folios_config
 #import fiscal_folios
 import ruta_comprobantes
+
+import purchase_order_inherit
+
+#CDCM
+#07-04-2021
+import account_invoice_inherit
+#CDCM
